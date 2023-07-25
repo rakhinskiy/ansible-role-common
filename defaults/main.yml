@@ -1,1 +1,11 @@
 ---
+
+# 00 # Always
+
+# Fix sudo error when hostname changed
+ansible_become_flags: "--host=127.0.0.1 --set-home"
+
+dist_name: "{{ ansible_distribution | lower }}"
+dist_version: "{{ ansible_distribution_major_version }}"
+dist_codename: "{{ ansible_lsb.codename | default() | lower }}"
+dist_pkg_mgr: "{{ ansible_pkg_mgr | lower }}"

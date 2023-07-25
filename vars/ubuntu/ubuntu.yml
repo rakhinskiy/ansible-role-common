@@ -1,0 +1,7 @@
+---
+
+always_packages:
+  - "apt-transport-https"
+  - "ca-certificates"
+  - "gnupg2"
+  - "python3-apt"

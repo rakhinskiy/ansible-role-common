@@ -1,0 +1,66 @@
+---
+
+# Check distribution and version before run tasks
+
+- name: "Common | Always | Check distribution"
+  ansible.builtin.fail:
+    msg: "Unsupported distribution {{ dist_name }}"
+  when:
+    - dist_name not in ["almalinux", "debian", "rockylinux", "ubuntu"]
+  tags:
+    - always
+
+- name: "Common | Always | Check alma/rocky linux version"
+  ansible.builtin.fail:
+    msg: "Unsupported distribution version {{ dist_name }}: {{ dist_version }}"
+  when:
+    - dist_name in ["almalinux", "rockylinux"]
+    - dist_version not in ["8", "9"]
+  tags:
+    - always
+
+- name: "Common | Always | Check debian linux version"
+  ansible.builtin.fail:
+    msg: "Unsupported distribution version {{ dist_name }}: {{ dist_codename }}"
+  when:
+    - dist_name in ["debian"]
+    - dist_codename not in ["buster", "bullseye", "bookworm"]
+  tags:
+    - always
+
+- name: "Common | Always | Check ubuntu linux version"
+  ansible.builtin.fail:
+    msg: "Unsupported distribution version {{ dist_name }}: {{ dist_codename }}"
+  when:
+    - dist_name in ["ubuntu"]
+    - dist_codename not in ["focal", "jammy"]
+  tags:
+    - always
+
+# Include distribution specified vars
+
+- name: "Common | Always | Include distribution vars"
+  ansible.builtin.include_vars: "{{ dist_name }}/{{ dist_name }}.yml"
+  tags:
+    - always
+
+- name: "Common | Always | Include alma/rocky linux version vars"
+  ansible.builtin.include_vars: "{{ dist_name }}/{{ dist_name }}-{{ dist_version }}.yml"
+  when:
+    - dist_name in ["almalinux", "rockylinux"]
+  tags:
+    - always
+
+- name: "Common | Always | Include debian/ubuntu codename vars"
+  ansible.builtin.include_vars: "{{ dist_name }}/{{ dist_name }}-{{ dist_codename }}.yml"
+  when:
+    - dist_name in ["debian", "ubuntu"]
+  tags:
+    - always
+
+# Install role packages dependencies
+
+- name: "Common | Always | Install packages"
+  ansible.builtin.include_tasks: "always/{{ dist_pkg_mgr }}.yml"
+  tags:
+    - always

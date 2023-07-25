@@ -1,0 +1,16 @@
+---
+
+- name: "Common | Always | Install dependencies | Apt"
+  ansible.builtin.apt:
+    name: "{{ always_packages }}"
+    state: present
+    update_cache: true
+    force_apt_get: true
+    cache_valid_time: 600
+  when:
+    - always_packages is defined
+    - always_packages | type_debug == 'list'
+    - always_packages | length > 0
+  become: true
+  tags:
+    - always

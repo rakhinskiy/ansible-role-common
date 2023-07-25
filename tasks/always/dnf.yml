@@ -1,0 +1,14 @@
+---
+
+- name: "Common | Always | Install dependencies | Dnf"
+  ansible.builtin.dnf:
+    name: "{{ always_packages }}"
+    state: present
+    update_cache: true
+  when:
+    - always_packages is defined
+    - always_packages | type_debug == 'list'
+    - always_packages | length > 0
+  become: true
+  tags:
+    - always
