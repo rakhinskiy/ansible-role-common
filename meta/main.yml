@@ -1,0 +1,27 @@
+galaxy_info:
+  author: "Vyacheslav Rakhinskiy"
+  role_name: "common"
+  namespace: "rakhinskiy"
+  description: "Servers bootstrap"
+
+  license: "MIT"
+  min_ansible_version: "2.1"
+
+  platforms:
+    - name: "Debian"
+      versions:
+        - "buster"
+        - "bullseye"
+        - "bookworm"
+    - name: "Ubuntu"
+      versions:
+        - "focal"
+        - "jammy"
+    - name: "EL"
+      versions:
+        - "8"
+        - "9"
+
+  galaxy_tags: ["bootstrap", "common"]
+
+dependencies: []
