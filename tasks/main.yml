@@ -6,3 +6,15 @@
   ansible.builtin.include_tasks: "always/main.yml"
   tags:
     - always
+
+# 01 # Hostname
+
+- name: "Common | Hostname"
+  ansible.builtin.include_tasks: "hostname/main.yml"
+  when:
+    - common_hostname is defined
+    - common_hostname | type_debug == 'AnsibleUnicode'
+    - common_hostname | length > 0
+  tags:
+    - common
+    - common-hostname
