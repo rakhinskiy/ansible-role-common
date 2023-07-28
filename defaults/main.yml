@@ -12,5 +12,12 @@ dist_pkg_mgr: "{{ ansible_pkg_mgr | lower }}"
 
 # 01 # Hostname
 
-# ex: common_hostname: "{{ inventory_hostname }}"
+# common_hostname: "{{ inventory_hostname }}"
 common_hostname: ~
+
+# 02 # Hosts
+
+# common_hosts:
+#   - ip: "192.168.0.1"
+#     name: "gw-1 gw-1.example.com"
+common_hosts: []

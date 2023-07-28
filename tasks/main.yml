@@ -18,3 +18,15 @@
   tags:
     - common
     - common-hostname
+
+# 02 # Hosts
+
+- name: "Common | Hosts"
+  ansible.builtin.include_tasks: "hosts/main.yml"
+  when:
+    - common_hosts is defined
+    - common_hosts | type_debug == 'list'
+    - common_hosts | length > 0
+  tags:
+    - common
+    - common-hosts
