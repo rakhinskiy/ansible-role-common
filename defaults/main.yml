@@ -39,3 +39,15 @@ common_timezone: ~
 #     append: true
 #     state: present
 common_users: []
+
+# 05 # Dirs
+
+# common_dirs:
+#   - path: "/var/shared/backups"
+#     state: "directory"
+#     owner: "root"
+#     group: "root"
+#     mode: "0750"
+#     force: "false"
+#     follow: "true"
+common_dirs: []
