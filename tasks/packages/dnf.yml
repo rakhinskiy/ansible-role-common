@@ -15,7 +15,7 @@
     - common-packages
 
 - name: "Common | Packages | Install Additional | Dnf"
-  ansible.builtin.apt:
+  ansible.builtin.dnf:
     name: "{{ common_packages_additional }}"
     state: present
     update_cache: true
