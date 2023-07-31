@@ -54,3 +54,15 @@
   tags:
     - common
     - common-users
+
+# 05 # Dirs
+
+- name: "Common | Dirs"
+  ansible.builtin.include_tasks: "dirs/main.yml"
+  when:
+    - common_dirs is defined
+    - common_dirs | type_debug == 'list'
+    - common_dirs | length > 0
+  tags:
+    - common
+    - common-dirs

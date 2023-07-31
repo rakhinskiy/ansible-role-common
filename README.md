@@ -16,35 +16,37 @@ Tasks
 |   02   |  hosts   |                                   Manage /etc/hosts                                    |
 |   03   | timezone |                                  Set server timezone                                   |
 |   04   |  users   |                                   Manage local users                                   |
+|   05   |   dirs   |                                  Create local folders                                  |
 
 
 TODO
 --------------
 
-|     Task      |    Description     |
-|:-------------:|:------------------:|
-| environments  |                    |
-|   packages    |                    |
-|     sudo      |                    |
-|     dirs      |                    |
-|     cron      |                    |
-|    sysctl     |                    |
-|    limits     |                    |
-|   firewall    |                    |
-|   logwatch    |                    |
-|     nscd      |                    |
-|    chrony     |                    |
-|      ssh      |                    |
-|     sshd      |                    |
-| smartmontools |                    |
-|     sysfs     |                    |
-|    locale     |                    |
-|     aide      |                    |
-|   rkhunter    |                    |
-| mail-aliases  |                    |
-|    selinux    |                    |
-|    auditd     |                    |
-
+|     Task      | Description |
+|:-------------:|:-----------:|
+|   packages    |             |
+| --security--  |     --      |
+|   firewall    |             |
+|    limits     |             |
+|    selinux    |             |
+|      ssh      |             |
+|     sshd      |             |
+|     sudo      |             |
+|     sysfs     |             |
+|    sysctl     |             |
+|  --system--   |     --      |
+| environments  |             |
+|    locale     |             |
+| mail-aliases  |             |
+| --software--  |     --      |
+|     aide      |             |
+|    auditd     |             |
+|    chrony     |             |
+|     cron      |             |
+|   logwatch    |             |
+|     nscd      |             |
+|   rkhunter    |             |
+| smartmontools |             |
 
 Role Variables
 --------------
@@ -71,6 +73,15 @@ common_users:
     system: false         # default: false
     append: true          # default: false
     state: present        # default: present
+
+common_dirs:
+  - path: "/var/shared/backups"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0750"
+    force: "false"
+    follow: "true"
 ```
 
 Dependencies
