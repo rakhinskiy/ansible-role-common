@@ -30,3 +30,15 @@
   tags:
     - common
     - common-hosts
+
+# 03 # Timezone
+
+- name: "Common | Timezone"
+  ansible.builtin.include_tasks: "timezone/main.yml"
+  when:
+    - common_timezone is defined
+    - common_timezone | type_debug == 'AnsibleUnicode'
+    - common_timezone | length > 0
+  tags:
+    - common
+    - common-timezone
