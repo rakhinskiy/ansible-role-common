@@ -9,14 +9,15 @@ Requirements
 Tasks
 --------------
 
-| Number |   Task   |                                      Description                                       |
-|:------:|:--------:|:--------------------------------------------------------------------------------------:|
-|   00   |  always  | Check distribution and Install ansible dependencies (python3-apt / python3-libselinux) |
-|   01   | hostname |                                  Set server hostname                                   |
-|   02   |  hosts   |                                   Manage /etc/hosts                                    |
-|   03   | timezone |                                  Set server timezone                                   |
-|   04   |  users   |                                   Manage local users                                   |
-|   05   |   dirs   |                                  Create local folders                                  |
+| Number |   Task   |                Description                |
+|:------:|:--------:|:-----------------------------------------:|
+|   00   |  always  | Check OS and install ansible dependencies |
+|   01   | hostname |            Set server hostname            |
+|   02   |  hosts   |             Manage /etc/hosts             |
+|   03   | timezone |            Set server timezone            |
+|   04   |  users   |            Manage local users             |
+|   05   |   dirs   |           Create local folders            |
+|   06   | packages |             Install packages              |
 
 
 TODO
@@ -24,7 +25,6 @@ TODO
 
 |     Task      | Description |
 |:-------------:|:-----------:|
-|   packages    |             |
 | --security--  |     --      |
 |   firewall    |             |
 |    limits     |             |
@@ -66,7 +66,7 @@ common_timezone: "Etc/UTC"
 # default: []
 common_users:
   - name: "deploy"
-    group: "deploy"       # default: name
+    group: "deploy"       # default: item.name
     groups: ["docker"]    # default: []
     shell: "/bin/zsh"     # default: /bin/bash
     create_home: true     # default: true
@@ -74,6 +74,7 @@ common_users:
     append: true          # default: false
     state: present        # default: present
 
+# default: []
 common_dirs:
   - path: "/var/shared/backups"
     state: "directory"
@@ -82,6 +83,16 @@ common_dirs:
     mode: "0750"
     force: "false"
     follow: "true"
+
+# default: []
+common_packages: 
+  - "strace"
+  - "tcpdump"
+  - "nano"
+
+# default: []
+common_packages_additional:
+  - "zsh"
 ```
 
 Dependencies

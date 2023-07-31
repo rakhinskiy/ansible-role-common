@@ -66,3 +66,11 @@
   tags:
     - common
     - common-dirs
+
+# 06 # Packages
+
+- name: "Common | Packages | Install"
+  ansible.builtin.include_tasks: "packages/{{ dist_pkg_mgr }}.yml"
+  tags:
+    - common
+    - common-packages

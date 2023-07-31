@@ -51,3 +51,16 @@ common_users: []
 #     force: "false"
 #     follow: "true"
 common_dirs: []
+
+# 06 # Packages
+
+
+# common_packages:
+#   - "strace"
+#   - "tcpdump"
+#   - "nano"
+common_packages: []
+
+# common_packages_additional:
+#   - "zsh"
+common_packages_additional: []
