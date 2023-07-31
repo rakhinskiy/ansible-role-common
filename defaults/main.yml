@@ -26,3 +26,16 @@ common_hosts: []
 
 # common_timezone: "Etc/UTC"
 common_timezone: ~
+
+# 04 # Users
+
+# common_users:
+#   - name: "deploy"
+#     group: "deploy"
+#     groups: ["docker"]
+#     shell: "/bin/zsh"
+#     create_home: true
+#     system: false
+#     append: true
+#     state: present
+common_users: []
