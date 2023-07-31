@@ -21,3 +21,8 @@ common_hostname: ~
 #   - ip: "192.168.0.1"
 #     name: "gw-1 gw-1.example.com"
 common_hosts: []
+
+# 03 # Timezone
+
+# common_timezone: "Etc/UTC"
+common_timezone: ~
