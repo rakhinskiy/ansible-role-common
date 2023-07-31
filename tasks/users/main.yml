@@ -1,0 +1,27 @@
+---
+
+- name: "Common | Users | Create groups"
+  ansible.builtin.group:
+    name: "{{ item.group | default(item.name) }}"
+    state: present
+  with_items: "{{ common_users }}"
+  become: true
+  tags:
+    - common
+    - common-users
+
+- name: "Common | Users | Create users"
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    group: "{{ item.group | default(item.name) }}"
+    groups: "{{ item.groups | default('[]') }}"
+    shell: "{{ item.shell | default('/bin/bash') }}"
+    create_home: "{{ item.create_home | default('true') }}"
+    system: "{{ item.system | default('false') }}"
+    append: "{{ item.append | default('false') }}"
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ common_users }}"
+  become: true
+  tags:
+    - common
+    - common-users

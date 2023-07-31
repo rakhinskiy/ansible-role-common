@@ -42,3 +42,15 @@
   tags:
     - common
     - common-timezone
+
+# 04 # Users
+
+- name: "Common | Users"
+  ansible.builtin.include_tasks: "users/main.yml"
+  when:
+    - common_users is defined
+    - common_users | type_debug == 'list'
+    - common_users | length > 0
+  tags:
+    - common
+    - common-users
