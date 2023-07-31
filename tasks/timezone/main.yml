@@ -1,7 +1,7 @@
 ---
 
 - name: "Common | Timezone | Configure"
-  ansible.builtin.timezone:
+  community.general.timezone:
     name: "{{ common_timezone }}"
   become: true
   tags:
