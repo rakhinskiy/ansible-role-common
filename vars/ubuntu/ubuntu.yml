@@ -1,7 +1,16 @@
 ---
 
+# 00 # Always
+
 always_packages:
   - "apt-transport-https"
   - "ca-certificates"
   - "gnupg2"
   - "python3-apt"
+
+# 07 # Locale
+
+common_locale_packages:
+  - "locales-all"
+
+common_locale_config: "/etc/default/locale"

@@ -69,8 +69,20 @@
 
 # 06 # Packages
 
-- name: "Common | Packages | Install"
+- name: "Common | Packages"
   ansible.builtin.include_tasks: "packages/{{ dist_pkg_mgr }}.yml"
   tags:
     - common
     - common-packages
+
+# 07 # Locales
+
+- name: "Common | Locale"
+  ansible.builtin.include_tasks: "locale/main.yml"
+  when:
+    - common_locale is defined
+    - common_locale | type_debug == 'AnsibleUnicode'
+    - common_locale | length > 0
+  tags:
+    - common
+    - common-locale

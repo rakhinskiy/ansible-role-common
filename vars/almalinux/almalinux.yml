@@ -4,3 +4,11 @@
 
 always_packages:
   - "python3-libselinux"
+
+# 07 # Locale
+
+common_locale_packages:
+  - "glibc-common"
+  - "glibc-all-langpacks"
+
+common_locale_config: "/etc/locale.conf"

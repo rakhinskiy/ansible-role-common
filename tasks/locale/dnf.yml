@@ -1,0 +1,11 @@
+---
+
+- name: "Common | Locale | Install dependencies | Dnf"
+  ansible.builtin.dnf:
+    name: "{{ common_locale_packages }}"
+    state: present
+    update_cache: true
+  become: true
+  tags:
+    - common
+    - common-locale
