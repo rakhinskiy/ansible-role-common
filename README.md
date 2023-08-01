@@ -18,6 +18,7 @@ Tasks
 |   04   |  users   |            Manage local users             |
 |   05   |   dirs   |           Create local folders            |
 |   06   | packages |             Install packages              |
+|   07   |  locale  |             Configure locales             |
 
 
 TODO
@@ -36,7 +37,6 @@ TODO
 |    sysctl     |             |
 |  --system--   |     --      |
 | environments  |             |
-|    locale     |             |
 | mail-aliases  |             |
 | --software--  |     --      |
 |     aide      |             |
@@ -93,6 +93,10 @@ common_packages:
 # default: []
 common_packages_additional:
   - "zsh"
+
+# default: none
+common_locale: "en_US.UTF-8"
+
 ```
 
 Dependencies

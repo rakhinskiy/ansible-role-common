@@ -1,0 +1,21 @@
+---
+
+- name: "Common | Locale | Install locale packages"
+  ansible.builtin.include_tasks: "locale/{{ dist_pkg_mgr }}.yml"
+  when:
+    - common_locale_packages is defined
+    - common_locale_packages | type_debug == 'list'
+    - common_locale_packages | length > 0
+  tags:
+    - common
+    - common-locale
+
+- name: "Common | Locale | Set default locale"
+  ansible.builtin.lineinfile:
+    dest: "{{ common_locale_config }}"
+    regexp: "^LANG="
+    line: "LANG={{ common_locale }}"
+  become: true
+  tags:
+    - common
+    - common-locale

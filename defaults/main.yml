@@ -1,6 +1,7 @@
 ---
 
 # 00 # Always
+##############################################################################
 
 # Fix sudo error when hostname changed
 ansible_become_flags: "--host=127.0.0.1 --set-home"
@@ -11,11 +12,13 @@ dist_codename: "{{ ansible_lsb.codename | default() | lower }}"
 dist_pkg_mgr: "{{ ansible_pkg_mgr | lower }}"
 
 # 01 # Hostname
+##############################################################################
 
 # common_hostname: "{{ inventory_hostname }}"
 common_hostname: ~
 
 # 02 # Hosts
+##############################################################################
 
 # common_hosts:
 #   - ip: "192.168.0.1"
@@ -23,11 +26,13 @@ common_hostname: ~
 common_hosts: []
 
 # 03 # Timezone
+##############################################################################
 
 # common_timezone: "Etc/UTC"
 common_timezone: ~
 
 # 04 # Users
+##############################################################################
 
 # common_users:
 #   - name: "deploy"
@@ -41,6 +46,7 @@ common_timezone: ~
 common_users: []
 
 # 05 # Dirs
+##############################################################################
 
 # common_dirs:
 #   - path: "/var/shared/backups"
@@ -53,7 +59,7 @@ common_users: []
 common_dirs: []
 
 # 06 # Packages
-
+##############################################################################
 
 # common_packages:
 #   - "strace"
@@ -64,3 +70,9 @@ common_packages: []
 # common_packages_additional:
 #   - "zsh"
 common_packages_additional: []
+
+# 07 # Locales
+##############################################################################
+
+# common_locale: "en_US.UTF-8"
+common_locale: ~
