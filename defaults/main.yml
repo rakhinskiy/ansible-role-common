@@ -76,3 +76,15 @@ common_packages_additional: []
 
 # common_locale: "en_US.UTF-8"
 common_locale: ~
+
+# 08 # Environments
+##############################################################################
+
+# common_environments:
+#   - user: ~     # Global
+#     variables:
+#       YII_DEBUG: "no"
+#   - user: "deploy"
+#     variables:
+#       PATH: "${PATH}:/usr/local/bin:~/.bin/:~/bin/"
+common_environmens: []
