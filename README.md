@@ -9,17 +9,17 @@ Requirements
 Tasks
 --------------
 
-| Number |   Task   |                Description                |
-|:------:|:--------:|:-----------------------------------------:|
-|   00   |  always  | Check OS and install ansible dependencies |
-|   01   | hostname |            Set server hostname            |
-|   02   |  hosts   |             Manage /etc/hosts             |
-|   03   | timezone |            Set server timezone            |
-|   04   |  users   |            Manage local users             |
-|   05   |   dirs   |           Create local folders            |
-|   06   | packages |             Install packages              |
-|   07   |  locale  |             Configure locales             |
-
+| Number |     Task     |                Description                |
+|:------:|:------------:|:-----------------------------------------:|
+|   00   |    always    | Check OS and install ansible dependencies |
+|   01   |   hostname   |            Set server hostname            |
+|   02   |    hosts     |             Manage /etc/hosts             |
+|   03   |   timezone   |            Set server timezone            |
+|   04   |    users     |            Manage local users             |
+|   05   |     dirs     |           Create local folders            |
+|   06   |   packages   |             Install packages              |
+|   07   |    locale    |             Configure locales             |
+|   08   | environments |            Configure env vars             |
 
 TODO
 --------------
@@ -35,9 +35,6 @@ TODO
 |     sudo      |             |
 |     sysfs     |             |
 |    sysctl     |             |
-|  --system--   |     --      |
-| environments  |             |
-| mail-aliases  |             |
 | --software--  |     --      |
 |     aide      |             |
 |    auditd     |             |
@@ -97,6 +94,14 @@ common_packages_additional:
 # default: none
 common_locale: "en_US.UTF-8"
 
+# default: []
+common_environments:
+  - user: ~     # Global
+    variables:
+      YII_DEBUG: "no"
+  - user: "deploy"
+    variables:
+      PATH: "${PATH}:/usr/local/bin:~/.bin/:~/bin/"
 ```
 
 Dependencies

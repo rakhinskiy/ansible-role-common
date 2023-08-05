@@ -1,0 +1,9 @@
+{% for environment in common_environments %}
+{%- if not environment.user | default(None) %}
+{%- for var, value in environment.variables.items() %}
+{{ var }}="{{ value }}"
+{% endfor -%}
+{% endif -%}
+{% endfor %}
+
+test -e "${HOME}/.config/shell/env.sh" && source "${HOME}/.config/shell/env.sh"

@@ -1,0 +1,48 @@
+---
+
+- name: "Common | Environments | System"
+  ansible.builtin.template:
+    src: "environments/system.sh.j2"
+    dest: "/etc/profile.d/system.sh"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: false
+  become: true
+  tags:
+    - common
+    - common-environments
+
+- name: "Common | Environments | Create user config directory"
+  ansible.builtin.file:
+    path: "~{{ item.user }}/.config/shell"
+    state: "directory"
+    owner: "{{ item.user }}"
+    mode: "0700"
+    follow: true
+  become: true
+  with_items: "{{ common_environments }}"
+  when:
+    - item.user is defined
+    - item.user | type_debug in ["AnsibleUnsafeText", "AnsibleUnicode"]
+    - item.user | length > 0
+  tags:
+    - common
+    - common-environments
+
+- name: "Common | Environments | User"
+  ansible.builtin.template:
+    src: "environments/user.sh.j2"
+    dest: "~{{ item.user }}/.config/shell/env.sh"
+    owner: "{{ item.user }}"
+    mode: "0700"
+    backup: false
+  become: true
+  with_items: "{{ common_environments }}"
+  when:
+    - item.user is defined
+    - item.user | type_debug in ["AnsibleUnsafeText", "AnsibleUnicode"]
+    - item.user | length > 0
+  tags:
+    - common
+    - common-environments

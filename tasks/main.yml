@@ -86,3 +86,15 @@
   tags:
     - common
     - common-locale
+
+# 08 # Environments
+
+- name: "Common | Environments"
+  ansible.builtin.include_tasks: "environments/main.yml"
+  when:
+    - common_environments is defined
+    - common_environments | type_debug == 'list'
+    - common_environments | length > 0
+  tags:
+    - common
+    - common-environments
