@@ -20,6 +20,8 @@ Tasks
 |   06   |   packages   |             Install packages              |
 |   07   |    locale    |             Configure locales             |
 |   08   | environments |            Configure env vars             |
+|   09   |    limits    |           Configure limits.conf           |
+
 
 TODO
 --------------
@@ -28,7 +30,6 @@ TODO
 |:-------------:|:-----------:|
 | --security--  |     --      |
 |   firewall    |             |
-|    limits     |             |
 |    selinux    |             |
 |      ssh      |             |
 |     sshd      |             |
@@ -102,6 +103,16 @@ common_environments:
   - user: "deploy"
     variables:
       PATH: "${PATH}:/usr/local/bin:~/.bin/:~/bin/"
+
+# default: []
+common_limits:
+  - domain: "root"        # Required user / @group
+    limit_type: "hard"    # Required hard / soft
+    limit_item: "core"    # Required
+    value: "100000"       # Required
+    use_min: "false"      # default: false | Use min between exist limits.conf and new values
+    use_max: "true"       # default: false | Use max between exist limits.conf and new values
+    comment: ""
 ```
 
 Dependencies

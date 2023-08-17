@@ -88,3 +88,16 @@ common_locale: ~
 #     variables:
 #       PATH: "${PATH}:/usr/local/bin:~/.bin/:~/bin/"
 common_environmens: []
+
+# 09 # Limits
+##############################################################################
+
+# common_limits:
+#   - domain: "root"
+#     limit_type: "hard"
+#     limit_item: "core"
+#     value: "100000"
+#     use_min: "false"
+#     use_max: "true"
+#     comment: ""
+common_limits: []

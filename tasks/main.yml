@@ -13,7 +13,7 @@
   ansible.builtin.include_tasks: "hostname/main.yml"
   when:
     - common_hostname is defined
-    - common_hostname | type_debug == 'AnsibleUnicode'
+    - common_hostname is string
     - common_hostname | length > 0
   tags:
     - common
@@ -37,7 +37,7 @@
   ansible.builtin.include_tasks: "timezone/main.yml"
   when:
     - common_timezone is defined
-    - common_timezone | type_debug == 'AnsibleUnicode'
+    - common_timezone is string
     - common_timezone | length > 0
   tags:
     - common
@@ -81,7 +81,7 @@
   ansible.builtin.include_tasks: "locale/main.yml"
   when:
     - common_locale is defined
-    - common_locale | type_debug == 'AnsibleUnicode'
+    - common_locale is string
     - common_locale | length > 0
   tags:
     - common
@@ -98,3 +98,15 @@
   tags:
     - common
     - common-environments
+
+# 09 # Limits
+
+- name: "Common | Limits"
+  ansible.builtin.include_tasks: "limits/main.yml"
+  when:
+    - common_limits is defined
+    - common_limits | type_debug == 'list'
+    - common_limits | length > 0
+  tags:
+    - common
+    - common-limits
