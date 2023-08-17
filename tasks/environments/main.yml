@@ -24,7 +24,7 @@
   with_items: "{{ common_environments }}"
   when:
     - item.user is defined
-    - item.user | type_debug in ["AnsibleUnsafeText", "AnsibleUnicode"]
+    - item.user is string
     - item.user | length > 0
   tags:
     - common
@@ -41,7 +41,7 @@
   with_items: "{{ common_environments }}"
   when:
     - item.user is defined
-    - item.user | type_debug in ["AnsibleUnsafeText", "AnsibleUnicode"]
+    - item.user is string
     - item.user | length > 0
   tags:
     - common

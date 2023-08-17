@@ -1,0 +1,16 @@
+---
+
+- name: "Common | Limits | Configure"
+  community.general.pam_limits:
+    domain: "{{ item.domain }}"
+    limit_type: "{{ item.limit_type }}"
+    limit_item: "{{ item.limit_item }}"
+    value: "{{ item.value }}"
+    use_min: "{{ item.use_min | default(false) }}"
+    use_max: "{{ item.use_max | default(false) }}"
+    comment: "{{ item.comment | default('') }}"
+  with_items: "{{ common_limits }}"
+  become: true
+  tags:
+    - common
+    - common-limits
