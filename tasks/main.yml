@@ -110,3 +110,15 @@
   tags:
     - common
     - common-limits
+
+# 10 # Sysctl
+
+- name: "Common | Sysctl"
+  ansible.builtin.include_tasks: "sysctl/main.yml"
+  when:
+    - common_sysctl_keys is defined
+    - common_sysctl_keys | type_debug == 'list'
+    - common_sysctl_keys | length > 0
+  tags:
+    - common
+    - common-sysctl
