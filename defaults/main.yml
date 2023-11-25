@@ -101,3 +101,14 @@ common_environmens: []
 #     use_max: "true"
 #     comment: ""
 common_limits: []
+
+# 10 # Sysctl
+##############################################################################
+
+# common_sysctl_file: "99-ansible" -> /etc/sysctl.d/99-sysctl.conf
+common_sysctl_file: "99-sysctl"
+
+# common_sysctl_keys:
+#  - name: "net.core.somaxconn"
+#    value: "50000"
+common_sysctl_keys: []

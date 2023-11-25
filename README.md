@@ -21,7 +21,7 @@ Tasks
 |   07   |    locale    |             Configure locales             |
 |   08   | environments |            Configure env vars             |
 |   09   |    limits    |           Configure limits.conf           |
-
+|   10   |    sysctl    |           Configure sysctl.conf           |
 
 TODO
 --------------
@@ -35,7 +35,6 @@ TODO
 |     sshd      |             |
 |     sudo      |             |
 |     sysfs     |             |
-|    sysctl     |             |
 | --software--  |     --      |
 |     aide      |             |
 |    auditd     |             |
@@ -113,6 +112,15 @@ common_limits:
     use_min: "false"      # default: false | Use min between exist limits.conf and new values
     use_max: "true"       # default: false | Use max between exist limits.conf and new values
     comment: ""
+
+# default: 
+# common_sysctl_file: "99-sysctl.conf"
+common_sysctl_file: "k8s.conf"
+
+# common_sysctl_keys: []
+common_sysctl_keys:
+  - name: "net.core.somaxconn"
+    value: "50000"
 ```
 
 Dependencies

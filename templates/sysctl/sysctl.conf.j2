@@ -1,0 +1,3 @@
+{% for item in common_sysctl_keys | default([]) %}
+{{ item.key }}={{ item.value }}
+{% endfor %}
