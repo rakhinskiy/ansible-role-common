@@ -3,9 +3,10 @@
 # 00 # Always
 
 always_packages:
+  - "dnf-utils"
   - "python3-libselinux"
 
-# 07 # Locale
+# 08 # Locale
 
 common_locale_packages:
   - "glibc-common"
