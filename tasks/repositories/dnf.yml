@@ -1,0 +1,81 @@
+---
+
+- name: "Common | Repositories | Dnf / Yum | Manager"
+  community.general.ini_file:
+    path: "/etc/dnf/dnf.conf"
+    section: "{{ item.section | default('main') }}"
+    option: "{{ item.name }}"
+    value: "{{ item.value }}"
+    mode: '0644'
+  with_items: "{{ common_repositories_manager }}"
+  when:
+    - common_repositories_manager | is_dicts_list
+  become: true
+  tags:
+    - common
+    - common-repositories
+    - common-repositories-manager
+
+- name: "Common | Repositories | Dnf / Yum | GPG Keys"
+  ansible.builtin.rpm_key:
+    key: "{{ item.key }}"
+    state: present
+  with_items: "{{ common_repositories_add }}"
+  when:
+    - not item | skipped
+    - item.key is defined
+    - common_repositories_add | is_dicts_list
+  become: true
+  tags:
+    - common
+    - common-repositories
+    - common-repositories-gpg-keys
+
+- name: "Common | Repositories | Dnf / Yum | Add repository"
+  ansible.builtin.template:
+    src: "repositories/dnf.repo.j2"
+    dest: "/etc/yum.repos.d/{{ item.name }}.repo"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: false
+  with_items: "{{ common_repositories_add }}"
+  when:
+    - common_repositories_add | is_dicts_list
+  become: true
+  tags:
+    - common
+    - common-repositories
+    - common-repositories-add
+
+- name: "Common | Repositories | Dnf / Yum | Get Repositories List"
+  scan_repositories:
+  become: true
+  tags:
+    - common
+    - common-repositories
+    - common-repositories-enable
+    - common-repositories-disable
+
+- name: "Common | Repositories | Dnf / Yum | Get Repositories List | Debug"
+  ansible.builtin.debug:
+    var: ansible_facts.repositories
+    verbosity: 1
+
+- name: "Common  Repositories | Dnf / Yum | Enable repository"
+  community.general.ini_file:
+    path: "/etc/yum.repos.d/{{ item.file }}"
+    section: "{{ item.name }}"
+    option: "enabled"
+    value: "1"
+    mode: '0644'
+  with_items: "{{ ansible_facts.repositories }}"
+  when:
+    - common_repositories_enable | is_ne_list
+    - item.name in common_repositories_enable
+    - not item.state
+  become: true
+  tags:
+    - common
+    - common-repositories
+    - common-repositories-enable

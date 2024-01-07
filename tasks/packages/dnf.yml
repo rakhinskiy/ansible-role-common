@@ -6,9 +6,7 @@
     state: present
     update_cache: true
   when:
-    - common_packages is defined
-    - common_packages | type_debug == 'list'
-    - common_packages | length > 0
+    - common_packages | is_ne_list
   become: true
   tags:
     - common
@@ -20,9 +18,7 @@
     state: present
     update_cache: true
   when:
-    - common_packages_additional is defined
-    - common_packages_additional | type_debug == 'list'
-    - common_packages_additional | length > 0
+    - common_packages_additional | is_ne_list
   become: true
   tags:
     - common

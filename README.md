@@ -9,19 +9,20 @@ Requirements
 Tasks
 --------------
 
-| Number |     Task     |                Description                |
-|:------:|:------------:|:-----------------------------------------:|
-|   00   |    always    | Check OS and install ansible dependencies |
-|   01   |   hostname   |            Set server hostname            |
-|   02   |    hosts     |             Manage /etc/hosts             |
-|   03   |   timezone   |            Set server timezone            |
-|   04   |    users     |            Manage local users             |
-|   05   |     dirs     |           Create local folders            |
-|   06   |   packages   |             Install packages              |
-|   07   |    locale    |             Configure locales             |
-|   08   | environments |            Configure env vars             |
-|   09   |    limits    |           Configure limits.conf           |
-|   10   |    sysctl    |           Configure sysctl.conf           |
+| Number |     Task      |                Description                |
+|:------:|:-------------:|:-----------------------------------------:|
+|   00   |    always     | Check OS and install ansible dependencies |
+|   01   |   hostname    |            Set server hostname            |
+|   02   |     hosts     |             Manage /etc/hosts             |
+|   03   |   timezone    |            Set server timezone            |
+|   04   |     users     |            Manage local users             |
+|   05   |     dirs      |           Create local folders            |
+|   06   | repositories  |        Add or enable repositories         |
+|   07   |   packages    |             Install packages              |
+|   08   |    locale     |             Configure locales             |
+|   09   | environments  |            Configure env vars             |
+|   10   |    limits     |           Configure limits.conf           |
+|   11   |    sysctl     |           Configure sysctl.conf           |
 
 TODO
 --------------
@@ -80,6 +81,53 @@ common_dirs:
     mode: "0750"
     force: "false"
     follow: "true"
+
+# default: []
+common_repositories_manager:
+  # Debian / Ubuntu example:
+  - name: "Acquire::http::proxy"
+    value: "http://user:password@hostname:port"
+  - name: "Acquire::https::proxy"
+    value: "http://user:password@hostname:port"
+  - name: "Acquire::::Proxy"
+    value: "true"
+  - name: "Acquire::ForceIPv4"
+    value: "true"
+  # CentOS / AlmaLinux / Rocky example (section main is default)
+  - name: "gpgcheck"
+    value: "1"
+    section: "main"
+  - name: "installonly_limit"
+    value: "3"
+    section: "main"
+  - name: "clean_requirements_on_remove"
+    value: "True"
+    section: "main"
+  - name: "skip_if_unavailable"
+    value: "False"
+    section: "main"
+
+# default: []
+common_repositories_add:
+  # Debian / Ubuntu example:
+  - name: "zabbix"
+    url: "https://repo.zabbix.com/zabbix/6.4/ubuntu {{ dist_codename }} main"
+    key: "https://repo.zabbix.com/RPM-GPG-KEY-ZABBIX-08EFA7DD"
+    # deb or deb-src | default deb | ignored on dnf / yum
+    type: "deb"
+    options:
+      arch: "amd64"
+  # CentOS / AlmaLinux / Rocky example
+  - name: "epel"
+    url: "https://download.fedoraproject.org/pub/epel/$releasever/$basearch/"
+    key: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ dist_version }}"
+    options:
+      module_hotfixes: "1"
+      skip_if_unavailable: "true"
+  - name: "example"
+    url: "http://example.com/...."
+    options:
+      gpgcheck: "0"
 
 # default: []
 common_packages: 

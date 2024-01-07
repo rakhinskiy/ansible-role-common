@@ -2,19 +2,17 @@
 
 # 00 # Always
 
-- name: "Common | Always"
-  ansible.builtin.include_tasks: "always/main.yml"
-  tags:
-    - always
+#- name: "Common | Always"
+#  ansible.builtin.include_tasks: "always/main.yml"
+#  tags:
+#    - always
 
 # 01 # Hostname
 
 - name: "Common | Hostname"
   ansible.builtin.include_tasks: "hostname/main.yml"
   when:
-    - common_hostname is defined
-    - common_hostname is string
-    - common_hostname | length > 0
+    - common_hostname | is_ne_string
   tags:
     - common
     - common-hostname
@@ -24,9 +22,7 @@
 - name: "Common | Hosts"
   ansible.builtin.include_tasks: "hosts/main.yml"
   when:
-    - common_hosts is defined
-    - common_hosts | type_debug == 'list'
-    - common_hosts | length > 0
+    - common_hosts | is_dicts_list
   tags:
     - common
     - common-hosts
@@ -36,9 +32,7 @@
 - name: "Common | Timezone"
   ansible.builtin.include_tasks: "timezone/main.yml"
   when:
-    - common_timezone is defined
-    - common_timezone is string
-    - common_timezone | length > 0
+    - common_timezone | is_ne_string
   tags:
     - common
     - common-timezone
@@ -48,9 +42,7 @@
 - name: "Common | Users"
   ansible.builtin.include_tasks: "users/main.yml"
   when:
-    - common_users is defined
-    - common_users | type_debug == 'list'
-    - common_users | length > 0
+    - common_users | is_dicts_list
   tags:
     - common
     - common-users
@@ -60,14 +52,29 @@
 - name: "Common | Dirs"
   ansible.builtin.include_tasks: "dirs/main.yml"
   when:
-    - common_dirs is defined
-    - common_dirs | type_debug == 'list'
-    - common_dirs | length > 0
+    - common_dirs | is_dicts_list
   tags:
     - common
     - common-dirs
 
-# 06 # Packages
+# 06 # Repositories
+
+- name: "Common | Repositories"
+  ansible.builtin.include_tasks: "repositories/{{ dist_pkg_mgr }}.yml"
+  when:
+    - common_repositories_manager | is_dicts_list or
+      common_repositories_add | is_dicts_list or
+      common_repositories_enable | is_ne_list
+  tags:
+    - common
+    - common-repositories
+    - common-repositories-manager
+    - common-repositories-gpg-keys
+    - common-repositories-add
+    - common-repositories-enable
+    - common-repositories-disable
+
+# 07 # Packages
 
 - name: "Common | Packages"
   ansible.builtin.include_tasks: "packages/{{ dist_pkg_mgr }}.yml"
@@ -75,50 +82,42 @@
     - common
     - common-packages
 
-# 07 # Locales
+# 08 # Locales
 
 - name: "Common | Locale"
   ansible.builtin.include_tasks: "locale/main.yml"
   when:
-    - common_locale is defined
-    - common_locale is string
-    - common_locale | length > 0
+    - common_locale | is_ne_string
   tags:
     - common
     - common-locale
 
-# 08 # Environments
+# 09 # Environments
 
 - name: "Common | Environments"
   ansible.builtin.include_tasks: "environments/main.yml"
   when:
-    - common_environments is defined
-    - common_environments | type_debug == 'list'
-    - common_environments | length > 0
+    - common_environments | is_dicts_list
   tags:
     - common
     - common-environments
 
-# 09 # Limits
+# 10 # Limits
 
 - name: "Common | Limits"
   ansible.builtin.include_tasks: "limits/main.yml"
   when:
-    - common_limits is defined
-    - common_limits | type_debug == 'list'
-    - common_limits | length > 0
+    - common_limits is_dicts_list
   tags:
     - common
     - common-limits
 
-# 10 # Sysctl
+# 11 # Sysctl
 
 - name: "Common | Sysctl"
   ansible.builtin.include_tasks: "sysctl/main.yml"
   when:
-    - common_sysctl_keys is defined
-    - common_sysctl_keys | type_debug == 'list'
-    - common_sysctl_keys | length > 0
+    - common_sysctl_keys | is_dicts_list
   tags:
     - common
     - common-sysctl

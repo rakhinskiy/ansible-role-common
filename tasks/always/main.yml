@@ -19,21 +19,12 @@
   tags:
     - always
 
-- name: "Common | Always | Check debian linux version"
+- name: "Common | Always | Check Debian / Ubuntu codename"
   ansible.builtin.fail:
     msg: "Unsupported distribution version {{ dist_name }}: {{ dist_codename }}"
   when:
-    - dist_name in ["debian"]
-    - dist_codename not in ["buster", "bullseye", "bookworm"]
-  tags:
-    - always
-
-- name: "Common | Always | Check ubuntu linux version"
-  ansible.builtin.fail:
-    msg: "Unsupported distribution version {{ dist_name }}: {{ dist_codename }}"
-  when:
-    - dist_name in ["ubuntu"]
-    - dist_codename not in ["focal", "jammy"]
+    - dist_name in ["debian", "ubuntu"]
+    - dist_codename not in ["buster", "bullseye", "bookworm", "focal", "jammy"]
   tags:
     - always
 

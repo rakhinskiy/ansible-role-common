@@ -1,0 +1,59 @@
+---
+
+- name: "Common | Repositories | Apt | Manager"
+  ansible.builtin.template:
+    src: "repositories/apt.conf.j2"
+    dest: "/etc/apt/apt.conf.d/99custom"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: false
+  when:
+    - common_repositories_manager | is_dicts_list
+  become: true
+  tags:
+    - common
+    - common-repositories
+    - common-repositories-manager
+
+- name: "Common | Repositories | Apt | GPG Keys"
+  ansible.builtin.apt_key:
+    url: "{{ item.key }}"
+    state: present
+  with_items: "{{ common_repositories_add }}"
+  when:
+    - not item | skipped
+    - item.key is defined
+    - common_repositories_add | is_dicts_list
+  become: true
+  tags:
+    - common
+    - common-repositories
+    - common-repositories-gpg-keys
+
+- name: "Common | Repositories | Apt | Add repository"
+  ansible.builtin.template:
+    src: "repositories/apt.list.j2"
+    dest: "/etc/apt/sources.list.d/{{ item.name }}.list"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: false
+  with_items: "{{ common_repositories_add }}"
+  when:
+    - common_repositories_add | is_dicts_list
+  become: true
+  tags:
+    - common
+    - common-repositories
+    - common-repositories-add
+
+- name: "Common | Repositories | Apt | Get Repositories List"
+  scan_repositories:
+  become: true
+  tags:
+    - common
+    - common-repositories
+    - common-repositories-enable
+    - common-repositories-disable
+
