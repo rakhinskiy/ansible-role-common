@@ -2,10 +2,10 @@
 
 # 00 # Always
 
-#- name: "Common | Always"
-#  ansible.builtin.include_tasks: "always/main.yml"
-#  tags:
-#    - always
+- name: "Common | Always"
+  ansible.builtin.include_tasks: "always/main.yml"
+  tags:
+    - always
 
 # 01 # Hostname
 
