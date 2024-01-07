@@ -1,3 +1,5 @@
+# TODO: Rewrite filters
+
 class FilterModule(object):
 
     STRING_CLASSES = [
