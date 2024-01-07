@@ -4,7 +4,7 @@
   community.general.ini_file:
     path: "/etc/dnf/dnf.conf"
     section: "{{ item.section | default('main') }}"
-    option: "{{ item.name }}"
+    option: "{{ item.option }}"
     value: "{{ item.value }}"
     mode: '0644'
   with_items: "{{ common_repositories_manager }}"
@@ -64,7 +64,7 @@
     var: ansible_facts.repositories
     verbosity: 1
 
-- name: "Common  Repositories | Dnf / Yum | Enable repository"
+- name: "Common | Repositories | Dnf / Yum | Enable repository"
   community.general.ini_file:
     path: "/etc/yum.repos.d/{{ item.file }}"
     section: "{{ item.name }}"
@@ -83,7 +83,7 @@
     - common-repositories
     - common-repositories-enable
 
-- name: "Common  Repositories | Dnf / Yum | Disable repository"
+- name: "Common | Repositories | Dnf / Yum | Disable repository"
   community.general.ini_file:
     path: "/etc/yum.repos.d/{{ item.file }}"
     section: "{{ item.name }}"

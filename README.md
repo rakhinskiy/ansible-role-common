@@ -15,11 +15,11 @@ Tasks
 |   01   |   hostname    |            Set server hostname            |
 |   02   |     hosts     |             Manage /etc/hosts             |
 |   03   |   timezone    |            Set server timezone            |
-|   04   |     users     |            Manage local users             |
-|   05   |     dirs      |           Create local folders            |
-|   06   | repositories  |        Add or enable repositories         |
-|   07   |   packages    |             Install packages              |
-|   08   |    locale     |             Configure locales             |
+|   04   | repositories  |        Add or enable repositories         |
+|   05   |   packages    |             Install packages              |
+|   06   |    locale     |             Configure locales             |
+|   07   |     users     |            Manage local users             |
+|   08   |     dirs      |           Create local folders            |
 |   09   | environments  |            Configure env vars             |
 |   10   |    limits     |           Configure limits.conf           |
 |   11   |    sysctl     |           Configure sysctl.conf           |
@@ -62,48 +62,27 @@ common_hosts:
 common_timezone: "Etc/UTC"
 
 # default: []
-common_users:
-  - name: "deploy"
-    group: "deploy"       # default: item.name
-    groups: ["docker"]    # default: []
-    shell: "/bin/zsh"     # default: /bin/bash
-    create_home: true     # default: true
-    system: false         # default: false
-    append: true          # default: false
-    state: present        # default: present
-
-# default: []
-common_dirs:
-  - path: "/var/shared/backups"
-    state: "directory"
-    owner: "root"
-    group: "root"
-    mode: "0750"
-    force: "false"
-    follow: "true"
-
-# default: []
 common_repositories_manager:
   # Debian / Ubuntu example:
-  - name: "Acquire::http::proxy"
+  - option: "Acquire::http::proxy"
     value: "http://user:password@hostname:port"
-  - name: "Acquire::https::proxy"
+  - option: "Acquire::https::proxy"
     value: "http://user:password@hostname:port"
-  - name: "Acquire::::Proxy"
+  - option: "Acquire::::Proxy"
     value: "true"
-  - name: "Acquire::ForceIPv4"
+  - option: "Acquire::ForceIPv4"
     value: "true"
   # CentOS / AlmaLinux / Rocky example (section main is default)
-  - name: "gpgcheck"
+  - option: "gpgcheck"
     value: "1"
     section: "main"
-  - name: "installonly_limit"
+  - option: "installonly_limit"
     value: "3"
     section: "main"
-  - name: "clean_requirements_on_remove"
+  - option: "clean_requirements_on_remove"
     value: "True"
     section: "main"
-  - name: "skip_if_unavailable"
+  - option: "skip_if_unavailable"
     value: "False"
     section: "main"
 
@@ -148,6 +127,27 @@ common_packages_additional:
 
 # default: none
 common_locale: "en_US.UTF-8"
+
+# default: []
+common_users:
+  - name: "deploy"
+    group: "deploy"       # default: item.name
+    groups: ["docker"]    # default: []
+    shell: "/bin/zsh"     # default: /bin/bash
+    create_home: true     # default: true
+    system: false         # default: false
+    append: true          # default: false
+    state: present        # default: present
+
+# default: []
+common_dirs:
+  - path: "/var/shared/backups"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0750"
+    force: "false"
+    follow: "true"
 
 # default: []
 common_environments:

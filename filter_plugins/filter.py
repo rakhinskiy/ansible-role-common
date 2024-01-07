@@ -40,7 +40,7 @@ class FilterModule(object):
     @staticmethod
     def is_dicts_list(var, *args, **kw):
 
-        if not var.__class__.__name__ == 'list':
+        if not var.__class__.__name__ == 'list' or len(var) == 0:
             return False
 
         for d in var:

@@ -37,27 +37,7 @@
     - common
     - common-timezone
 
-# 04 # Users
-
-- name: "Common | Users"
-  ansible.builtin.include_tasks: "users/main.yml"
-  when:
-    - common_users | is_dicts_list
-  tags:
-    - common
-    - common-users
-
-# 05 # Dirs
-
-- name: "Common | Dirs"
-  ansible.builtin.include_tasks: "dirs/main.yml"
-  when:
-    - common_dirs | is_dicts_list
-  tags:
-    - common
-    - common-dirs
-
-# 06 # Repositories
+# 04 # Repositories
 
 - name: "Common | Repositories"
   ansible.builtin.include_tasks: "repositories/{{ dist_pkg_mgr }}.yml"
@@ -74,7 +54,7 @@
     - common-repositories-enable
     - common-repositories-disable
 
-# 07 # Packages
+# 05 # Packages
 
 - name: "Common | Packages"
   ansible.builtin.include_tasks: "packages/{{ dist_pkg_mgr }}.yml"
@@ -82,7 +62,7 @@
     - common
     - common-packages
 
-# 08 # Locales
+# 06 # Locales
 
 - name: "Common | Locale"
   ansible.builtin.include_tasks: "locale/main.yml"
@@ -91,6 +71,26 @@
   tags:
     - common
     - common-locale
+
+# 07 # Users
+
+- name: "Common | Users"
+  ansible.builtin.include_tasks: "users/main.yml"
+  when:
+    - common_users | is_dicts_list
+  tags:
+    - common
+    - common-users
+
+# 08 # Dirs
+
+- name: "Common | Dirs"
+  ansible.builtin.include_tasks: "dirs/main.yml"
+  when:
+    - common_dirs | is_dicts_list
+  tags:
+    - common
+    - common-dirs
 
 # 09 # Environments
 

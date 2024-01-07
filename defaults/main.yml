@@ -31,34 +31,7 @@ common_hosts: []
 # common_timezone: "Etc/UTC"
 common_timezone: ~
 
-# 04 # Users
-##############################################################################
-
-# common_users:
-#   - name: "deploy"
-#     group: "deploy"
-#     groups: ["docker"]
-#     shell: "/bin/zsh"
-#     create_home: true
-#     system: false
-#     append: true
-#     state: present
-common_users: []
-
-# 05 # Dirs
-##############################################################################
-
-# common_dirs:
-#   - path: "/var/shared/backups"
-#     state: "directory"
-#     owner: "root"
-#     group: "root"
-#     mode: "0750"
-#     force: "false"
-#     follow: "true"
-common_dirs: []
-
-# 06 # Repositories
+# 04 # Repositories
 ##############################################################################
 
 # Debian / Ubuntu example:
@@ -108,7 +81,7 @@ common_repositories_enable: []
 #   - powertools-source
 common_repositories_disable: []
 
-# 07 # Packages
+# 05 # Packages
 ##############################################################################
 
 # common_packages:
@@ -121,11 +94,38 @@ common_packages: []
 #   - "zsh"
 common_packages_additional: []
 
-# 08 # Locales
+# 06 # Locales
 ##############################################################################
 
 # common_locale: "en_US.UTF-8"
 common_locale: ~
+
+# 07 # Users
+##############################################################################
+
+# common_users:
+#   - name: "deploy"
+#     group: "deploy"
+#     groups: ["docker"]
+#     shell: "/bin/zsh"
+#     create_home: true
+#     system: false
+#     append: true
+#     state: present
+common_users: []
+
+# 08 # Dirs
+##############################################################################
+
+# common_dirs:
+#   - path: "/var/shared/backups"
+#     state: "directory"
+#     owner: "root"
+#     group: "root"
+#     mode: "0750"
+#     force: "false"
+#     follow: "true"
+common_dirs: []
 
 # 09 # Environments
 ##############################################################################

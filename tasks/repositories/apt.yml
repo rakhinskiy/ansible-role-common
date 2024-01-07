@@ -49,6 +49,9 @@
 
 - name: "Common | Repositories | Apt | Get Repositories List"
   scan_repositories:
+  when:
+    - common_repositories_enable | is_ne_list or
+      common_repositories_disable | is_ne_list
   become: true
   tags:
     - common
@@ -56,3 +59,36 @@
     - common-repositories-enable
     - common-repositories-disable
 
+- name: "Common | Repositories | Apt | Enable repository"
+  ansible.builtin.replace:
+    dest: "/etc/apt/sources.list.d/{{ item.file }}"
+    regexp: '^\s*#\s*(deb(-src)?(.*)$)'
+    replace: '\1'
+  with_items: "{{ ansible_facts.repositories }}"
+  when:
+    - common_repositories_enable | is_ne_list
+    - item.name is defined
+    - item.name in common_repositories_enable
+    - not item.state
+  become: true
+  tags:
+    - common
+    - common-repositories
+    - common-repositories-enable
+
+- name: "Common | Repositories | Apt | Disable repository"
+  ansible.builtin.replace:
+    dest: "/etc/apt/sources.list.d/{{ item.file }}"
+    regexp: '^(\s*deb(-src)?(.*)$)'
+    replace: '# \1'
+  with_items: "{{ ansible_facts.repositories }}"
+  when:
+    - common_repositories_disable | is_ne_list
+    - item.name is defined
+    - item.name in common_repositories_disable
+    - item.state
+  become: true
+  tags:
+    - common
+    - common-repositories
+    - common-repositories-disable
