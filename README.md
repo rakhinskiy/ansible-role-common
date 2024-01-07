@@ -129,6 +129,13 @@ common_repositories_add:
     options:
       gpgcheck: "0"
 
+common_repositories_enable:
+  # CentOS / AlmaLinux / Rocky example
+  - "crb"
+  - "extras"
+  - "highavailability"
+  - "plus"
+
 # default: []
 common_packages: 
   - "strace"

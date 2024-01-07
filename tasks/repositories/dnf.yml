@@ -22,9 +22,8 @@
     state: present
   with_items: "{{ common_repositories_add }}"
   when:
-    - not item | skipped
-    - item.key is defined
     - common_repositories_add | is_dicts_list
+    - item.key is defined
   become: true
   tags:
     - common
@@ -51,6 +50,9 @@
 - name: "Common | Repositories | Dnf / Yum | Get Repositories List"
   scan_repositories:
   become: true
+  when:
+    - common_repositories_enable | is_ne_list or
+      common_repositories_disable | is_ne_list
   tags:
     - common
     - common-repositories
@@ -72,8 +74,28 @@
   with_items: "{{ ansible_facts.repositories }}"
   when:
     - common_repositories_enable | is_ne_list
+    - item.name is defined
     - item.name in common_repositories_enable
     - not item.state
+  become: true
+  tags:
+    - common
+    - common-repositories
+    - common-repositories-enable
+
+- name: "Common  Repositories | Dnf / Yum | Disable repository"
+  community.general.ini_file:
+    path: "/etc/yum.repos.d/{{ item.file }}"
+    section: "{{ item.name }}"
+    option: "enabled"
+    value: "0"
+    mode: '0644'
+  with_items: "{{ ansible_facts.repositories }}"
+  when:
+    - common_repositories_disable | is_ne_list
+    - item.name is defined
+    - item.name in common_repositories_disable
+    - item.state
   become: true
   tags:
     - common

@@ -22,7 +22,6 @@
     state: present
   with_items: "{{ common_repositories_add }}"
   when:
-    - not item | skipped
     - item.key is defined
     - common_repositories_add | is_dicts_list
   become: true
