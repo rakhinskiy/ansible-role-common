@@ -140,29 +140,27 @@ common_users:
     state: present        # default: present
 
 # default: []
-# common_sudo:
-#   # user example
-#   - name: deploy
-#     defaults:
-#       - "!requiretty"
-#       - "env_keep += 'TZ'"
-#     permissions:
-#       - host: "ALL"
-#         runas: "root"
-#         nopasswd: false
-#         cmd: "ALL"
-#   # group example
-#   - name: %wheel
-#     defaults:
-#       - "!requiretty"
-#       - "env_keep += 'TZ'"
-#     permissions:
-#       - host: "ALL"
-#         runas: "root"
-#         nopasswd: true
-#         cmd: "ALL"
-common_sudo: []
-
+common_sudo:
+  # user example
+  - name: deploy
+    defaults:
+      - "!requiretty"
+      - "env_keep += 'TZ'"
+    permissions:
+      - host: "ALL"
+        runas: "root"
+        nopasswd: false
+        cmd: "ALL"
+  # group example
+  - name: %wheel
+    defaults:
+      - "!requiretty"
+      - "env_keep += 'TZ'"
+    permissions:
+      - host: "ALL"
+        runas: "root"
+        nopasswd: true
+        cmd: "ALL"
 
 # default: []
 common_dirs:
