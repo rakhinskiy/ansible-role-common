@@ -199,6 +199,21 @@ common_sysctl_file: "k8s"
 common_sysctl_keys:
   - name: "net.core.somaxconn"
     value: "50000"
+
+# default: []
+common_sysfs:
+  - attribute: "power/state"
+    mode: 0660
+    type: "mode"
+  - attribute: "power/state"
+    owner: "root:power"
+    type: "owner"
+  - attribute: "devices/system/cpu/cpu0/cpufreq/scaling_governor"
+    value: "userspace"
+    type: "attribute"
+  - attribute: "sys/kernel/mm/transparent_hugepage/enabled"
+    value: "madvise"
+    type: "attribute"
 ```
 
 Dependencies

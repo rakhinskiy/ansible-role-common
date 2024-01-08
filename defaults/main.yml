@@ -121,7 +121,7 @@ common_users: []
 #   - group: deploy
 #     defaults:
 #       - "!requiretty"
-#       - "env_keep += 'TZ'"
+#       - "env_keep += "TZ""
 #     permissions:
 #       - host: "ALL"
 #         runas: "root"
@@ -177,3 +177,26 @@ common_sysctl_file: "ansible"
 #  - name: "net.core.somaxconn"
 #    value: "50000"
 common_sysctl_keys: []
+
+# 13 # Sysfs
+##############################################################################
+
+# Example
+# attribute = value
+# mode attribute = 0600 # (any valid argument for chmod)
+# owner attribute = root:wheel # (any valid argument for chown)
+
+# common_sysfs:
+#   - attribute: "power/state"
+#     mode: 0660
+#     type: "mode"
+#   - attribute: "power/state"
+#     owner: "root:power"
+#     type: "owner"
+#   - attribute: "devices/system/cpu/cpu0/cpufreq/scaling_governor"
+#     value: "userspace"
+#     type: "attribute"
+#   - attribute: "sys/kernel/mm/transparent_hugepage/enabled"
+#     value: "madvise"
+#     type: "attribute"
+common_sysfs: []

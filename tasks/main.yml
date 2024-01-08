@@ -133,3 +133,15 @@
   tags:
     - common
     - common-sysctl
+
+# 12 # Sysctl
+
+- name: "Common | Sysfs"
+  ansible.builtin.include_tasks: "sysfs/main.yml"
+  when:
+    - common_sysfs | is_dicts_list
+  tags:
+    - common
+    - common-sysfs
+    - common-sysfs-install
+    - common-sysfs-configure

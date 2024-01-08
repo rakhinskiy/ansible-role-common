@@ -1,0 +1,12 @@
+---
+
+- name: "Common | Sysfs | Install | Dnf"
+  ansible.builtin.dnf:
+    name: "sysfsutils"
+    state: present
+    update_cache: true
+  become: true
+  tags:
+    - common
+    - common-sysfs
+    - common-sysfs-install
