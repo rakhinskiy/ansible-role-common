@@ -20,22 +20,23 @@ Tasks
 |   06   |    locale     |             Configure locales             |
 |   07   |     users     |            Manage local users             |
 |   08   |     sudo      |        Install sudo and configure         |
-|   09   |     dirs      |           Create local folders            |
-|   10   | environments  |            Configure env vars             |
-|   11   |    limits     |           Configure limits.conf           |
-|   12   |    sysctl     |           Configure sysctl.conf           |
-|   13   |     sysfs     |     Install and configure sysfs utils     |
+|   09   |      ssh      |         Configure ssh client keys         |
+|   10   |     dirs      |           Create local folders            |
+|   11   | environments  |            Configure env vars             |
+|   12   |    limits     |           Configure limits.conf           |
+|   13   |    sysctl     |           Configure sysctl.conf           |
+|   14   |     sysfs     |     Install and configure sysfs utils     |
 
 TODO
 --------------
+
+- Replace sysfsutils with tuned
 
 |     Task      | Description |
 |:-------------:|:-----------:|
 | --security--  |     --      |
 |   firewall    |             |
 |    selinux    |             |
-|      ssh      |             |
-|     sshd      |             |
 | --software--  |     --      |
 |     aide      |             |
 |    auditd     |             |
@@ -45,6 +46,8 @@ TODO
 |     nscd      |             |
 |   rkhunter    |             |
 | smartmontools |             |
+|     sshd      |             |
+|      zsh      |             |
 
 Role Variables
 --------------
@@ -169,6 +172,19 @@ common_sudo:
         runas: "root"
         nopasswd: true
         cmd: "ALL"
+
+# default: []
+common_ssh_authorized_keys:
+  - user: deploy
+    key: "ssh-rsa AAAAB3..."
+    state: "present"
+
+# default: []
+common_ssh_keys:
+  - user: deploy
+    key_name: "id_rsa"
+    key_public: "ssh-rsa AAAAB3..."
+    key_private: "..."
 
 # default: []
 common_dirs:

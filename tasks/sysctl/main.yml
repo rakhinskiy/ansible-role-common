@@ -1,3 +1,4 @@
+# code: language=ansible
 ---
 
 - name: "Common | Sysctl | Configure"
@@ -9,7 +10,7 @@
     mode: "0644"
     backup: false
   notify:
-    - Reload sysctl
+    - "Reload sysctl"
   become: true
   tags:
     - common

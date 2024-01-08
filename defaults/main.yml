@@ -1,3 +1,4 @@
+# code: language=ansible
 ---
 
 # 00 # Always
@@ -131,7 +132,23 @@ common_users: []
 #         cmd: "ALL"
 common_sudo: []
 
-# 09 # Dirs
+# 09 # SSH
+##############################################################################
+
+# common_ssh_authorized_keys:
+#   - user: deploy
+#     key: "key_string or vault"
+#     state: "present"
+common_ssh_authorized_keys: []
+
+# common_ssh_keys:
+#   - user: deploy
+#     key_name: "id_rsa"
+#     key_public: "string with public key or vault"
+#     key_private: "string with private key or vault"
+common_ssh_keys: []
+
+# 10 # Dirs
 ##############################################################################
 
 # common_dirs:
@@ -144,7 +161,7 @@ common_sudo: []
 #     follow: "true"
 common_dirs: []
 
-# 10 # Environments
+# 11 # Environments
 ##############################################################################
 
 # common_environments:
@@ -156,7 +173,7 @@ common_dirs: []
 #       PATH: "${PATH}:/usr/local/bin:~/.bin/:~/bin/"
 common_environments: []
 
-# 11 # Limits
+# 12 # Limits
 ##############################################################################
 
 # common_limits:
@@ -169,7 +186,7 @@ common_environments: []
 #     comment: ""
 common_limits: []
 
-# 12 # Sysctl
+# 13 # Sysctl
 ##############################################################################
 
 # common_sysctl_file: "ansible" -> /etc/sysctl.d/ansible.conf
@@ -180,7 +197,7 @@ common_sysctl_file: "ansible"
 #    value: "50000"
 common_sysctl_keys: []
 
-# 13 # Sysfs
+# 14 # Sysfs
 ##############################################################################
 
 # Example

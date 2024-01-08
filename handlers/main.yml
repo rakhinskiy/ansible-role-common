@@ -1,7 +1,18 @@
+# code: language=ansible
 ---
 
-- name: Reload sysctl
+- name: "Reload sysctl"
   ansible.builtin.command:
     cmd: "sysctl --system"
+  become: true
+  changed_when: false
+
+- name: "SELinux security contexts restore"
+  ansible.builtin.command:
+    cmd: "restorecon -R -v ~{{ item.user }}/.ssh"
+  with_items: "{{ common_ssh_authorized_keys }}"
+  when:
+    - ansible_facts.selinux.status == "enabled"
+    - common_ssh_authorized_keys | is_dicts_list
   become: true
   changed_when: false
