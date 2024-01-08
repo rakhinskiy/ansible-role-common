@@ -192,8 +192,8 @@ common_limits:
     comment: ""
 
 # default: 
-# common_sysctl_file: "99-sysctl.conf"
-common_sysctl_file: "k8s.conf"
+# common_sysctl_file: "ansible"
+common_sysctl_file: "k8s"
 
 # common_sysctl_keys: []
 common_sysctl_keys:
