@@ -109,11 +109,19 @@ common_repositories_add:
       gpgcheck: "0"
 
 common_repositories_enable:
-  # CentOS / AlmaLinux / Rocky example
+  # Debian / Ubuntu example:
+  - "zabbix"  # Uncomment all deb / deb-src in /etc/apt/sources.list.d/zabbix.list
+  # CentOS / AlmaLinux / Rocky example:
   - "crb"
   - "extras"
   - "highavailability"
   - "plus"
+
+common_repositories_disable:
+  # Debian / Ubuntu example:
+  - "zabbix"  # Comment all deb / deb-src in /etc/apt/sources.list.d/zabbix.list
+  # CentOS / AlmaLinux / Rocky example:
+  - "epel"
 
 # default: []
 common_packages: 
@@ -203,10 +211,10 @@ common_sysctl_keys:
 # default: []
 common_sysfs:
   - attribute: "power/state"
-    mode: 0660
+    value: 0660
     type: "mode"
   - attribute: "power/state"
-    owner: "root:power"
+    value: "root:power"
     type: "owner"
   - attribute: "devices/system/cpu/cpu0/cpufreq/scaling_governor"
     value: "userspace"

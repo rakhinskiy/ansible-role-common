@@ -3,9 +3,7 @@
 - name: "Common | Locale | Install locale packages"
   ansible.builtin.include_tasks: "locale/{{ dist_pkg_mgr }}.yml"
   when:
-    - common_locale_packages is defined
-    - common_locale_packages | type_debug == 'list'
-    - common_locale_packages | length > 0
+    - common_locale_packages | is_ne_list
   tags:
     - common
     - common-locale

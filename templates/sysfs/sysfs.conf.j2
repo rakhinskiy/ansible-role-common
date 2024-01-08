@@ -1,3 +1,4 @@
+#jinja2: lstrip_blocks: True, trim_blocks: True
 #
 # /etc/sysfs.conf - Configuration file for setting sysfs attributes.
 #
@@ -23,13 +24,11 @@
 # owner power/state = root:power
 
 {% for item in common_sysfs | default([]) %}
-{% if item.type == 'mode' %}mode {{ item.attribute }} = {{ item.mode }}{% enfif %}
+{% if item.type == 'mode' %}mode {{ item.attribute }} = {{ item.value }}{% endif %}
 {% endfor %}
-
 {% for item in common_sysfs | default([])  %}
-{% if item.type == 'owner' %}owner {{ item.attribute }} = {{ item.owner }}{% enfif %}
+{% if item.type == 'owner' %}owner {{ item.attribute }} = {{ item.value }}{% endif %}
 {% endfor %}
-
 {% for item in common_sysfs | default([])  %}
-{% if item.type == 'attribute' %}{{ item.attribute }} = {{ item.value }}{% enfif %}
+{% if item.type == 'attribute' %}{{ item.attribute }} = {{ item.value }}{% endif %}
 {% endfor %}

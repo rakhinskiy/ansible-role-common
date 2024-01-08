@@ -23,9 +23,7 @@
   become: true
   with_items: "{{ common_environments }}"
   when:
-    - item.user is defined
-    - item.user is string
-    - item.user | length > 0
+    - item.user | is_ne_string
   tags:
     - common
     - common-environments
@@ -40,9 +38,7 @@
   become: true
   with_items: "{{ common_environments }}"
   when:
-    - item.user is defined
-    - item.user is string
-    - item.user | length > 0
+    - item.user | is_ne_string
   tags:
     - common
     - common-environments
