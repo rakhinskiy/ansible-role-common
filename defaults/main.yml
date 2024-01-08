@@ -114,7 +114,22 @@ common_locale: ~
 #     state: present
 common_users: []
 
-# 08 # Dirs
+# 08 # Sudo
+##############################################################################
+
+# common_sudo:
+#   - group: deploy
+#     defaults:
+#       - "!requiretty"
+#       - "env_keep += 'TZ'"
+#     permissions:
+#       - host: "ALL"
+#         runas: "root"
+#         nopasswd: true
+#         cmd: "ALL"
+common_sudo: []
+
+# 09 # Dirs
 ##############################################################################
 
 # common_dirs:
@@ -127,7 +142,7 @@ common_users: []
 #     follow: "true"
 common_dirs: []
 
-# 09 # Environments
+# 10 # Environments
 ##############################################################################
 
 # common_environments:
@@ -137,9 +152,9 @@ common_dirs: []
 #   - user: "deploy"
 #     variables:
 #       PATH: "${PATH}:/usr/local/bin:~/.bin/:~/bin/"
-common_environmens: []
+common_environments: []
 
-# 10 # Limits
+# 11 # Limits
 ##############################################################################
 
 # common_limits:
@@ -152,11 +167,11 @@ common_environmens: []
 #     comment: ""
 common_limits: []
 
-# 11 # Sysctl
+# 12 # Sysctl
 ##############################################################################
 
-# common_sysctl_file: "99-ansible" -> /etc/sysctl.d/99-sysctl.conf
-common_sysctl_file: "99-sysctl"
+# common_sysctl_file: "ansible" -> /etc/sysctl.d/ansible.conf
+common_sysctl_file: "ansible"
 
 # common_sysctl_keys:
 #  - name: "net.core.somaxconn"

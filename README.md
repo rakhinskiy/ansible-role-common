@@ -15,14 +15,15 @@ Tasks
 |   01   |   hostname    |            Set server hostname            |
 |   02   |     hosts     |             Manage /etc/hosts             |
 |   03   |   timezone    |            Set server timezone            |
-|   04   | repositories  |        Add or enable repositories         |
+|   04   | repositories  |    Add or enable/disable repositories     |
 |   05   |   packages    |             Install packages              |
 |   06   |    locale     |             Configure locales             |
 |   07   |     users     |            Manage local users             |
-|   08   |     dirs      |           Create local folders            |
-|   09   | environments  |            Configure env vars             |
-|   10   |    limits     |           Configure limits.conf           |
-|   11   |    sysctl     |           Configure sysctl.conf           |
+|   08   |     sudo      |        Install sudo and configure         |
+|   09   |     dirs      |           Create local folders            |
+|   10   | environments  |            Configure env vars             |
+|   11   |    limits     |           Configure limits.conf           |
+|   12   |    sysctl     |           Configure sysctl.conf           |
 
 TODO
 --------------
@@ -34,7 +35,6 @@ TODO
 |    selinux    |             |
 |      ssh      |             |
 |     sshd      |             |
-|     sudo      |             |
 |     sysfs     |             |
 | --software--  |     --      |
 |     aide      |             |
@@ -138,6 +138,29 @@ common_users:
     system: false         # default: false
     append: true          # default: false
     state: present        # default: present
+
+# default: []
+# common_sudo:
+#   - user: deploy
+#     defaults:
+#       - "!requiretty"
+#       - "env_keep += 'TZ'"
+#     permissions:
+#       - host: "ALL"
+#         runas: "root"
+#         nopasswd: false
+#         cmd: "ALL"
+#   - group: wheel
+#     defaults:
+#       - "!requiretty"
+#       - "env_keep += 'TZ'"
+#     permissions:
+#       - host: "ALL"
+#         runas: "root"
+#         nopasswd: true
+#         cmd: "ALL"
+common_sudo: []
+
 
 # default: []
 common_dirs:

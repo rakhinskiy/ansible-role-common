@@ -82,7 +82,19 @@
     - common
     - common-users
 
-# 08 # Dirs
+# 08 # Sudo
+
+- name: "Common | Sudo"
+  ansible.builtin.include_tasks: "sudo/main.yml"
+  when:
+    - common_sudo | is_dicts_list
+  tags:
+    - common
+    - common-sudo
+    - common-sudo-install
+    - common-sudo-configure
+
+# 09 # Dirs
 
 - name: "Common | Dirs"
   ansible.builtin.include_tasks: "dirs/main.yml"
@@ -92,7 +104,7 @@
     - common
     - common-dirs
 
-# 09 # Environments
+# 10 # Environments
 
 - name: "Common | Environments"
   ansible.builtin.include_tasks: "environments/main.yml"
@@ -102,17 +114,17 @@
     - common
     - common-environments
 
-# 10 # Limits
+# 11 # Limits
 
 - name: "Common | Limits"
   ansible.builtin.include_tasks: "limits/main.yml"
   when:
-    - common_limits is_dicts_list
+    - common_limits | is_dicts_list
   tags:
     - common
     - common-limits
 
-# 11 # Sysctl
+# 12 # Sysctl
 
 - name: "Common | Sysctl"
   ansible.builtin.include_tasks: "sysctl/main.yml"

@@ -1,0 +1,14 @@
+---
+
+- name: "Common | Sudo | Install | Apt"
+  ansible.builtin.apt:
+    name: "sudo"
+    state: present
+    update_cache: true
+    force_apt_get: true
+    cache_valid_time: 600
+  become: true
+  tags:
+    - common
+    - common-sudo
+    - common-sudo-install
