@@ -24,6 +24,7 @@ Tasks
 |   10   | environments  |            Configure env vars             |
 |   11   |    limits     |           Configure limits.conf           |
 |   12   |    sysctl     |           Configure sysctl.conf           |
+|   13   |     sysfs     |     Install and configure sysfs utils     |
 
 TODO
 --------------
@@ -35,7 +36,6 @@ TODO
 |    selinux    |             |
 |      ssh      |             |
 |     sshd      |             |
-|     sysfs     |             |
 | --software--  |     --      |
 |     aide      |             |
 |    auditd     |             |
