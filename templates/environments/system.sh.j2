@@ -1,3 +1,4 @@
+#jinja2: lstrip_blocks: True, trim_blocks: True
 {% for environment in common_environments %}
 {%- if not environment.user | default(None) %}
 {%- for var, value in environment.variables.items() %}

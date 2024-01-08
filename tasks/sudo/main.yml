@@ -2,8 +2,6 @@
 
 - name: "Common | Sudo | Install"
   ansible.builtin.include_tasks: "sudo/{{ dist_pkg_mgr }}.yml"
-  when:
-    - common_sudo | is_dicts_list
   tags:
     - common
     - common-sudo
@@ -11,9 +9,9 @@
 
 - name: "Common | Sudo | Configure"
   ansible.builtin.template:
-    src: sudo/sudoers.j2
+    src: "sudo/sudoers.j2"
     dest: "/etc/sudoers.d/{% if item.name[1] == '%' %}group{% else %}user{% endif %}-{{ item.name | replace('%', '') }}"
-    mode: 0440
+    mode: "0440"
     validate: 'visudo -cf %s'
   when:
     - item.name | default('') | is_ne_string

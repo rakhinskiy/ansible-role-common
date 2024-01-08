@@ -1,3 +1,4 @@
+#jinja2: lstrip_blocks: True, trim_blocks: True
 {% if ansible_fqdn == ansible_hostname -%}
 127.0.0.1       {{ ansible_hostname }}
 {% else %}

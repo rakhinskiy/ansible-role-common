@@ -3,7 +3,7 @@
 - name: "Common | Users | Create groups"
   ansible.builtin.group:
     name: "{{ item.group | default(item.name) }}"
-    state: present
+    state: "present"
   with_items: "{{ common_users }}"
   become: true
   tags:
