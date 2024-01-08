@@ -1,5 +1,4 @@
 # code: language=ansible
-
 ---
 
 - name: "Common | Sysfs | Install"

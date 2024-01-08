@@ -1,0 +1,59 @@
+# code: language=ansible
+---
+
+- name: "Common | SSH | SELinux status | Debug"
+  ansible.builtin.debug:
+    var: ansible_facts.selinux
+    verbosity: 1
+  tags:
+    - common
+    - common-ssh
+
+- name: "Common | SSH | Add authorized public keys for user"
+  ansible.posix.authorized_key:
+    user: "{{ item.user }}"
+    key: '{{ item.key }}'
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ common_ssh_authorized_keys | default([]) }}"
+  notify:
+    - "SELinux security contexts restore"
+  when:
+    - common_ssh_authorized_keys | is_dicts_list
+  become: true
+  tags:
+    - common
+    - common-ssh
+
+- name: "Common | SSH | Add user private keys"
+  ansible.builtin.copy:
+    content: "{{ item.private_key }}"
+    dest: "~{{ item.user }}/.ssh/{{ item.key_name }}"
+    owner: "{{ item.user }}"
+    mode: "0600"
+  with_items: "{{ common_ssh_keys | default([]) }}"
+  when:
+    - common_ssh_keys | is_dicts_list
+  become: true
+  tags:
+    - common
+    - common-ssh
+
+- name: "Common | SSH | Add user public keys"
+  ansible.builtin.copy:
+    content: "{{ item.public_key }}"
+    dest: "~{{ item.user }}/.ssh/{{ item.key_name }}.pub"
+    owner: "{{ item.user }}"
+    mode: "0600"
+  with_items: "{{ common_ssh_keys | default([]) }}"
+  when:
+    - common_ssh_keys | is_dicts_list
+  become: true
+  tags:
+    - common
+    - common-ssh
+
+- name: "Common | SSH | Flush handlers"
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - common
+    - common-ssh

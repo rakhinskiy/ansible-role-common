@@ -1,3 +1,4 @@
+# code: language=ansible
 ---
 
 # 00 # Always
@@ -94,7 +95,18 @@
     - common-sudo-install
     - common-sudo-configure
 
-# 09 # Dirs
+# 09 # SSH
+
+- name: "Common | SSH"
+  ansible.builtin.include_tasks: "ssh/main.yml"
+  when:
+    - common_ssh_authorized_keys | is_dicts_list or  
+      common_ssh_keys | is_dicts_list
+  tags:
+    - common
+    - common-ssh
+
+# 10 # Dirs
 
 - name: "Common | Dirs"
   ansible.builtin.include_tasks: "dirs/main.yml"
@@ -104,7 +116,7 @@
     - common
     - common-dirs
 
-# 10 # Environments
+# 11 # Environments
 
 - name: "Common | Environments"
   ansible.builtin.include_tasks: "environments/main.yml"
@@ -114,7 +126,7 @@
     - common
     - common-environments
 
-# 11 # Limits
+# 12 # Limits
 
 - name: "Common | Limits"
   ansible.builtin.include_tasks: "limits/main.yml"
@@ -124,7 +136,7 @@
     - common
     - common-limits
 
-# 12 # Sysctl
+# 13 # Sysctl
 
 - name: "Common | Sysctl"
   ansible.builtin.include_tasks: "sysctl/main.yml"
@@ -134,7 +146,7 @@
     - common
     - common-sysctl
 
-# 12 # Sysctl
+# 14 # Sysfs
 
 - name: "Common | Sysfs"
   ansible.builtin.include_tasks: "sysfs/main.yml"
