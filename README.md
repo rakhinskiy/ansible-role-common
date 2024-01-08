@@ -141,7 +141,8 @@ common_users:
 
 # default: []
 # common_sudo:
-#   - user: deploy
+#   # user example
+#   - name: deploy
 #     defaults:
 #       - "!requiretty"
 #       - "env_keep += 'TZ'"
@@ -150,7 +151,8 @@ common_users:
 #         runas: "root"
 #         nopasswd: false
 #         cmd: "ALL"
-#   - group: wheel
+#   # group example
+#   - name: %wheel
 #     defaults:
 #       - "!requiretty"
 #       - "env_keep += 'TZ'"
