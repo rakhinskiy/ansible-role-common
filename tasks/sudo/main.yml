@@ -11,7 +11,7 @@
 - name: "Common | Sudo | Configure"
   ansible.builtin.template:
     src: "sudo/sudoers.j2"
-    dest: "/etc/sudoers.d/{% if item.name[1] == '%' %}group{% else %}user{% endif %}-{{ item.name | replace('%', '') }}"
+    dest: "/etc/sudoers.d/{% if item.name[1] == '%' %}group{% else %}user{% endif %}-{{ item.name | replace('%', '') | replace('.', '-') }}"
     mode: "0440"
     validate: 'visudo -cf %s'
   when:

@@ -100,7 +100,7 @@
 - name: "Common | SSH"
   ansible.builtin.include_tasks: "ssh/main.yml"
   when:
-    - common_ssh_authorized_keys | is_dicts_list or  
+    - common_ssh_authorized_keys | is_dicts_list or
       common_ssh_keys | is_dicts_list
   tags:
     - common
@@ -157,3 +157,15 @@
     - common-sysfs
     - common-sysfs-install
     - common-sysfs-configure
+
+# 26 # ZSH
+
+- name: "Common | ZSH"
+  ansible.builtin.include_tasks: "zsh/main.yml"
+  when:
+    - common_zsh | is_dicts_list
+  tags:
+    - common
+    - common-zsh
+    - common-zsh-install
+    - common-zsh-configure
