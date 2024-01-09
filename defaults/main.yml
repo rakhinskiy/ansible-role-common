@@ -219,3 +219,17 @@ common_sysctl_keys: []
 #     value: "madvise"
 #     type: "attribute"
 common_sysfs: []
+
+# 26 # ZSH
+##############################################################################
+
+# common_zsh:
+#   - user: "deploy"
+#
+common_zsh: []
+
+# common_zsh_omz_version: "commit:SHA"
+common_zsh_omz_version: "master"
+
+# common_zsh_p10k_version: "commit:SHA or tag"
+common_zsh_p10k_version: "master"
