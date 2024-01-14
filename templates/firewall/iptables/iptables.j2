@@ -1,0 +1,50 @@
+#jinja2: lstrip_blocks: True, trim_blocks: True
+*filter
+# Chains
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT ACCEPT [0:0]
+{% for item in common_firewall.filter | default([]) %}
+:ZONE-{{ item.zone | upper }} - [0.0]
+{% endfor %}
+
+# Input rules
+-A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -p icmp -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+# Zones
+{% for item in common_firewall.filter | default([]) %}
+  {% if "any" in item.interfaces %}
+# Redirect all input to zone {{ item.zone }}
+-A INPUT -j ZONE-{{ item.zone | upper }}
+  {% else %}
+    {% for interface in item.interfaces %}
+# Redirect interface: {{ interface }} input for zone ZONE-{{ item.zone | upper }}
+-A INPUT -i {{ interface }} -j ZONE-{{ item.zone | upper }}
+    {% endfor %}
+  {% endif %}
+{% endfor %}
+{% for item in common_firewall.filter | default([]) %}
+# Zone: ZONE-{{ item.zone | upper }}
+  {% for service in item.services | default([]) %}
+# Service: {{ service.name }}
+    {% if "any" in service.ports and "any" not in service.sources %}
+-A ZONE-{{ item.zone | upper }} -m set --match-set ZONE-{{ item.zone | upper }}-SERVICE-{{ service.name | upper }} src -j ACCEPT
+    {% else %}
+      {% for port in service.ports | default([]) %}
+        {% set protocol = port.split("/")[0] %}
+        {% set port_number = port.split("/")[1] %}
+        {% if "any" in service.sources %}
+-A ZONE-{{ item.zone | upper }} -p {{ protocol }} -m {{ protocol }} --dport {{ port_number }} -j ACCEPT
+          {% else %}
+-A ZONE-{{ item.zone | upper }} -p {{ protocol }} -m {{ protocol }} --dport {{ port_number }} -m set --match-set ZONE-{{ item.zone | upper }}-SERVICE-{{ service.name | upper }} src -j ACCEPT
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+
+# Forward rules
+
+# Output rules
+COMMIT

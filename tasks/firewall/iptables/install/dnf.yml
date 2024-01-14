@@ -1,0 +1,17 @@
+# code: language=ansible
+---
+
+- name: "Common | Firewall | IPTables | Install | Dnf / Yum"
+  ansible.builtin.dnf:
+    name:
+      - "iptables"
+      - "iptables-services"
+      - "ipset"
+      - "ipset-service"
+    state: "present"
+    update_cache: true
+  become: true
+  tags:
+    - common
+    - common-firewall
+    - common-firewall-install

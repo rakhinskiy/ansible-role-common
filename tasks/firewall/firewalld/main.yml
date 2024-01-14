@@ -1,0 +1,16 @@
+# code: language=ansible
+---
+
+- name: "Common | Firewall | Firewalld | Not implemented"
+  ansible.builtin.fail:
+    msg: "Firewalld tasks not implemented"
+  tags:
+    - common-firewall
+
+
+- name: "Common | Firewall | Firewalld | Install"
+  ansible.builtin.include_tasks: "firewall/firewalld/install/{{ dist_pkg_mgr }}.yml"
+  tags:
+    - common
+    - common-firewall
+    - common-firewall-install

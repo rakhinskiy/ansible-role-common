@@ -3,7 +3,7 @@
 
 - name: "Common | Locale | Install dependencies | Apt"
   ansible.builtin.apt:
-    name: "{{ common_locale_packages }}"
+    name: "{{ common_locale_packages | default(__common_locale_packages__) }}"
     state: present
     update_cache: true
     force_apt_get: true

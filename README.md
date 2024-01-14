@@ -26,6 +26,8 @@ Tasks
 |   12   |    limits     |           Configure limits.conf           |
 |   13   |    sysctl     |           Configure sysctl.conf           |
 |   14   |     sysfs     |     Install and configure sysfs utils     |
+|   15   |   firewall    |   Configure firewalld / iptables / ufw    |
+|   26   |      zsh      |               Configure ZSH               |
 
 TODO
 --------------
@@ -35,7 +37,6 @@ TODO
 |     Task      | Description |
 |:-------------:|:-----------:|
 | --security--  |     --      |
-|   firewall    |             |
 |    selinux    |             |
 | --software--  |     --      |
 |     aide      |             |
@@ -47,7 +48,7 @@ TODO
 |   rkhunter    |             |
 | smartmontools |             |
 |     sshd      |             |
-|      zsh      |             |
+
 
 Role Variables
 --------------
@@ -238,6 +239,13 @@ common_sysfs:
   - attribute: "sys/kernel/mm/transparent_hugepage/enabled"
     value: "madvise"
     type: "attribute"
+
+# default: []
+common_firewall:
+
+# default: []
+common_zsh:
+  - user: "deploy"
 ```
 
 Dependencies

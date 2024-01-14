@@ -16,3 +16,15 @@
     - common_ssh_authorized_keys | is_dicts_list
   become: true
   changed_when: false
+
+- name: Restart IPSet
+  ansible.builtin.service:
+    name: "{{ __common_firewall_ipset_service__ }}"
+    state: restarted
+  become: true
+
+- name: Restart IPTables
+  ansible.builtin.service:
+    name: "{{ __common_firewall_iptables_service__ }}"
+    state: restarted
+  become: true

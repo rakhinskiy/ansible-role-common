@@ -1,0 +1,19 @@
+# code: language=ansible
+---
+
+- name: "Common | Firewall | IPTables | Install | Apt"
+  ansible.builtin.apt:
+    name:
+      - "iptables"
+      - "iptables-persistent"
+      - "ipset"
+      - "ipset-persistent"
+    state: "present"
+    update_cache: true
+    force_apt_get: true
+    cache_valid_time: 600
+  become: true
+  tags:
+    - common
+    - common-firewall
+    - common-firewall-install

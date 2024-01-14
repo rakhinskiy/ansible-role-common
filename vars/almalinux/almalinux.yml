@@ -3,14 +3,26 @@
 
 # 00 # Always
 
-always_packages:
+__always_packages__:
   - "dnf-utils"
   - "python3-libselinux"
 
 # 08 # Locale
 
-common_locale_packages:
+__common_locale_packages__:
   - "glibc-common"
   - "glibc-all-langpacks"
 
-common_locale_config: "/etc/locale.conf"
+__common_locale_config__: "/etc/locale.conf"
+
+# 15 # Firewall
+
+__common_firewall_backend__: "firewalld"
+
+__common_firewall_iptables_config__: "/etc/sysconfig/iptables"
+__common_firewall_iptables_service__: "iptables"
+__common_firewall_iptables_disable_services__:
+  - "firewalld"
+
+__common_firewall_ipset_config__: "/etc/sysconfig/ipset"
+__common_firewall_ipset_service__: "ipset"

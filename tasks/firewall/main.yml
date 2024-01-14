@@ -1,0 +1,13 @@
+# code: language=ansible
+---
+
+- name: "Common | Firewall | {{ common_firewall_backend | default(__common_firewall_backend__) }}"
+  ansible.builtin.include_tasks: "firewall/{{ common_firewall_backend | default(__common_firewall_backend__) }}/main.yml"
+  when:
+    - common_firewall_backend | default(__common_firewall_backend__) | is_ne_string
+    - common_firewall_backend | default(__common_firewall_backend__) in ["iptables", "firewalld", "ufw"]
+  tags:
+    - common
+    - common-firewall
+    - common-firewall-install
+    - common-firewall-configure

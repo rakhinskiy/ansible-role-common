@@ -13,7 +13,7 @@
     repo: "https://github.com/ohmyzsh/ohmyzsh.git"
     dest: "~{{ item.user }}/.oh-my-zsh"
     version: "{{ common_zsh_omz_version }}"
-    single_branch: yes
+    single_branch: true
     clone: true
     update: false
   with_items: "{{ common_zsh }}"
@@ -29,7 +29,7 @@
     repo: "https://github.com/romkatv/powerlevel10k.git"
     dest: "~{{ item.user }}/.oh-my-zsh/custom/themes/powerlevel10k"
     version: "{{ common_zsh_p10k_version }}"
-    single_branch: yes
+    single_branch: true
     depth: 1
     clone: true
     update: false

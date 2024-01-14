@@ -158,6 +158,28 @@
     - common-sysfs-install
     - common-sysfs-configure
 
+# 15 # Firewall
+
+- name: "Common | Firewall | Debug"
+  ansible.builtin.debug:
+    var: common_firewall
+    verbosity: 1
+  tags:
+    - common
+    - common-firewall
+    - common-firewall-install
+    - common-firewall-configure
+
+- name: "Common | Firewall"
+  ansible.builtin.include_tasks: "firewall/main.yml"
+  when:
+    - common_firewall | is_ne_dict
+  tags:
+    - common
+    - common-firewall
+    - common-firewall-install
+    - common-firewall-configure
+
 # 26 # ZSH
 
 - name: "Common | ZSH"
