@@ -255,11 +255,9 @@ common_firewall:
         - "eth0"
       services:
         - name: "web"
-          protocol: "tcp"
           ports:
             - "tcp/80"
             - "tcp/443"
-          chain: "input"
           sources:
             - "any"
     - zone: "dmz"
@@ -277,7 +275,6 @@ common_firewall:
           sources:
             - "192.168.99.0/24"
         - name: "web"
-          protocol: "tcp"
           ports:
             - "tcp/80"
             - "tcp/443"
@@ -287,6 +284,8 @@ common_firewall:
 # default: []
 common_zsh:
   - user: "deploy"
+  - user: "root"
+
 ```
 
 Dependencies

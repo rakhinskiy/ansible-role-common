@@ -26,3 +26,8 @@ __common_firewall_iptables_disable_services__:
 
 __common_firewall_ipset_config__: "/etc/sysconfig/ipset"
 __common_firewall_ipset_service__: "ipset"
+
+__common_firewall_firewalld_config__: "/etc/firewalld"
+__common_firewall_firewalld_service__: "firewalld"
+__common_firewall_firewalld_disable_services__:
+  - "iptables"
