@@ -1,10 +1,13 @@
 Common Role
 ------------
 
-Server bootstrap role, add users / ssh keys, install tools / install chrony/nscd/...
+Server bootstrap role, see tasks in readme
 
 Requirements
 ------------
+
+ - ansible >= 2.16
+ - python >= 3.6
 
 Tasks
 --------------
@@ -54,6 +57,8 @@ TODO
 
 Role Variables
 --------------
+
+By default, role only run always task, other tasks only if exist config in inventory
 
 ```yaml
 # default: none
