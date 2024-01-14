@@ -240,8 +240,47 @@ common_sysfs:
     value: "madvise"
     type: "attribute"
 
+# default: 
+#   Alma Linux / Rocky Linux -> firewalld
+#   Debian / Ubuntu -> ufw
+common_firewall_backend: "iptables"
+
 # default: []
 common_firewall:
+  filter:
+    - zone: "public"
+      interfaces:
+        - "eth0"
+      services:
+        - name: "web"
+          protocol: "tcp"
+          ports:
+            - "tcp/80"
+            - "tcp/443"
+          chain: "input"
+          sources:
+            - "any"
+    - zone: "dmz"
+      interfaces:
+        - "eth1"
+      services:
+        - name: "whitelist"
+          ports:
+            - "any"
+          sources:
+            - "10.0.0.0/24"
+        - name: "sshd"
+          ports:
+            - "tcp/22"
+          sources:
+            - "192.168.99.0/24"
+        - name: "web"
+          protocol: "tcp"
+          ports:
+            - "tcp/80"
+            - "tcp/443"
+          sources:
+            - "any"
 
 # default: []
 common_zsh:
