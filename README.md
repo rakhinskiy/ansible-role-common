@@ -33,6 +33,8 @@ TODO
 --------------
 
 - Replace sysfsutils with tuned
+- Add firewalld and ufw support
+- Add molecule tests (docker with systemd images)
 
 |     Task      | Description |
 |:-------------:|:-----------:|
