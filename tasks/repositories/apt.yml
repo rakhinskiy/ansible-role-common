@@ -42,6 +42,7 @@
   with_items: "{{ common_repositories_add }}"
   when:
     - common_repositories_add | is_dicts_list
+  notify: Update apt cache
   become: true
   tags:
     - common
@@ -71,6 +72,7 @@
     - item.name is defined
     - item.name in common_repositories_enable
     - not item.state
+  notify: Update apt cache
   become: true
   tags:
     - common
@@ -88,8 +90,18 @@
     - item.name is defined
     - item.name in common_repositories_disable
     - item.state
+  notify: Update apt cache
   become: true
   tags:
     - common
     - common-repositories
+    - common-repositories-disable
+
+- name: "Common | Repositories | Apt | Flush handlers"
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - common
+    - common-repositories
+    - common-repositories-add
+    - common-repositories-enable
     - common-repositories-disable

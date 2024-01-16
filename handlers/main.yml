@@ -17,14 +17,25 @@
   become: true
   changed_when: false
 
-- name: Restart IPSet
+- name: "Restart IPSet"
   ansible.builtin.service:
-    name: "{{ __common_firewall_ipset_service__ }}"
+    name: "{{ common_firewall_ipset_service }}"
     state: restarted
   become: true
 
-- name: Restart IPTables
+- name: "Restart IPTables"
   ansible.builtin.service:
-    name: "{{ __common_firewall_iptables_service__ }}"
+    name: "{{ common_firewall_iptables_service }}"
     state: restarted
+  become: true
+
+- name: "Update dnf cache"
+  ansible.builtin.dnf:
+    update_cache: true
+  become: true
+
+- name: "Update apt cache"
+  ansible.builtin.apt:
+    update_cache: true
+    force_apt_get: true
   become: true

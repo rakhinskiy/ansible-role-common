@@ -55,6 +55,6 @@
 - name: "Common | Always | Install packages"
   ansible.builtin.include_tasks: "always/{{ dist_pkg_mgr }}.yml"
   when:
-    - __always_packages__ | is_ne_list
+    - common_always_packages | is_ne_list
   tags:
     - always

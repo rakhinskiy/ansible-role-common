@@ -9,7 +9,7 @@
       - "ipset"
       - "ipset-service"
     state: "present"
-    update_cache: true
+    update_cache: false
   become: true
   tags:
     - common

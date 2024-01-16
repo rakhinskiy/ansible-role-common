@@ -3,7 +3,7 @@
 
 # 00 # Always
 
-__always_packages__:
+common_always_packages:
   - "apt-transport-https"
   - "ca-certificates"
   - "gnupg2"
@@ -11,19 +11,19 @@ __always_packages__:
 
 # 08 # Locale
 
-__common_locale_packages__:
+common_locale_packages:
   - "locales-all"
 
-__common_locale_config__: "/etc/default/locale"
+common_locale_config: "/etc/default/locale"
 
 # 15 # Firewall
 
-__common_firewall_backend__: "ufw"
+common_firewall_default_backend: "ufw"
 
-__common_firewall_iptables_config__: "/etc/iptables/rules.v4"
-__common_firewall_iptables_service__: "netfilter-persistent"
-__common_firewall_iptables_disable_services__:
+common_firewall_iptables_config: "/etc/iptables/rules.v4"
+common_firewall_iptables_service: "netfilter-persistent"
+common_firewall_iptables_disable_services:
   - "ufw"
 
-__common_firewall_ipset_config__: "/etc/iptables/ipsets"
-__common_firewall_ipset_service__: "netfilter-persistent"
+common_firewall_ipset_config: "/etc/iptables/ipsets"
+common_firewall_ipset_service: "netfilter-persistent"

@@ -3,7 +3,7 @@
 
 - name: "Common | Always | Install dependencies | Dnf"
   ansible.builtin.dnf:
-    name: "{{ __always_packages__ }}"
+    name: "{{ common_always_packages }}"
     state: present
     update_cache: true
   become: true

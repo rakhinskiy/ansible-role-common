@@ -9,9 +9,9 @@
       - "ipset"
       - "ipset-persistent"
     state: "present"
-    update_cache: true
+    update_cache: false
     force_apt_get: true
-    cache_valid_time: 600
+    cache_valid_time: 3600
   become: true
   tags:
     - common

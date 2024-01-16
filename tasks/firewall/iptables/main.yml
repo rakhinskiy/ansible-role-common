@@ -11,7 +11,7 @@
 - name: "Common | Firewall | IPTables | IPSet Configure"
   ansible.builtin.template:
     src: "firewall/iptables/ipset.j2"
-    dest: "{{ __common_firewall_ipset_config__ }}"
+    dest: "{{ common_firewall_ipset_config }}"
     owner: "root"
     group: "root"
     mode: "0600"
@@ -26,7 +26,7 @@
 
 - name: "Common | Firewall | IPTables | Enable ipset service"
   ansible.builtin.service:
-    name: "ipset"
+    name: "{{ common_firewall_ipset_service }}"
     enabled: true
     state: started
   become: true
@@ -45,7 +45,7 @@
 - name: "Common | Firewall | IPTables | Configure"
   ansible.builtin.template:
     src: "firewall/iptables/iptables.j2"
-    dest: "{{ __common_firewall_iptables_config__ }}"
+    dest: "{{ common_firewall_iptables_config }}"
     owner: "root"
     group: "root"
     mode: "0600"
@@ -60,22 +60,25 @@
 
 - name: "Common | Firewall | IPTables | Disable firewalld / ufw services"
   ansible.builtin.service:
-    name: "{{ __common_firewall_iptables_disable_services__ }}"
-    enabled: true
-    state: started
+    name: "{{ item }}"
+    enabled: false
+    state: stopped
+  with_items: "{{ common_firewall_iptables_disable_services }}"
   become: true
   tags:
     - common
+    - common-firewall
     - common-firewall-service
 
 - name: "Common | Firewall | IPTables | Enable iptables service"
   ansible.builtin.service:
-    name: "iptables"
+    name: "{{ common_firewall_iptables_service }}"
     enabled: true
     state: started
   become: true
   tags:
     - common
+    - common-firewall
     - common-firewall-service
 
 - name: "Common | Firewall | IPTables | IPTables flush handlers"

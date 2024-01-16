@@ -2,12 +2,12 @@
 {% for item in common_firewall.filter | default([]) %}
   {% for service in item.services %}
     {% if "any" not in service.sources %}
-create ZONE-{{ item.zone | upper }}-SERVICE-{{ service.name | upper }} hash:net family inet hashsize 1024 maxelem 65536 bucketsize 12
+create Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }} hash:net family inet hashsize 1024 maxelem 65536 bucketsize 12
       {% for source in service.sources %}
         {% if "/" not in source %}
-add ZONE-{{ item.zone | upper }}-SERVICE-{{ service.name | upper }} {{ source }}/32
+add Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }} {{ source }}/32
         {% else %}
-add ZONE-{{ item.zone | upper }}-SERVICE-{{ service.name | upper }} {{ source }}
+add Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }} {{ source }}
         {% endif %}
       {% endfor %}
     {% endif %}
