@@ -1,0 +1,23 @@
+# code: language=ansible
+---
+
+- name: "Common | Sysctl | Configure"
+  ansible.builtin.template:
+    src: "sysctl/sysctl.conf.j2"
+    dest: "/etc/sysctl.d/{{ common_sysctl_file }}.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: false
+  notify:
+    - "Reload sysctl"
+  become: true
+  tags:
+    - common
+    - common-sysctl
+
+- name: "Common | Sysctl | Flush handlers"
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - common
+    - common-sysctl

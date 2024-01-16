@@ -1,0 +1,72 @@
+# code: language=ansible
+---
+
+- name: "Common | ZSH | Install"
+  ansible.builtin.include_tasks: "zsh/{{ dist_pkg_mgr }}.yml"
+  tags:
+    - common
+    - common-zsh
+    - common-zsh-install
+
+- name: "Common | ZSH | Install OMZ"
+  ansible.builtin.git:
+    repo: "https://github.com/ohmyzsh/ohmyzsh.git"
+    dest: "~{{ item.user }}/.oh-my-zsh"
+    version: "{{ common_zsh_omz_version }}"
+    single_branch: true
+    clone: true
+    update: false
+  with_items: "{{ common_zsh }}"
+  become: true
+  become_user: "{{ item.user }}"
+  tags:
+    - common
+    - common-zsh
+    - common-zsh-configure
+
+- name: "Common | ZSH | Install P10K"
+  ansible.builtin.git:
+    repo: "https://github.com/romkatv/powerlevel10k.git"
+    dest: "~{{ item.user }}/.oh-my-zsh/custom/themes/powerlevel10k"
+    version: "{{ common_zsh_p10k_version }}"
+    single_branch: true
+    depth: 1
+    clone: true
+    update: false
+  with_items: "{{ common_zsh }}"
+  become: true
+  become_user: "{{ item.user }}"
+  tags:
+    - common
+    - common-zsh
+    - common-zsh-configure
+
+- name: "Common | ZSH | Configure ZSH"
+  ansible.builtin.copy:
+    src: "zsh/.zshrc"
+    dest: "~{{ item.user }}/.zshrc"
+    owner: "{{ item.user }}"
+    mode: "0644"
+    backup: false
+  with_items: "{{ common_zsh }}"
+  become: true
+  become_user: "{{ item.user }}"
+  tags:
+    - common
+    - common-zsh
+    - common-zsh-configure
+
+- name: "Common | ZSH | Configure P10K"
+  ansible.builtin.copy:
+    src: "zsh/.p10k.zsh"
+    dest: "~{{ item.user }}/.p10k.zsh"
+    owner: "{{ item.user }}"
+    mode: "0644"
+    backup: false
+  with_items: "{{ common_zsh }}"
+  become: true
+  become_user: "{{ item.user }}"
+  tags:
+    - common
+    - common-zsh
+    - common-zsh-configure

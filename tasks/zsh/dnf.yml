@@ -1,0 +1,16 @@
+# code: language=ansible
+---
+
+- name: "Common | ZSH | Install | Dnf"
+  ansible.builtin.dnf:
+    name:
+      - "git"
+      - "tar"
+      - "zsh"
+    state: "present"
+    update_cache: false
+  become: true
+  tags:
+    - common
+    - common-zsh
+    - common-zsh-install

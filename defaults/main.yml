@@ -1,1 +1,281 @@
+# code: language=ansible
 ---
+
+# 00 # Always
+##############################################################################
+
+# Fix sudo error when hostname changed
+ansible_become_flags: "--host=127.0.0.1 --set-home"
+
+dist_name: "{{ ansible_distribution | lower }}"
+dist_version: "{{ ansible_distribution_major_version }}"
+dist_codename: "{{ ansible_lsb.codename | default() | lower }}"
+dist_pkg_mgr: "{{ ansible_pkg_mgr | lower }}"
+
+# 01 # Hostname
+##############################################################################
+
+# common_hostname: "{{ inventory_hostname }}"
+common_hostname: ~
+
+# 02 # Hosts
+##############################################################################
+
+# common_hosts:
+#   - ip: "192.168.0.1"
+#     name: "gw-1 gw-1.example.com"
+common_hosts: []
+
+# 03 # Timezone
+##############################################################################
+
+# common_timezone: "Etc/UTC"
+common_timezone: ~
+
+# 04 # Repositories
+##############################################################################
+
+# Debian / Ubuntu example:
+# common_repositories_manager:
+#   - name: "Acquire::http::proxy"
+#     value: "http://user:password@hostname:port"
+#   - name: "Acquire::https::proxy"
+#     value: "http://user:password@hostname:port"
+#   - name: "Acquire::::Proxy"
+#     value: "true"
+#   - name: "Acquire::ForceIPv4"
+#     value: "true"
+#
+# CentOS / AlmaLinux / Rocky example (section main is default)
+# common_repositories_manager:
+#   - name: gpgcheck
+#     value: 1
+#     section: main
+#   - name: installonly_limit
+#     value: 3
+#   - name: clean_requirements_on_remove
+#     value: True
+#   - name: skip_if_unavailable
+#     value: False
+common_repositories_manager: []
+
+# common_repositories_add:
+#   - name: epel
+#     filename: epel.repo
+#     url: https://....
+#     gpgkey: url or file://path
+#       or
+#     mirrorlist: https://...
+#     enabled: yes
+#     gpgcheck: yes
+common_repositories_add: []
+
+# common_repositories_enable:
+#   - ha
+#   - plus
+#   - powertools
+common_repositories_enable: []
+
+# common_repositories_disable:
+#   - ha-source
+#   - plus-source
+#   - powertools-source
+common_repositories_disable: []
+
+# 05 # Packages
+##############################################################################
+
+# common_packages:
+#   - "strace"
+#   - "tcpdump"
+#   - "nano"
+common_packages: []
+
+# common_packages_additional:
+#   - "zsh"
+common_packages_additional: []
+
+# 06 # Locales
+##############################################################################
+
+# common_locale: "en_US.UTF-8"
+common_locale: ~
+
+# 07 # Users
+##############################################################################
+
+# common_users:
+#   - name: "deploy"
+#     group: "deploy"
+#     groups: ["docker"]
+#     shell: "/bin/zsh"
+#     create_home: true
+#     system: false
+#     append: true
+#     state: present
+common_users: []
+
+# 08 # Sudo
+##############################################################################
+
+# common_sudo:
+#   - group: deploy
+#     defaults:
+#       - "!requiretty"
+#       - "env_keep += "TZ""
+#     permissions:
+#       - host: "ALL"
+#         runas: "root"
+#         nopasswd: true
+#         cmd: "ALL"
+common_sudo: []
+
+# 09 # SSH
+##############################################################################
+
+# common_ssh_authorized_keys:
+#   - user: deploy
+#     key: "key_string or vault"
+#     state: "present"
+common_ssh_authorized_keys: []
+
+# common_ssh_keys:
+#   - user: deploy
+#     key_name: "id_rsa"
+#     key_public: "string with public key or vault"
+#     key_private: "string with private key or vault"
+common_ssh_keys: []
+
+# 10 # Dirs
+##############################################################################
+
+# common_dirs:
+#   - path: "/var/shared/backups"
+#     state: "directory"
+#     owner: "root"
+#     group: "root"
+#     mode: "0750"
+#     force: "false"
+#     follow: "true"
+common_dirs: []
+
+# 11 # Environments
+##############################################################################
+
+# common_environments:
+#   - user: ~     # Global
+#     variables:
+#       YII_DEBUG: "no"
+#   - user: "deploy"
+#     variables:
+#       PATH: "${PATH}:/usr/local/bin:~/.bin/:~/bin/"
+common_environments: []
+
+# 12 # Limits
+##############################################################################
+
+# common_limits:
+#   - domain: "root"
+#     limit_type: "hard"
+#     limit_item: "core"
+#     value: "100000"
+#     use_min: "false"
+#     use_max: "true"
+#     comment: ""
+common_limits: []
+
+# 13 # Sysctl
+##############################################################################
+
+# common_sysctl_file: "ansible" -> /etc/sysctl.d/ansible.conf
+common_sysctl_file: "ansible"
+
+# common_sysctl_keys:
+#  - name: "net.core.somaxconn"
+#    value: "50000"
+common_sysctl_keys: []
+
+# 14 # Sysfs
+##############################################################################
+
+# Example
+# attribute = value
+# mode attribute = 0600 # (any valid argument for chmod)
+# owner attribute = root:wheel # (any valid argument for chown)
+
+# common_sysfs:
+#   - attribute: "power/state"
+#     mode: 0660
+#     type: "mode"
+#   - attribute: "power/state"
+#     owner: "root:power"
+#     type: "owner"
+#   - attribute: "devices/system/cpu/cpu0/cpufreq/scaling_governor"
+#     value: "userspace"
+#     type: "attribute"
+#   - attribute: "sys/kernel/mm/transparent_hugepage/enabled"
+#     value: "madvise"
+#     type: "attribute"
+common_sysfs: []
+
+# 15 # Firewall
+##############################################################################
+
+# default [from vars]: firewalld [CentOS / Alma Linux / Rocky Linux]
+# default [from vars]: ufw [Debian / Ubuntu]
+# allowed: firewalld / iptables / ufw
+common_firewall_backend: ~
+
+# common_firewall:
+#   filter:
+#     - zone: "public"
+#       interfaces:
+#         - eth0
+#       services:
+#         - name: "ssh"
+#           ports:
+#             - tcp/22
+#           sources:
+#             - "1.0.0.0/24"
+#         - name: "web"
+#           ports:
+#             - tcp/80
+#             - tcp/443
+#           sources:
+#             - "any"
+#     - zone: "dmz"
+#       interfaces:
+#         - eth1
+#       services:
+#         - name: "ssh"
+#           ports:
+#             - tcp/22
+#           sources:
+#             - "any"
+#         - name: "mysql"
+#           ports:
+#             - tcp/3306
+#           sources:
+#             - "10.0.0.11"
+#             - "10.0.0.12"
+#         - name: "web"
+#           ports:
+#             - tcp/80
+#             - tcp/443
+#           sources:
+#             - any
+common_firewall: []
+
+# 26 # ZSH
+##############################################################################
+
+# common_zsh:
+#   - user: "deploy"
+#
+common_zsh: []
+
+# common_zsh_omz_version: "commit:SHA"
+common_zsh_omz_version: "master"
+
+# common_zsh_p10k_version: "commit:SHA or tag"
+common_zsh_p10k_version: "master"

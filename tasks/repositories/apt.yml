@@ -1,0 +1,107 @@
+# code: language=ansible
+---
+
+- name: "Common | Repositories | Apt | Manager"
+  ansible.builtin.template:
+    src: "repositories/apt.conf.j2"
+    dest: "/etc/apt/apt.conf.d/99custom"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: false
+  when:
+    - common_repositories_manager | is_dicts_list
+  become: true
+  tags:
+    - common
+    - common-repositories
+    - common-repositories-manager
+
+- name: "Common | Repositories | Apt | GPG Keys"
+  ansible.builtin.apt_key:
+    url: "{{ item.key }}"
+    state: present
+  with_items: "{{ common_repositories_add }}"
+  when:
+    - item.key is defined
+    - common_repositories_add | is_dicts_list
+  become: true
+  tags:
+    - common
+    - common-repositories
+    - common-repositories-gpg-keys
+
+- name: "Common | Repositories | Apt | Add repository"
+  ansible.builtin.template:
+    src: "repositories/apt.list.j2"
+    dest: "/etc/apt/sources.list.d/{{ item.name }}.list"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: false
+  with_items: "{{ common_repositories_add }}"
+  when:
+    - common_repositories_add | is_dicts_list
+  notify: Update apt cache
+  become: true
+  tags:
+    - common
+    - common-repositories
+    - common-repositories-add
+
+- name: "Common | Repositories | Apt | Get Repositories List"
+  scan_repositories:
+  when:
+    - common_repositories_enable | is_ne_list or
+      common_repositories_disable | is_ne_list
+  become: true
+  tags:
+    - common
+    - common-repositories
+    - common-repositories-enable
+    - common-repositories-disable
+
+- name: "Common | Repositories | Apt | Enable repository"
+  ansible.builtin.replace:
+    dest: "/etc/apt/sources.list.d/{{ item.file }}"
+    regexp: '^\s*#\s*(deb(-src)?(.*)$)'
+    replace: '\1'
+  with_items: "{{ ansible_facts.repositories }}"
+  when:
+    - common_repositories_enable | is_ne_list
+    - item.name is defined
+    - item.name in common_repositories_enable
+    - not item.state
+  notify: Update apt cache
+  become: true
+  tags:
+    - common
+    - common-repositories
+    - common-repositories-enable
+
+- name: "Common | Repositories | Apt | Disable repository"
+  ansible.builtin.replace:
+    dest: "/etc/apt/sources.list.d/{{ item.file }}"
+    regexp: '^(\s*deb(-src)?(.*)$)'
+    replace: '# \1'
+  with_items: "{{ ansible_facts.repositories }}"
+  when:
+    - common_repositories_disable | is_ne_list
+    - item.name is defined
+    - item.name in common_repositories_disable
+    - item.state
+  notify: Update apt cache
+  become: true
+  tags:
+    - common
+    - common-repositories
+    - common-repositories-disable
+
+- name: "Common | Repositories | Apt | Flush handlers"
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - common
+    - common-repositories
+    - common-repositories-add
+    - common-repositories-enable
+    - common-repositories-disable

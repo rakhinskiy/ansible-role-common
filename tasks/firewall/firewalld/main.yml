@@ -1,0 +1,8 @@
+# code: language=ansible
+---
+
+- name: "Common | Firewall | Firewalld | Not implemented"
+  ansible.builtin.fail:
+    msg: "Firewalld tasks not implemented"
+  tags:
+    - common-firewall

@@ -1,0 +1,15 @@
+# code: language=ansible
+---
+
+- name: "Common | Hosts | Create /etc/hosts file"
+  ansible.builtin.template:
+    src: "hosts/hosts.j2"
+    dest: "/etc/hosts"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: false
+  become: true
+  tags:
+    - common
+    - common-hosts

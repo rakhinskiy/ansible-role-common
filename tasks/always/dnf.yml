@@ -1,0 +1,11 @@
+# code: language=ansible
+---
+
+- name: "Common | Always | Install dependencies | Dnf"
+  ansible.builtin.dnf:
+    name: "{{ common_always_packages }}"
+    state: present
+    update_cache: true
+  become: true
+  tags:
+    - always

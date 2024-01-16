@@ -1,1 +1,41 @@
+# code: language=ansible
 ---
+
+- name: "Reload sysctl"
+  ansible.builtin.command:
+    cmd: "sysctl --system"
+  become: true
+  changed_when: false
+
+- name: "SELinux security contexts restore"
+  ansible.builtin.command:
+    cmd: "restorecon -R -v ~{{ item.user }}/.ssh"
+  with_items: "{{ common_ssh_authorized_keys }}"
+  when:
+    - ansible_facts.selinux.status == "enabled"
+    - common_ssh_authorized_keys | is_dicts_list
+  become: true
+  changed_when: false
+
+- name: "Restart IPSet"
+  ansible.builtin.service:
+    name: "{{ common_firewall_ipset_service }}"
+    state: restarted
+  become: true
+
+- name: "Restart IPTables"
+  ansible.builtin.service:
+    name: "{{ common_firewall_iptables_service }}"
+    state: restarted
+  become: true
+
+- name: "Update dnf cache"
+  ansible.builtin.dnf:
+    update_cache: true
+  become: true
+
+- name: "Update apt cache"
+  ansible.builtin.apt:
+    update_cache: true
+    force_apt_get: true
+  become: true

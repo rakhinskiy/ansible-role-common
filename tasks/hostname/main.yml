@@ -1,0 +1,10 @@
+# code: language=ansible
+---
+
+- name: "Common | Hostname | Set hostname"
+  ansible.builtin.hostname:
+    name: "{{ common_hostname }}"
+  become: true
+  tags:
+    - common
+    - common-hostname

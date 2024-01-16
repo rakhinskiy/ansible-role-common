@@ -1,0 +1,10 @@
+# code: language=ansible
+---
+
+- name: "Common | Timezone | Configure"
+  community.general.timezone:
+    name: "{{ common_timezone }}"
+  become: true
+  tags:
+    - common
+    - common-timezone

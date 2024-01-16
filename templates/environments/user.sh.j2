@@ -1,0 +1,4 @@
+#jinja2: lstrip_blocks: True, trim_blocks: True
+{%- for var, value in item.variables.items() %}
+{{ var }}="{{ value }}"
+{% endfor -%}

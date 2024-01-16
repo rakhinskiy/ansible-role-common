@@ -1,0 +1,13 @@
+# code: language=ansible
+---
+
+- name: "Common | Sudo | Install | Dnf"
+  ansible.builtin.dnf:
+    name: "sudo"
+    state: present
+    update_cache: false
+  become: true
+  tags:
+    - common
+    - common-sudo
+    - common-sudo-install

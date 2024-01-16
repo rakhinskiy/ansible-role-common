@@ -1,0 +1,28 @@
+# code: language=ansible
+---
+
+# 00 # Always
+
+common_always_packages:
+  - "dnf-utils"
+  - "python3-libselinux"
+
+# 08 # Locale
+
+common_locale_packages:
+  - "glibc-common"
+  - "glibc-all-langpacks"
+
+common_locale_config: "/etc/locale.conf"
+
+# 15 # Firewall
+
+common_firewall_default_backend: "firewalld"
+
+common_firewall_iptables_config: "/etc/sysconfig/iptables"
+common_firewall_iptables_service: "iptables"
+common_firewall_iptables_disable_services:
+  - "firewalld"
+
+common_firewall_ipset_config: "/etc/sysconfig/ipset"
+common_firewall_ipset_service: "ipset"

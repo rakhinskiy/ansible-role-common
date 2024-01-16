@@ -1,0 +1,4 @@
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+{% for item in common_repositories_manager %}
+{{ item.option }} "{{ item.value }}";
+{% endfor %}
