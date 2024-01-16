@@ -1,0 +1,8 @@
+# code: language=ansible
+---
+
+- name: "Common | Firewall | UFW | Not implemented"
+  ansible.builtin.fail:
+    msg: "UFW tasks not implemented"
+  tags:
+    - common-firewall

@@ -1,0 +1,109 @@
+#jinja2: lstrip_blocks: True, trim_blocks: True
+###############################################
+
+*raw
+:PREROUTING ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+
+{% for rule in common_firewall.get('raw', {}).get('raw', []) %}
+{{ rule }}
+{% endfor %}
+
+COMMIT
+
+###############################################
+
+*mangle
+:PREROUTING ACCEPT [0:0]
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+
+{% for rule in common_firewall.get('raw', {}).get('mangle', []) %}
+{{ rule }}
+{% endfor %}
+{% if common_firewall.get('tcp_mss', false) %}
+-A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+{% endif %}
+
+COMMIT
+
+###############################################
+
+*nat
+:PREROUTING ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+
+{% for rule in common_firewall.get('raw', {}).get('nat', []) %}
+{{ rule }}
+{% endfor %}
+{% for interface in common_firewall.get('masquerade', {}).get('interfaces', []) %}
+-A POSTROUTING -o {{ interface }} -j MASQUERADE
+{% endfor %}
+
+COMMIT
+
+###############################################
+
+*filter
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT ACCEPT [0:0]
+{% for item in common_firewall.get('filter', []) %}
+:Z-{{ item.zone | replace(' ', '-') | upper }} - [0.0]
+{% endfor %}
+
+-A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -p icmp -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+{% for rule in common_firewall.get('raw', {}).get('filter', []) %}
+{{ rule }}
+{% endfor %}
+
+{% for item in common_firewall.get('filter', []) %}
+#######################
+# Zone: {{ item.zone }}
+
+    {% if "any" in item.get('ip_addresses', []) %}
+-A INPUT -j Z-{{ item.zone | replace(' ', '-') | upper }}
+    {% else %}
+        {% for ip in item.get('ip_addresses', []) %}
+-A INPUT -d {{ ip }} -j Z-{{ item.zone | replace(' ', '-') | upper }}
+        {% endfor %}
+    {% endif %}
+    {% if "any" in item.get('interfaces', []) %}
+-A INPUT -j Z-{{ item.zone | replace(' ', '-') | upper }}
+    {% else %}
+        {% for interface in item.get('interfaces', []) %}
+-A INPUT -i {{ interface }} -j Z-{{ item.zone | replace(' ', '-') | upper }}
+        {% endfor %}
+    {% endif %}
+    {% for service in item.get('services', []) %}
+
+# Service: {{ service.name }}
+        {% if "any" in service.ports and "any" not in service.sources %}
+-A Z-{{ item.zone | replace(' ', '-') | upper }} -m set --match-set Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }} src -j ACCEPT
+        {% else %}
+            {% for port in service.get('ports', []) %}
+                {% if "/" in port %}
+                    {% set proto = port.split("/")[0] %}
+                    {% set port_number = port.split("/")[1] %}
+                {% else %}
+                    {% set proto = 'tcp' %}
+                    {% set port_number = port %}
+                {% endif %}
+                {% if "any" in service.sources %}
+-A Z-{{ item.zone | replace(' ', '-') | upper }} -p {{ proto }}{% if port_number %} --dport {{ port_number }}{% endif %} -j {{ service.get('action', "accept") | upper }}
+                {% else %}
+-A Z-{{ item.zone | replace(' ', '-') | upper }} -p {{ proto }}{% if port_number %} --dport {{ port_number }}{% endif %} -m set --match-set Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }} src -j {{ service.get('action', "accept") | upper }}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+
+-A Z-{{ item.zone | replace(' ', '-') | upper }} -j {{ item.get('default', "return") | upper }}
+
+{% endfor %}
+COMMIT

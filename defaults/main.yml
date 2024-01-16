@@ -12,8 +12,6 @@ dist_version: "{{ ansible_distribution_major_version }}"
 dist_codename: "{{ ansible_lsb.codename | default() | lower }}"
 dist_pkg_mgr: "{{ ansible_pkg_mgr | lower }}"
 
-common_always_skip: false
-
 # 01 # Hostname
 ##############################################################################
 
@@ -219,6 +217,54 @@ common_sysctl_keys: []
 #     value: "madvise"
 #     type: "attribute"
 common_sysfs: []
+
+# 15 # Firewall
+##############################################################################
+
+# default [from vars]: firewalld [CentOS / Alma Linux / Rocky Linux]
+# default [from vars]: ufw [Debian / Ubuntu]
+# allowed: firewalld / iptables / ufw
+common_firewall_backend: ~
+
+# common_firewall:
+#   filter:
+#     - zone: "public"
+#       interfaces:
+#         - eth0
+#       services:
+#         - name: "ssh"
+#           ports:
+#             - tcp/22
+#           sources:
+#             - "1.0.0.0/24"
+#         - name: "web"
+#           ports:
+#             - tcp/80
+#             - tcp/443
+#           sources:
+#             - "any"
+#     - zone: "dmz"
+#       interfaces:
+#         - eth1
+#       services:
+#         - name: "ssh"
+#           ports:
+#             - tcp/22
+#           sources:
+#             - "any"
+#         - name: "mysql"
+#           ports:
+#             - tcp/3306
+#           sources:
+#             - "10.0.0.11"
+#             - "10.0.0.12"
+#         - name: "web"
+#           ports:
+#             - tcp/80
+#             - tcp/443
+#           sources:
+#             - any
+common_firewall: []
 
 # 26 # ZSH
 ##############################################################################

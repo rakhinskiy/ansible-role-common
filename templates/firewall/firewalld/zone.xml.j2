@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<zone>
+  <short>{{ zone.name }}</short>
+  <description>{{ zone.description }}</description>
+{% for service in common_firewall_services %}
+  <service name="ssh"/>
+{% endfor %}
+  <forward/>
+</zone>

@@ -1,0 +1,89 @@
+# code: language=ansible
+---
+
+- name: "Common | Firewall | IPTables | Install"
+  ansible.builtin.include_tasks: "firewall/iptables/install/{{ dist_pkg_mgr }}.yml"
+  tags:
+    - common
+    - common-firewall
+    - common-firewall-install
+
+- name: "Common | Firewall | IPTables | IPSet Configure"
+  ansible.builtin.template:
+    src: "firewall/iptables/ipset.j2"
+    dest: "{{ common_firewall_ipset_config }}"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+    backup: false
+  notify:
+    - Restart IPSet
+  become: true
+  tags:
+    - common
+    - common-firewall
+    - common-firewall-configure
+
+- name: "Common | Firewall | IPTables | Enable ipset service"
+  ansible.builtin.service:
+    name: "{{ common_firewall_ipset_service }}"
+    enabled: true
+    state: started
+  become: true
+  tags:
+    - common
+    - common-firewall
+    - common-firewall-service
+
+- name: "Common | Firewall | IPTables | IPSet flush handlers"
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - common
+    - common-firewall
+    - common-firewall-service
+
+- name: "Common | Firewall | IPTables | Configure"
+  ansible.builtin.template:
+    src: "firewall/iptables/iptables.j2"
+    dest: "{{ common_firewall_iptables_config }}"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+    backup: false
+  notify:
+    - Restart IPTables
+  become: true
+  tags:
+    - common
+    - common-firewall
+    - common-firewall-configure
+
+- name: "Common | Firewall | IPTables | Disable firewalld / ufw services"
+  ansible.builtin.service:
+    name: "{{ item }}"
+    enabled: false
+    state: stopped
+  with_items: "{{ common_firewall_iptables_disable_services }}"
+  become: true
+  tags:
+    - common
+    - common-firewall
+    - common-firewall-service
+
+- name: "Common | Firewall | IPTables | Enable iptables service"
+  ansible.builtin.service:
+    name: "{{ common_firewall_iptables_service }}"
+    enabled: true
+    state: started
+  become: true
+  tags:
+    - common
+    - common-firewall
+    - common-firewall-service
+
+- name: "Common | Firewall | IPTables | IPTables flush handlers"
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - common
+    - common-firewall
+    - common-firewall-service

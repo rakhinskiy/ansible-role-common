@@ -1,10 +1,13 @@
 Common Role
 ------------
 
-Server bootstrap role, add users / ssh keys, install tools / install chrony/nscd/...
+Server bootstrap role, see tasks in readme
 
 Requirements
 ------------
+
+ - ansible >= 2.16
+ - python >= 3.6
 
 Tasks
 --------------
@@ -26,16 +29,23 @@ Tasks
 |   12   |    limits     |           Configure limits.conf           |
 |   13   |    sysctl     |           Configure sysctl.conf           |
 |   14   |     sysfs     |     Install and configure sysfs utils     |
+|   15   |   firewall    |            Configure iptables             |
+|   26   |      zsh      |               Configure ZSH               |
 
 TODO
 --------------
 
-- Replace sysfsutils with tuned
+- Replace sysfs utils with tuned
+- Add to iptables config forward / output rules support (with zones)
+- Add to iptables src nat / dst nat zone rules
+- Add iptables restart script with save docker / k8s rules
+- Fix ipset service restart in Debian / Ubuntu (ipset is symlink to netfilter-persistent)
+- Add firewalld and ufw support
+- Add molecule tests (docker with systemd images)
 
 |     Task      | Description |
 |:-------------:|:-----------:|
 | --security--  |     --      |
-|   firewall    |             |
 |    selinux    |             |
 | --software--  |     --      |
 |     aide      |             |
@@ -47,10 +57,12 @@ TODO
 |   rkhunter    |             |
 | smartmontools |             |
 |     sshd      |             |
-|      zsh      |             |
+
 
 Role Variables
 --------------
+
+By default, role only run always task, other tasks only if exist config in inventory
 
 ```yaml
 # default: none
@@ -238,6 +250,97 @@ common_sysfs:
   - attribute: "sys/kernel/mm/transparent_hugepage/enabled"
     value: "madvise"
     type: "attribute"
+
+# default: 
+#   Alma Linux / Rocky Linux -> firewalld
+#   Debian / Ubuntu -> ufw
+#   Only iptables currently supported
+common_firewall_backend: "iptables"
+
+# default: []
+# default input / forward policy is DROP
+# default zone chains policy is RETURN
+common_firewall:
+  tcp_mss: true
+  masquerade:
+    interfaces:
+      - "eth0"
+  filter:
+    # eth0:vip VRRP
+    - zone: "public"
+      ip_addresses:
+        - "10.0.10.10"
+      default: "drop"  # Chain policy
+      services:
+        - name: "HTTP"
+          ports:
+            - "tcp/80"
+            - "tcp/443"
+          sources:
+            - "any"
+        - name: "Kubernetes"
+          ports:
+            - "tcp/6443"
+          sources:
+            - "any"
+          action: "reject" # default action is accept
+    # eth0 internal network
+    - zone: "dmz"
+      interfaces:
+        - "eth0"
+      default: "return"
+      services:
+        - name: "Whitelist"
+          ports:
+            - "any"
+          sources:
+            - "92.62.112.162"
+            - "46.148.186.31"
+            - "45.136.49.214"
+            - "91.239.26.11"
+        - name: "SSH"
+          ports:
+            - "tcp/22"
+          sources:
+            - "192.168.99.0/24"
+            - "10.0.0.0/16"
+        - name: "HTTP"
+          ports:
+            - "tcp/80"
+            - "tcp/443"
+          sources:
+            - "any"
+        - name: "IPSec"
+          # ports rules:
+          # udp/53 -> protocol: udp  / port: 53
+          # tcp/80 -> protocol: tcp  / port: 80
+          # 80     -> protocol: tcp  / port: 80
+          # gre/   -> protocol: gre  / port: not used | enable GRE on chain
+          # icmp/  -> protocol: icmp / port: not used | enable pings on chain
+          ports:
+            - "esp/"
+            - "gre/"
+            - "udp/500"
+            - "udp/4500"
+          sources:
+            - "any"
+  # Direct rules example
+  direct:
+    mangle: # *mangle table | first rules
+      - "-A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu"
+    raw: # *raw table | first rules
+      - "-A PREROUTING -s 10.0.0.0/8 -d 10.0.0.0/8 -j NOTRACK"
+    filter: # *filter table | first rules
+      - "-A INPUT -i eth0 -p esp -j ACCEPT"
+      - "-A INPUT -i eth0 -p gre -j ACCEPT"
+    nat: # *nat table | first rules
+      - "-A POSTROUTING -o eht0 -j MASQUERADE"
+
+# default: []
+common_zsh:
+  - user: "deploy"
+  - user: "root"
+
 ```
 
 Dependencies
