@@ -37,3 +37,10 @@ common_chrony_service: "chrony"
 
 common_chrony_config: "/etc/chrony/chrony.keys"
 common_chrony_keyfile: "/etc/chrony/chrony.keys"
+
+# 20 # Cron
+
+common_cron_packages:
+  - "cron"
+
+common_cron_service: "cron"

@@ -31,6 +31,7 @@ Tasks
 |   14   |     sysfs     |     Install and configure sysfs utils     |
 |   15   |   firewall    |            Configure iptables             |
 |   19   |    chrony     |       Install and configure chrony        |
+|   20   |     cron      |       Install cron[d] and add tasks       |
 |   21   |   logwatch    |      Install and configure logwatch       |
 |   26   |      zsh      |               Configure ZSH               |
 
@@ -52,7 +53,6 @@ TODO
 |        | --software--  |     --      |
 |   17   |     aide      |             |
 |   18   |    auditd     |             |
-|   20   |     cron      |             |
 |   22   |     nscd      |             |
 |   23   |   rkhunter    |             |
 |   24   | smartmontools |             |
@@ -401,6 +401,27 @@ common_chrony_rtc_on_utc: true
 common_chrony_rtc_sync: true
 common_chrony_servers: ~
 common_chrony_stratum_weight: "0.001"
+
+# 20 # Cron
+
+# default: []
+common_cron_environments:
+  - user: "deploy"
+    vars:
+      - name: "MAILTO"
+        value: "{{ admin_email }}"
+
+# default: []
+common_cron_tasks:
+  - name: "My super job"          # required
+    job: "/opt/scripts/notify.sh" # required
+    minute: "0"                   # default: 0
+    hour: "1"                     # default: 0
+    day: "*"                      # default: *
+    month: "*"                    # default: *
+    weekday: "*"                  # default: *
+    user: "root"                  # default: root
+    disabled: "no"                # default: no
 
 # 21 # Logwatch
 
