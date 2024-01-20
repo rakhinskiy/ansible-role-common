@@ -43,20 +43,20 @@ TODO
 - Add firewalld and ufw support
 - Add molecule tests (docker with systemd images)
 
-|     Task      | Description |
-|:-------------:|:-----------:|
-| --security--  |     --      |
-|    selinux    |             |
-| --software--  |     --      |
-|     aide      |             |
-|    auditd     |             |
-|    chrony     |             |
-|     cron      |             |
-|   logwatch    |             |
-|     nscd      |             |
-|   rkhunter    |             |
-| smartmontools |             |
-|     sshd      |             |
+| Number |     Task      | Description |
+|:------:|:-------------:|:-----------:|
+|        | --security--  |     --      |
+|   16   |    selinux    |             |
+|        | --software--  |     --      |
+|   17   |     aide      |             |
+|   18   |    auditd     |             |
+|   19   |    chrony     |             |
+|   20   |     cron      |             |
+|   21   |   logwatch    |             |
+|   22   |     nscd      |             |
+|   23   |   rkhunter    |             |
+|   24   | smartmontools |             |
+|   25   |     sshd      |             |
 
 
 Role Variables
