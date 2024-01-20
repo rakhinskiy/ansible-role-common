@@ -170,6 +170,18 @@
     - common-firewall-install
     - common-firewall-configure
 
+# 19 # Chrony
+
+- name: "Common | Chrony"
+  ansible.builtin.include_tasks: "chrony/main.yml"
+  when:
+    - common_chrony_enable
+  tags:
+    - common
+    - common-chrony
+    - common-chrony-install
+    - common-chrony-configure
+
 # 21 # Logwatch
 
 - name: "Common | Logwatch"

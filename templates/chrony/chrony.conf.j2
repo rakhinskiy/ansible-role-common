@@ -1,0 +1,77 @@
+{% if common_chrony_servers | is_ne_list -%}
+{% for server in common_chrony_servers -%}
+server {{ server }}
+{% endfor -%}
+{% endif -%}
+{% if common_chrony_pools | is_ne_list -%}
+{% for pool in common_chrony_pools -%}
+pool {{ pool }}
+{% endfor -%}
+{% endif -%}
+{% if common_chrony_stratum_weight is defined and common_chrony_stratum_weight is not none %}
+stratumweight {{ common_chrony_stratum_weight }}
+{% endif -%}
+driftfile {{ common_chrony_drift_file }}
+makestep {{ common_chrony_make_step }}
+{% if common_chrony_rtc_sync -%}
+rtcsync
+{% endif -%}
+{% if common_chrony_hw_timestamp | is_ne_string -%}
+hwtimestamp {{ common_chrony_hw_timestamp }}
+{% endif -%}
+{% if common_chrony_min_sources is defined and common_chrony_min_sources is not none -%}
+minsources {{ common_chrony_min_sources }}
+{% endif -%}
+{% if common_chrony_allows | is_ne_list -%}
+{% for allow in common_chrony_allows -%}
+allow {{ allow }}
+{% endfor -%}
+{% endif -%}
+{% if common_chrony_keyfile | is_ne_string -%}
+keyfile {{ common_chrony_keyfile }}
+{% endif -%}
+{% if common_chrony_command_key is defined and common_chrony_command_key is not none -%}
+commandkey {{ common_chrony_command_key }}
+{% endif -%}
+{% if common_chrony_generate_command_key -%}
+generatecommandkey
+{% endif -%}
+{% if common_chrony_no_client_log -%}
+noclientlog
+{% endif -%}
+{% if common_chrony_log_change is defined and common_chrony_log_change is not none -%}
+logchange {{ common_chrony_log_change }}
+{% endif -%}
+{% if common_chrony_log_dir is defined and common_chrony_log_dir is not none -%}
+logdir {{ common_chrony_log_dir }}
+{% endif -%}
+{% if common_chrony_max_update_skew is defined and common_chrony_max_update_skew is not none -%}
+maxupdateskew {{ common_chrony_max_update_skew }}
+{% endif -%}
+{% if common_chrony_dump_on_exit -%}
+dumponexit
+{% endif -%}
+{% if common_chrony_dump_dir | is_ne_string -%}
+dumpdir {{ common_chrony_dump_dir }}
+{% endif -%}
+{% if common_chrony_log | is_ne_list -%}
+log {{ common_chrony_log | join(' ') }}
+{% endif -%}
+{% if common_chrony_local_stratum is defined and common_chrony_local_stratum is not none -%}
+local stratum {{ common_chrony_local_stratum }}
+{% endif -%}
+{% if common_chrony_mail_on_change | is_ne_string -%}
+mailonchange {{ common_chrony_mail_on_change }}
+{% endif -%}
+{% if common_chrony_rtc_file | is_ne_string -%}
+rtcfile {{ common_chrony_rtc_file }}
+{% endif -%}
+{% if common_chrony_rtc_on_utc -%}
+rtconutc
+{% endif -%}
+{% if common_chrony_leap_sec_tz | is_ne_string -%}
+leapsectz {{ common_chrony_leap_sec_tz }}
+{% endif -%}
+{% if common_chrony_hw_clock_file | is_ne_string -%}
+hwclockfile {{ common_chrony_hw_clock_file }}
+{% endif -%}

@@ -1,0 +1,13 @@
+# code: language=ansible
+---
+
+- name: "Common | Chrony | Install | Dnf"
+  ansible.builtin.dnf:
+    name: "{{ common_chrony_packages }}"
+    state: present
+    update_cache: false
+  become: true
+  tags:
+    - common
+    - common-chrony
+    - common-chrony-install
