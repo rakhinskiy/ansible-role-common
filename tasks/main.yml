@@ -160,16 +160,6 @@
 
 # 15 # Firewall
 
-- name: "Common | Firewall | Debug"
-  ansible.builtin.debug:
-    var: common_firewall
-    verbosity: 1
-  tags:
-    - common
-    - common-firewall
-    - common-firewall-install
-    - common-firewall-configure
-
 - name: "Common | Firewall"
   ansible.builtin.include_tasks: "firewall/main.yml"
   when:
@@ -179,6 +169,18 @@
     - common-firewall
     - common-firewall-install
     - common-firewall-configure
+
+# 21 # Logwatch
+
+- name: "Common | Logwatch"
+  ansible.builtin.include_tasks: "logwatch/main.yml"
+  when:
+    - common_logwatch_enable
+  tags:
+    - common
+    - common-logwatch
+    - common-logwatch-install
+    - common-logwatch-configure
 
 # 26 # ZSH
 

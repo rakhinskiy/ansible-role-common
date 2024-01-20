@@ -1,0 +1,26 @@
+LogDir = {{ common_logwatch_log_dir }}
+TmpDir = {{ common_logwatch_tmp_dir }}
+Output = {{ common_logwatch_output }}
+Format = {{ common_logwatch_format }}
+Encode = {{ common_logwatch_encode }}
+MailTo = {{ common_logwatch_mail_to }}
+MailFrom = {{ common_logwatch_mail_from }}
+{% if common_logwatch_hostname is defined and common_logwatch_hostname != "" -%}
+hostname = {{ common_logwatch_hostname }}
+{% endif %}
+{% if common_logwatch_output == 'file' -%}
+Filename = {{ common_logwatch_filename }}
+{% endif %}
+Archives = {{ common_logwatch_archives }}
+Range = {{ common_logwatch_range }}
+Detail = {{ common_logwatch_detail }}
+{% for service in common_logwatch_services -%}
+Service = {{ service }}
+{% endfor %}
+{% if common_logwatch_logfile is defined and common_logwatch_logfile is not none and common_logwatch_logfile != "" -%}
+LogFile = {{ common_logwatch_logfile }}
+{% endif %}
+mailer = "{{ common_logwatch_mailer }}"
+{% if common_logwatch_hostlimit is defined and common_logwatch_hostlimit is not none and common_logwatch_hostlimit !="" -%}
+HostLimit = {{ common_logwatch_hostlimit }}
+{% endif %}

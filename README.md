@@ -30,6 +30,7 @@ Tasks
 |   13   |    sysctl     |           Configure sysctl.conf           |
 |   14   |     sysfs     |     Install and configure sysfs utils     |
 |   15   |   firewall    |            Configure iptables             |
+|   21   |   logwatch    |      Install and configure logwatch       |
 |   26   |      zsh      |               Configure ZSH               |
 
 TODO
@@ -52,7 +53,6 @@ TODO
 |   18   |    auditd     |             |
 |   19   |    chrony     |             |
 |   20   |     cron      |             |
-|   21   |   logwatch    |             |
 |   22   |     nscd      |             |
 |   23   |   rkhunter    |             |
 |   24   | smartmontools |             |
@@ -333,6 +333,34 @@ common_firewall:
       - "-A INPUT -i eth0 -p gre -j ACCEPT"
     nat: # *nat table | first rules
       - "-A POSTROUTING -o eht0 -j MASQUERADE"
+
+# default: false
+common_logwatch_enable: true
+
+common_logwatch_config: "/etc/logwatch/conf/logwatch.conf"
+common_logwatch_packages:
+  - "logwatch"
+common_logwatch_log_dir: "/var/log"
+common_logwatch_tmp_dir: "/var/cache/logwatch"
+common_logwatch_output: "stdout"
+common_logwatch_format: "text"
+common_logwatch_encode: "none"
+common_logwatch_mail_to: "root"
+common_logwatch_mail_from: "logwatch"
+common_logwatch_hostname: ~
+common_logwatch_filename: ~
+common_logwatch_archives: "Yes"
+common_logwatch_range: "yesterday"
+common_logwatch_detail: "Low"
+common_logwatch_services:
+  - "All"
+  - "-zz-network"
+  - "-zz-sys"
+  - "-eximstats"
+  - "-puppet"
+common_logwatch_logfile: ~
+common_logwatch_mailer: "/usr/sbin/sendmail -t"
+common_logwatch_hostlimit: ~
 
 # default: []
 common_zsh:
