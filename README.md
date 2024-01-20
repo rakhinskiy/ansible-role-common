@@ -36,7 +36,7 @@ TODO
 --------------
 
 - Replace sysfs utils with tuned
-- Add to iptables config forward / output rules support (with zones)
+- Add to iptables forward / output zone rules
 - Add to iptables src nat / dst nat zone rules
 - Add iptables restart script with save docker / k8s rules
 - Fix ipset service restart in Debian / Ubuntu (ipset is symlink to netfilter-persistent)
