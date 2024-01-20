@@ -266,6 +266,37 @@ common_firewall_backend: ~
 #             - any
 common_firewall: []
 
+# 21 # Logwatch
+###############################################################################
+
+common_logwatch_enable: false
+
+common_logwatch_config: "/etc/logwatch/conf/logwatch.conf"
+common_logwatch_packages:
+  - "logwatch"
+
+common_logwatch_log_dir: "/var/log"
+common_logwatch_tmp_dir: "/var/cache/logwatch"
+common_logwatch_output: "stdout"
+common_logwatch_format: "text"
+common_logwatch_encode: "none"
+common_logwatch_mail_to: "root"
+common_logwatch_mail_from: "logwatch"
+common_logwatch_hostname: ~
+common_logwatch_filename: ~
+common_logwatch_archives: "Yes"
+common_logwatch_range: "yesterday"
+common_logwatch_detail: "Low"
+common_logwatch_services:
+  - "All"
+  - "-zz-network"
+  - "-zz-sys"
+  - "-eximstats"
+  - "-puppet"
+common_logwatch_logfile: ~
+common_logwatch_mailer: "/usr/sbin/sendmail -t"
+common_logwatch_hostlimit: ~
+
 # 26 # ZSH
 ##############################################################################
 

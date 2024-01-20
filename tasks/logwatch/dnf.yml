@@ -1,0 +1,13 @@
+# code: language=ansible
+---
+
+- name: "Common | Logwatch | Install | Dnf"
+  ansible.builtin.dnf:
+    name: "{{ common_logwatch_packages }}"
+    state: present
+    update_cache: false
+  become: true
+  tags:
+    - common
+    - common-logwatch
+    - common-logwatch-install

@@ -1,0 +1,38 @@
+# code: language=ansible
+---
+
+- name: "Common | Logwatch | Install"
+  ansible.builtin.include_tasks: "logwatch/{{ dist_pkg_mgr }}.yml"
+  tags:
+    - common
+    - common-logwatch
+    - common-logwatch-install
+
+- name: "Common | Logwatch | Create cache directory"
+  ansible.builtin.file:
+    path: "{{ common_logwatch_tmp_dir }}"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    force: "no"
+    follow: true
+  become: true
+  tags:
+    - common
+    - common-logwatch
+    - common-logwatch-install
+
+- name: "Common | Logwatch | Configure"
+  ansible.builtin.template:
+    src: "logwatch/logwatch.conf.j2"
+    dest: "/etc/logwatch/conf/logwatch.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: false
+  become: true
+  tags:
+    - common
+    - common-logwatch
+    - common-logwatch-configure
