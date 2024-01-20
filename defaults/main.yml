@@ -305,6 +305,32 @@ common_chrony_rtc_sync: true
 common_chrony_servers: ~
 common_chrony_stratum_weight: "0.001"
 
+# 20 # Cron
+###############################################################################
+
+# common_cron_environments:
+#   - user: "deploy"
+#     vars:
+#       - name: "MAILTO"
+#         value: "{{ admin_email }}"
+#   - user: "root"
+#     vars:
+#       - name: "MAILTO"
+#         value: "{{ admin_email }}"
+common_cron_environments: []
+
+# common_cron_tasks:
+#   - name: "My super job"
+#     job: "/opt/scripts/notify.sh"
+#     minute: "0"
+#     hour: "1"
+#     day: "*"
+#     month: "*"
+#     weekday: "*"
+#     user: "root"
+#     disabled: "no"
+common_cron_tasks: []
+
 # 21 # Logwatch
 ###############################################################################
 

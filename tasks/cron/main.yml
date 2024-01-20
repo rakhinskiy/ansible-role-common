@@ -1,0 +1,69 @@
+# code: language=ansible
+---
+
+- name: "Common | Cron | Install"
+  ansible.builtin.include_tasks: "cron/{{ dist_pkg_mgr }}.yml"
+  tags:
+    - common
+    - common-cron
+    - common-cron-install
+
+- name: "Common | Cron | Environments"
+  ansible.builtin.cron:
+    env: true
+    name: "{{ item.1.name }}"
+    value: "{{ item.1.value }}"
+    user: "{{ item.0.user }}"
+  when:
+    - common_cron_environments | is_ne_list
+    - item.0.user | default('') | is_ne_string
+  with_subelements:
+    - "{{ common_cron_environments | default([]) }}"
+    - vars
+  notify:
+    - Restart cron
+  become: true
+  tags:
+    - common
+    - common-cron
+    - common-cron-configure
+
+- name: "Common | Cron | Tasks"
+  ansible.builtin.cron:
+    name: "{{ item.name }}"
+    job: "{{ item.job }}"
+    minute: "{{ item.minute | default('0') }}"
+    hour: "{{ item.hour | default('0') }}"
+    day: "{{ item.day | default('*') }}"
+    month: "{{ item.month | default('*') }}"
+    weekday: "{{ item.weekday | default('*') }}"
+    user: "{{ item.user | default('root') }}"
+    disabled: "{{ item.disabled | default('no') }}"
+  with_items: "{{ common_cron_tasks }}"
+  when:
+    - common_cron_tasks | is_ne_list
+  notify:
+    - Restart cron
+  become: true
+  tags:
+    - common
+    - common-cron
+    - common-cron-configure
+
+- name: "Common | Cron | Enable cron service"
+  ansible.builtin.service:
+    name: "{{ common_cron_service }}"
+    state: "started"
+    enabled: true
+  become: true
+  tags:
+    - common
+    - common-cron
+    - common-cron-configure
+
+- name: "Common | Cron | Flush handlers"
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - common
+    - common-cron
+    - common-cron-configure

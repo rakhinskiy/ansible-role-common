@@ -182,6 +182,19 @@
     - common-chrony-install
     - common-chrony-configure
 
+# 20 # Cron
+
+- name: "Common | Cron"
+  ansible.builtin.include_tasks: "cron/main.yml"
+  when:
+    - common_cron_environments | is_dicts_list or
+      common_cron_tasks | is_dicts_list
+  tags:
+    - common
+    - common-cron
+    - common-cron-install
+    - common-cron-configure
+
 # 21 # Logwatch
 
 - name: "Common | Logwatch"

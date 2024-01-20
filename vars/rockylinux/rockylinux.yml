@@ -36,3 +36,12 @@ common_chrony_service: "chronyd"
 
 common_chrony_config: "/etc/chrony.conf"
 common_chrony_keyfile: "/etc/chrony.keys"
+
+# 20 # Cron
+
+common_cron_packages:
+  - "cronie"
+  - "cronie-anacron"
+  - "crontabs"
+
+common_cron_service: "crond"
