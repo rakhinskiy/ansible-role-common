@@ -27,3 +27,13 @@ common_firewall_iptables_disable_services:
 
 common_firewall_ipset_config: "/etc/iptables/ipsets"
 common_firewall_ipset_service: "netfilter-persistent"
+
+# 19 # Chrony
+
+common_chrony_user: "_chrony"
+common_chrony_group: "_chrony"
+
+common_chrony_service: "chrony"
+
+common_chrony_config: "/etc/chrony/chrony.keys"
+common_chrony_keyfile: "/etc/chrony/chrony.keys"

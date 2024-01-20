@@ -1,0 +1,83 @@
+# code: language=ansible
+---
+
+- name: "Common | Chrony | Install"
+  ansible.builtin.include_tasks: "chrony/{{ dist_pkg_mgr }}.yml"
+  tags:
+    - common
+    - common-chrony
+    - common-chrony-install
+
+- name: "Common | Chrony | Create dump directory"
+  ansible.builtin.file:
+    path: "{{ common_chrony_dump_dir }}"
+    state: "directory"
+    owner: "{{ common_chrony_user }}"
+    group: "{{ common_chrony_group }}"
+    mode: "0750"
+    force: "no"
+    follow: true
+  become: true
+  tags:
+    - common
+    - common-chrony
+    - common-chrony-install
+
+- name: "Common | Chrony | Configure"
+  ansible.builtin.template:
+    src: "chrony/chrony.conf.j2"
+    dest: "{{ common_chrony_config }}"
+    owner: "root"
+    group: "root"
+    mode: "0640"
+    backup: false
+  notify:
+    - Restart chrony
+  become: true
+  tags:
+    - common
+    - common-chrony
+    - common-chrony-configure
+
+- name: "Common | Chrony | Get services facts"
+  ansible.builtin.service_facts:
+  tags:
+    - common
+    - common-chrony
+    - common-chrony-configure
+
+- name: "Common | Chrony | Disable ntp/ntpd service"
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: "stopped"
+    enabled: false
+  when:
+    - item in ansible_facts.services.keys() | list
+    - ansible_facts.services[item].status == 'loaded'
+  with_items:
+    - "ntp.service"
+    - "ntpd.service"
+    - "systemd-timesyncd.service"
+  become: true
+  tags:
+    - common
+    - common-chrony
+    - common-chrony-configure
+
+- name: "Common | Chrony | Enable chrony service"
+  ansible.builtin.service:
+    name: "{{ common_chrony_service }}"
+    state: "started"
+    enabled: true
+  become: true
+  tags:
+    - common
+    - common-chrony
+    - common-chrony-configure
+
+- name: "Common | Chrony | Flush handlers"
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - common
+    - common-chrony
+    - common-chrony-configure

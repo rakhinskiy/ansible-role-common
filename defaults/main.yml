@@ -266,6 +266,45 @@ common_firewall_backend: ~
 #             - any
 common_firewall: []
 
+# 19 # Chrony
+###############################################################################
+
+common_chrony_enable: false
+common_chrony_packages:
+  - "chrony"
+
+common_chrony_allows:
+  - "10/8"
+  - "192.168/16"
+  - "172.16/12"
+common_chrony_command_key: ~
+common_chrony_dump_dir: "/var/lib/chrony"
+common_chrony_drift_file: "{{ common_chrony_dump_dir }}/chrony.drift"
+common_chrony_dump_on_exit: true
+common_chrony_generate_command_key: false
+common_chrony_hw_clock_file: ~
+common_chrony_hw_timestamp: ~
+common_chrony_leap_sec_tz: "right/UTC"
+common_chrony_local_stratum: "10"
+common_chrony_log:
+  - "tracking"
+  - "measurements"
+  - "statistics"
+common_chrony_log_change: "1"
+common_chrony_log_dir: "/var/log/chrony"
+common_chrony_mail_on_change: ~
+common_chrony_make_step: "1.0 3"
+common_chrony_max_update_skew: "100.0"
+common_chrony_min_sources: ~
+common_chrony_no_client_log: true
+common_chrony_pools:
+  - "pool.ntp.org iburst maxsources 5"
+common_chrony_rtc_file: ~
+common_chrony_rtc_on_utc: true
+common_chrony_rtc_sync: true
+common_chrony_servers: ~
+common_chrony_stratum_weight: "0.001"
+
 # 21 # Logwatch
 ###############################################################################
 

@@ -14,7 +14,8 @@ class FilterModule(object):
             'is_dicts_list': self.is_dicts_list,
             'is_ne_dict': self.is_not_empty_dict,
             'is_string': self.is_string,
-            'is_ne_string': self.is_not_empty_string
+            'is_ne_string': self.is_not_empty_string,
+            'is_systemd_loaded_service': self.is_systemd_loaded_service
         }
 
     @staticmethod
@@ -59,3 +60,11 @@ class FilterModule(object):
         return var and \
                var.__class__.__name__ in self.STRING_CLASSES and \
                len(var) > 0
+
+    @staticmethod
+    def is_systemd_loaded_service(services, var, *args, **kw):
+        for k, v in services:
+            if var == k or f"{var}.service" == k:
+                if v.get('status') and v.get('status') == 'loaded':
+                    return True
+        return False

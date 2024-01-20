@@ -30,6 +30,7 @@ Tasks
 |   13   |    sysctl     |           Configure sysctl.conf           |
 |   14   |     sysfs     |     Install and configure sysfs utils     |
 |   15   |   firewall    |            Configure iptables             |
+|   19   |    chrony     |       Install and configure chrony        |
 |   21   |   logwatch    |      Install and configure logwatch       |
 |   26   |      zsh      |               Configure ZSH               |
 
@@ -51,7 +52,6 @@ TODO
 |        | --software--  |     --      |
 |   17   |     aide      |             |
 |   18   |    auditd     |             |
-|   19   |    chrony     |             |
 |   20   |     cron      |             |
 |   22   |     nscd      |             |
 |   23   |   rkhunter    |             |
@@ -65,16 +65,25 @@ Role Variables
 By default, role only run always task, other tasks only if exist config in inventory
 
 ```yaml
+
+# 01 # Hostname
+
 # default: none
 common_hostname: "{{ inventory_hostname }}"
+
+# 02 # Hosts
 
 # default: []
 common_hosts:
   - ip: "192.168.0.1"
     name: "gw-1 gw-1.example.com"
 
+# 03 # Timezone
+
 # default: none
 common_timezone: "Etc/UTC"
+
+# 04 # Repositories
 
 # default: []
 common_repositories_manager:
@@ -138,6 +147,8 @@ common_repositories_disable:
   # CentOS / AlmaLinux / Rocky example:
   - "epel"
 
+# 05 # Packages
+
 # default: []
 common_packages: 
   - "strace"
@@ -148,8 +159,12 @@ common_packages:
 common_packages_additional:
   - "zsh"
 
+# 06 # Locale
+
 # default: none
 common_locale: "en_US.UTF-8"
+
+# 07 # Users
 
 # default: []
 common_users:
@@ -161,6 +176,8 @@ common_users:
     system: false         # default: false
     append: true          # default: false
     state: present        # default: present
+
+# 08 # Sudo
 
 # default: []
 common_sudo:
@@ -185,6 +202,8 @@ common_sudo:
         nopasswd: true
         cmd: "ALL"
 
+# 09 # SSh
+
 # default: []
 common_ssh_authorized_keys:
   - user: deploy
@@ -198,6 +217,8 @@ common_ssh_keys:
     key_public: "ssh-rsa AAAAB3..."
     key_private: "..."
 
+# 10 # Dirs
+
 # default: []
 common_dirs:
   - path: "/var/shared/backups"
@@ -208,6 +229,8 @@ common_dirs:
     force: "false"
     follow: "true"
 
+# 11 # Environments
+
 # default: []
 common_environments:
   - user: ~     # Global
@@ -216,6 +239,8 @@ common_environments:
   - user: "deploy"
     variables:
       PATH: "${PATH}:/usr/local/bin:~/.bin/:~/bin/"
+
+# 12 # Limits
 
 # default: []
 common_limits:
@@ -227,6 +252,8 @@ common_limits:
     use_max: "true"       # default: false | Use max between exist limits.conf and new values
     comment: ""
 
+# 13 # Sysctl
+
 # default: 
 # common_sysctl_file: "ansible"
 common_sysctl_file: "k8s"
@@ -235,6 +262,8 @@ common_sysctl_file: "k8s"
 common_sysctl_keys:
   - name: "net.core.somaxconn"
     value: "50000"
+
+# 14 # SysFS
 
 # default: []
 common_sysfs:
@@ -250,6 +279,8 @@ common_sysfs:
   - attribute: "sys/kernel/mm/transparent_hugepage/enabled"
     value: "madvise"
     type: "attribute"
+
+# 15 # Firewall
 
 # default: 
 #   Alma Linux / Rocky Linux -> firewalld
@@ -334,6 +365,45 @@ common_firewall:
     nat: # *nat table | first rules
       - "-A POSTROUTING -o eht0 -j MASQUERADE"
 
+# 19 # Chrony
+
+common_chrony_enable: false
+
+common_chrony_allows:
+  - "10/8"
+  - "192.168/16"
+  - "172.16/12"
+common_chrony_command_key: ~
+common_chrony_dump_dir: "/var/lib/chrony"
+common_chrony_drift_file: "{{ common_chrony_dump_dir }}/chrony.drift"
+common_chrony_dump_on_exit: true
+common_chrony_generate_command_key: false
+common_chrony_hw_clock_file: ~
+common_chrony_hw_timestamp: ~
+common_chrony_keyfile: "/etc/chrony/chrony.keys"
+common_chrony_leap_sec_tz: "right/UTC"
+common_chrony_local_stratum: "10"
+common_chrony_log:
+  - "tracking"
+  - "measurements"
+  - "statistics"
+common_chrony_log_change: "1"
+common_chrony_log_dir: "/var/log/chrony"
+common_chrony_mail_on_change: ~
+common_chrony_make_step: "1.0 3"
+common_chrony_max_update_skew: "100.0"
+common_chrony_min_sources: ~
+common_chrony_no_client_log: true
+common_chrony_pools:
+  - "pool.ntp.org iburst maxsources 5"
+common_chrony_rtc_file: ~
+common_chrony_rtc_on_utc: true
+common_chrony_rtc_sync: true
+common_chrony_servers: ~
+common_chrony_stratum_weight: "0.001"
+
+# 21 # Logwatch
+
 # default: false
 common_logwatch_enable: true
 
@@ -361,6 +431,8 @@ common_logwatch_services:
 common_logwatch_logfile: ~
 common_logwatch_mailer: "/usr/sbin/sendmail -t"
 common_logwatch_hostlimit: ~
+
+# 26 # ZSH
 
 # default: []
 common_zsh:
