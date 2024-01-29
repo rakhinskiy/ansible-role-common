@@ -8,6 +8,8 @@
     update_cache: true
     force_apt_get: true
     cache_valid_time: 3600
+  notify:
+    - Update RKHunter
   become: true
   tags:
     - common

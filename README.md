@@ -1,7 +1,7 @@
 Common Role
 ------------
 
-Server bootstrap role, see tasks in readme
+Server bootstrap role
 
 Requirements
 ------------
@@ -37,6 +37,7 @@ Tasks
 |   23   |     nscd      |        Install and configure NSCD         |
 |   24   |   rkhunter    |      Install and configure rkhunter       |
 |   25   | smartmontools |    Install and configure smartmontools    |
+|   26   |     sshd      |           Configure SSHD daemon           |
 |   27   |      zsh      |               Configure ZSH               |
 
 TODO
@@ -49,7 +50,7 @@ TODO
 - Fix ipset service restart in Debian / Ubuntu (ipset is symlink to netfilter-persistent)
 - Add firewalld and ufw support
 - Add molecule tests (docker with systemd images)
-- Optimize vars
+- Optimize vars/*
 
 | Number |     Task      | Description |
 |:------:|:-------------:|:-----------:|
@@ -58,7 +59,6 @@ TODO
 |        | --software--  |     --      |
 |   17   |     aide      |             |
 |   19   |    auditd     |             |
-|   26   |     sshd      |             |
 
 
 Role Variables
@@ -556,6 +556,21 @@ common_smartmontools_mail_to: "root"
 #   Debian/Ubuntu Linux: "-d removable -n standby,10,q -H -M exec /usr/share/smartmontools/smartd-runner"
 common_smartmontools_devicescan: "-H -d removable -n standby,10,q"
 common_smartmontools_devices: ~
+
+# 26 # SSHD
+
+# default: []
+# config location: /etc/ssh/sshd_config.d/99-custom.conf
+# option name converted at filter_plugins -> filter.py -> def correct_sshd_option
+common_sshd_options:
+  - option: "pub_key_authentication"
+    value: "yes"
+  - option: "password_authentication"
+    value: "no"
+  - option: "gss_api_authentication"
+    value: "no"
+  - option: "kerberos_authentication"
+    value: "no"
 
 # 27 # ZSH
 

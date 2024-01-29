@@ -11,6 +11,7 @@
 - name: "Common | Rootkit Hunter | Configure"
   ansible.builtin.lineinfile:
     path: "{{ common_rkhunter_config }}"
+    line: "{{ item.option }}={{ item.value }}"
     regexp: "^{{ item.option }}={{ item.value }}"
     state: "{{ item.state | default('present') }}"
     owner: "root"

@@ -6,6 +6,8 @@
     name: "{{ common_rkhunter_packages }}"
     state: present
     update_cache: false
+  notify:
+    - Update RKHunter
   become: true
   tags:
     - common

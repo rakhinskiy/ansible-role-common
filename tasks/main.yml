@@ -255,6 +255,18 @@
     - common-smartmontools-install
     - common-smartmontools-configure
 
+# 26 # SSHD
+
+- name: "Common | SSHD"
+  ansible.builtin.include_tasks: "sshd/main.yml"
+  when:
+    - common_sshd_options | is_dicts_list
+  tags:
+    - common
+    - common-sshd
+    - common-sshd-install
+    - common-sshd-configure
+
 # 27 # ZSH
 
 - name: "Common | ZSH"

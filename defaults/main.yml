@@ -461,6 +461,13 @@ common_smartmontools_daemon_options:
 common_smartmontools_mail_to: ~
 common_smartmontools_devices: ~
 
+# 26 # SSHD
+###############################################################################
+
+common_sshd_config: "/etc/ssh/sshd_config.d/99-custom.conf"
+common_sshd_service: "sshd"
+common_sshd_options: []
+
 # 27 # ZSH
 ##############################################################################
 

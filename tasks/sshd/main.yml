@@ -1,0 +1,44 @@
+# code: language=ansible
+---
+
+- name: "Common | SSHD | Configure"
+  ansible.builtin.template:
+    src: "sshd/sshd.conf.j2"
+    dest: "{{ common_sshd_config }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: false
+  notify:
+    - Restart SSHD
+  when:
+    - common_sshd_options | is_valid_sshd_options
+  become: true
+  tags:
+    - common
+    - common-sshd
+    - common-sshd-configure
+
+- name: "Common | SSHD | Configure SELinux"
+  community.general.seport:
+    ports: "{{ item.value }}"
+    proto: "tcp"
+    setype: "ssh_port_t"
+    state: present
+  with_items: "{{ common_sshd_options }}"
+  when:
+    - ansible_facts.selinux.status == "enabled"
+    - common_sshd_options | is_valid_sshd_options
+    - item.option | lower == "port"
+  become: true
+  tags:
+    - common
+    - common-sshd
+    - common-sshd-configure
+
+- name: "Common | SSH | Flush handlers"
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - common
+    - common-sshd
+    - common-sshd-configure
