@@ -8,6 +8,7 @@ common_always_packages:
   - "ca-certificates"
   - "gnupg2"
   - "python3-apt"
+  - "virt-what"
 
 # 08 # Locale
 
@@ -48,3 +49,10 @@ common_cron_service: "cron"
 # 22 # NSCD
 
 common_nscd_server_user: "root"
+
+# 24 # Smartmontools
+
+common_smartmontools_config: "/etc/smartd.conf"
+common_smartmontools_daemon_options_config: "/etc/default/smartmontools"
+common_smartmontools_service: "smartmontools"
+common_smartmontools_devicescan: "-d removable -n standby,10,q -H -M exec /usr/share/smartmontools/smartd-runner"

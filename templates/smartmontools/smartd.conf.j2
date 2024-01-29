@@ -1,0 +1,9 @@
+{% if common_smartmontools_devicescan | is_ne_string %}
+DEVICESCAN {{ common_smartmontools_devicescan }}{% if common_smartmontools_mail_to | is_ne_string %} -m {{ common_smartmontools_mail_to }}{% endif %}
+{% endif %}
+
+{% if common_smartmontools_devices | is_ne_list %}
+{% for device in common_smartmontools_devices %}
+{{ device }}{% if common_smartmontools_mail_to | is_ne_string %} -m {{ common_smartmontools_mail_to }}{% endif %}
+{% endfor %}
+{% endif %}

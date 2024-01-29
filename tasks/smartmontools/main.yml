@@ -1,0 +1,64 @@
+# code: language=ansible
+---
+
+- name: "Common | Smartmontools | Install"
+  ansible.builtin.include_tasks: "smartmontools/{{ dist_pkg_mgr }}.yml"
+  tags:
+    - common
+    - common-smartmontools
+    - common-smartmontools-install
+
+- name: "Common | Smartmontools | Configure"
+  ansible.builtin.template:
+    src: "smartmontools/smartd.conf.j2"
+    dest: "{{ common_smartmontools_config }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: false
+  notify:
+    - Restart Smartmontools
+  become: true
+  tags:
+    - common
+    - common-smartmontools
+    - common-smartmontools-configure
+
+- name: "Common | Smartmontools | Configure daemon options"
+  community.general.ini_file:
+    section: ~
+    path: "{{ common_smartmontools_daemon_options_config }}"
+    option: "{{ item.option }}"
+    value: "\"{{ item.value }}\""
+    state: "{{ item.state | default('present') }}"
+    no_extra_spaces: true
+    mode: "0644"
+  with_items: "{{ common_smartmontools_daemon_options }}"
+  when:
+    - common_smartmontools_daemon_options | is_ne_list
+  notify:
+    - Restart Smartmontools
+  become: true
+  tags:
+    - common
+    - common-smartmontools
+    - common-smartmontools-configure
+
+- name: "Common | Smartmontools | Enable service"
+  ansible.builtin.service:
+    name: "{{ common_smartmontools_service }}"
+    enabled: true
+    state: "started"
+  become: true
+  tags:
+    - common
+    - common-smartmontools
+    - common-smartmontools-configure
+
+- name: "Common | Smartmontools | Flush handlers"
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - common
+    - common-smartmontools
+    - common-smartmontools-configure
+    - common-smartmontools-install

@@ -6,6 +6,7 @@
 common_always_packages:
   - "dnf-utils"
   - "python3-libselinux"
+  - "virt-what"
 
 # 08 # Locale
 
@@ -49,3 +50,10 @@ common_cron_service: "crond"
 # 22 # NSCD
 
 common_nscd_server_user: "nscd"
+
+# 24 # Smartmontools
+
+common_smartmontools_config: "/etc/smartmontools/smartd.conf"
+common_smartmontools_daemon_options_config: "/etc/sysconfig/smartmontools"
+common_smartmontools_service: "smartd"
+common_smartmontools_devicescan: "-d removable -n standby,10,q -H -M exec /usr/libexec/smartmontools/smartdnotify"
