@@ -323,7 +323,7 @@ common_cron_environments: []
 #   - name: "My super job"
 #     job: "/opt/scripts/notify.sh"
 #     minute: "0"
-#     hour: "1"
+#     hour: "0"
 #     day: "*"
 #     month: "*"
 #     weekday: "*"
