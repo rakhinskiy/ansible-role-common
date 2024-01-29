@@ -1,0 +1,13 @@
+# code: language=ansible
+---
+
+- name: "Common | NSCD | Install | Dnf"
+  ansible.builtin.dnf:
+    name: "{{ common_nscd_packages }}"
+    state: present
+    update_cache: false
+  become: true
+  tags:
+    - common
+    - common-nscd
+    - common-nscd-install

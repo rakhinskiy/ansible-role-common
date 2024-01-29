@@ -207,6 +207,18 @@
     - common-logwatch-install
     - common-logwatch-configure
 
+# 22 # NSCD
+
+- name: "Common | NSCD"
+  ansible.builtin.include_tasks: "nscd/main.yml"
+  when:
+    - common_nscd_enable
+  tags:
+    - common
+    - common-nscd
+    - common-nscd-install
+    - common-nscd-configure
+
 # 26 # ZSH
 
 - name: "Common | ZSH"

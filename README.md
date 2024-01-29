@@ -33,6 +33,7 @@ Tasks
 |   19   |    chrony     |       Install and configure chrony        |
 |   20   |     cron      |       Install cron[d] and add tasks       |
 |   21   |   logwatch    |      Install and configure logwatch       |
+|   22   |     nscd      |        Install and configure NSCD         |
 |   26   |      zsh      |               Configure ZSH               |
 
 TODO
@@ -45,6 +46,7 @@ TODO
 - Fix ipset service restart in Debian / Ubuntu (ipset is symlink to netfilter-persistent)
 - Add firewalld and ufw support
 - Add molecule tests (docker with systemd images)
+- Optimize vars
 
 | Number |     Task      | Description |
 |:------:|:-------------:|:-----------:|
@@ -53,7 +55,6 @@ TODO
 |        | --software--  |     --      |
 |   17   |     aide      |             |
 |   18   |    auditd     |             |
-|   22   |     nscd      |             |
 |   23   |   rkhunter    |             |
 |   24   | smartmontools |             |
 |   25   |     sshd      |             |
@@ -89,9 +90,9 @@ common_timezone: "Etc/UTC"
 common_repositories_manager:
   # Debian / Ubuntu example:
   - option: "Acquire::http::proxy"
-    value: "http://user:password@hostname:port"
+    value: "https://user:password@hostname:port"
   - option: "Acquire::https::proxy"
-    value: "http://user:password@hostname:port"
+    value: "https://user:password@hostname:port"
   - option: "Acquire::::Proxy"
     value: "true"
   - option: "Acquire::ForceIPv4"
@@ -128,7 +129,7 @@ common_repositories_add:
       module_hotfixes: "1"
       skip_if_unavailable: "true"
   - name: "example"
-    url: "http://example.com/...."
+    url: "https://example.com/...."
     options:
       gpgcheck: "0"
 
@@ -207,14 +208,14 @@ common_sudo:
 # default: []
 common_ssh_authorized_keys:
   - user: deploy
-    key: "ssh-rsa AAAAB3..."
+    key: "ssh-rsa ..."
     state: "present"
 
 # default: []
 common_ssh_keys:
   - user: deploy
     key_name: "id_rsa"
-    key_public: "ssh-rsa AAAAB3..."
+    key_public: "ssh-rsa ..."
     key_private: "..."
 
 # 10 # Dirs
@@ -268,7 +269,7 @@ common_sysctl_keys:
 # default: []
 common_sysfs:
   - attribute: "power/state"
-    value: 0660
+    value: "0660"
     type: "mode"
   - attribute: "power/state"
     value: "root:power"
@@ -452,6 +453,73 @@ common_logwatch_services:
 common_logwatch_logfile: ~
 common_logwatch_mailer: "/usr/sbin/sendmail -t"
 common_logwatch_hostlimit: ~
+
+# 22 # NSCD
+
+# default: false
+common_nscd_enable: true
+
+common_nscd_config: "/etc/nscd.conf"
+
+common_nscd_logfile: "/var/log/nscd.log"
+common_nscd_threads: ~
+common_nscd_max_threads: ~
+# default: 
+#   Alma Linux / Rocky Linux: nscd
+#   Debian/Ubuntu: root 
+common_nscd_server_user: "root"
+common_nscd_stat_user: ~
+common_nscd_debug_level: "0"
+common_nscd_reload_count: ~
+common_nscd_paranoia: "no"
+common_nscd_restart_interval: ~
+
+common_nscd_passwd_enable_cache: "yes"
+common_nscd_passwd_positive_time_to_live: "600"
+common_nscd_passwd_negative_time_to_live: "20"
+common_nscd_passwd_suggested_size: "211"
+common_nscd_passwd_check_files: "yes"
+common_nscd_passwd_persistent: "yes"
+common_nscd_passwd_shared: "yes"
+common_nscd_passwd_max_db_size: "33554432"
+common_nscd_passwd_auto_propagate: "yes"
+
+common_nscd_group_enable_cache: "yes"
+common_nscd_group_positive_time_to_live: "3600"
+common_nscd_group_negative_time_to_live: "60"
+common_nscd_group_suggested_size: "211"
+common_nscd_group_check_files: "yes"
+common_nscd_group_persistent: "yes"
+common_nscd_group_shared: "yes"
+common_nscd_group_max_db_size: "33554432"
+common_nscd_group_auto_propagate: "yes"
+
+common_nscd_hosts_enable_cache: "yes"
+common_nscd_hosts_positive_time_to_live: "3600"
+common_nscd_hosts_negative_time_to_live: "20"
+common_nscd_hosts_suggested_size: "211"
+common_nscd_hosts_check_files: "yes"
+common_nscd_hosts_persistent: "yes"
+common_nscd_hosts_shared: "yes"
+common_nscd_hosts_max_db_size: "33554432"
+
+common_nscd_services_enable_cache: "yes"
+common_nscd_services_positive_time_to_live: "28800"
+common_nscd_services_negative_time_to_live: "20"
+common_nscd_services_suggested_size: "211"
+common_nscd_services_check_files: "yes"
+common_nscd_services_persistent: "yes"
+common_nscd_services_shared: "yes"
+common_nscd_services_max_db_size: "33554432"
+
+common_nscd_netgroup_enable_cache: "no"
+common_nscd_netgroup_positive_time_to_live: "28800"
+common_nscd_netgroup_negative_time_to_live: "20"
+common_nscd_netgroup_suggested_size: "211"
+common_nscd_netgroup_check_files: "yes"
+common_nscd_netgroup_persistent: "yes"
+common_nscd_netgroup_shared: "yes"
+common_nscd_netgroup_max_db_size: "33554432"
 
 # 26 # ZSH
 
