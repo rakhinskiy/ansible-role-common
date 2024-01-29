@@ -438,6 +438,15 @@ common_nscd_netgroup_persistent: "yes"
 common_nscd_netgroup_shared: "yes"
 common_nscd_netgroup_max_db_size: "33554432"
 
+# 24 # Rkhunter
+###############################################################################
+
+common_rkhunter_enable: false
+common_rkhunter_packages:
+  - "rkhunter"
+common_rkhunter_config: "/etc/rkhunter.conf"
+common_rkhunter_options: []
+
 # 25 # Smartmontools
 ###############################################################################
 

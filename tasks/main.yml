@@ -231,6 +231,18 @@
     - common-nscd-install
     - common-nscd-configure
 
+# 24 # Rootkit Hunter
+
+- name: "Common | Rootkit Hunter"
+  ansible.builtin.include_tasks: "rkhunter/main.yml"
+  when:
+    - common_rkhunter_enable
+  tags:
+    - common
+    - common-rkhunter
+    - common-rkhunter-install
+    - common-rkhunter-configure
+
 # 25 # Smartmontools
 
 - name: "Common | Smartmontools"

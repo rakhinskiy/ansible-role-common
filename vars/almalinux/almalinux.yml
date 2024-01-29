@@ -5,6 +5,7 @@
 
 common_always_packages:
   - "dnf-utils"
+  - "epel-release"
   - "python3-libselinux"
   - "virt-what"
 
