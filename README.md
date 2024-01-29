@@ -35,6 +35,7 @@ Tasks
 |   21   |     cron      |       Install cron[d] and add tasks       |
 |   22   |   logwatch    |      Install and configure logwatch       |
 |   23   |     nscd      |        Install and configure NSCD         |
+|   24   |   rkhunter    |      Install and configure rkhunter       |
 |   25   | smartmontools |    Install and configure smartmontools    |
 |   27   |      zsh      |               Configure ZSH               |
 
@@ -57,7 +58,6 @@ TODO
 |        | --software--  |     --      |
 |   17   |     aide      |             |
 |   19   |    auditd     |             |
-|   24   |   rkhunter    |             |
 |   26   |     sshd      |             |
 
 
@@ -381,7 +381,7 @@ common_atop_options:
   - option: "LOGGENERATIONS"
     value: "14"
 
-# 19 # Chrony
+# 20 # Chrony
 
 common_chrony_enable: false
 
@@ -418,7 +418,7 @@ common_chrony_rtc_sync: true
 common_chrony_servers: ~
 common_chrony_stratum_weight: "0.001"
 
-# 20 # Cron
+# 21 # Cron
 
 # default: []
 common_cron_environments:
@@ -439,7 +439,7 @@ common_cron_tasks:
     user: "root"                  # default: root
     disabled: "no"                # default: no
 
-# 21 # Logwatch
+# 22 # Logwatch
 
 # default: false
 common_logwatch_enable: true
@@ -469,7 +469,7 @@ common_logwatch_logfile: ~
 common_logwatch_mailer: "/usr/sbin/sendmail -t"
 common_logwatch_hostlimit: ~
 
-# 22 # NSCD
+# 23 # NSCD
 
 # default: false
 common_nscd_enable: true
@@ -530,7 +530,18 @@ common_nscd_netgroup_persistent: "yes"
 common_nscd_netgroup_shared: "yes"
 common_nscd_netgroup_max_db_size: "33554432"
 
-# 24 # Smartmontools
+# 24 # RKHunter
+
+common_rkhunter_enable: true
+common_rkhunter_options:
+  - option: "SCRIPTWHITELIST"
+    value: "/usr/sbin/adduser"
+    state: "present"  # default: present
+  - option: "DISABLE_TESTS"
+    value: "(.*)"
+    state: "absent"
+
+# 25 # Smartmontools
 
 # default: false
 # Enable on bare-metal servers
@@ -546,7 +557,7 @@ common_smartmontools_mail_to: "root"
 common_smartmontools_devicescan: "-H -d removable -n standby,10,q"
 common_smartmontools_devices: ~
 
-# 26 # ZSH
+# 27 # ZSH
 
 # default: []
 common_zsh:

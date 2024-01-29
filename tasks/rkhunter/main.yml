@@ -1,0 +1,27 @@
+# code: language=ansible
+---
+
+- name: "Common | Rootkit Hunter | Install"
+  ansible.builtin.include_tasks: "rkhunter/{{ dist_pkg_mgr }}.yml"
+  tags:
+    - common
+    - common-rkhunter
+    - common-rkhunter-install
+
+- name: "Common | Rootkit Hunter | Configure"
+  ansible.builtin.lineinfile:
+    path: "{{ common_rkhunter_config }}"
+    regexp: "^{{ item.option }}={{ item.value }}"
+    state: "{{ item.state | default('present') }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: false
+  with_items: "{{ common_rkhunter_options | default([]) }}"
+  when:
+    - common_rkhunter_options | default([]) | is_dicts_list
+  become: true
+  tags:
+    - common
+    - common-rkhunter
+    - common-rkhunter-configure
