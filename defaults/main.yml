@@ -266,7 +266,17 @@ common_firewall_backend: ~
 #             - any
 common_firewall: []
 
-# 19 # Chrony
+# 18 # Atop
+###############################################################################
+
+common_atop_enable: false
+common_atop_packages:
+  - "atop"
+common_atop_service: "atop"
+
+common_atop_options: []
+
+# 20 # Chrony
 ###############################################################################
 
 common_chrony_enable: false
@@ -305,7 +315,7 @@ common_chrony_rtc_sync: true
 common_chrony_servers: ~
 common_chrony_stratum_weight: "0.001"
 
-# 20 # Cron
+# 21 # Cron
 ###############################################################################
 
 # common_cron_environments:
@@ -331,7 +341,7 @@ common_cron_environments: []
 #     disabled: "no"
 common_cron_tasks: []
 
-# 21 # Logwatch
+# 22 # Logwatch
 ###############################################################################
 
 common_logwatch_enable: false
@@ -362,7 +372,7 @@ common_logwatch_logfile: ~
 common_logwatch_mailer: "/usr/sbin/sendmail -t"
 common_logwatch_hostlimit: ~
 
-# 22 # NSCD
+# 23 # NSCD
 ###############################################################################
 
 common_nscd_enable: false
@@ -428,7 +438,7 @@ common_nscd_netgroup_persistent: "yes"
 common_nscd_netgroup_shared: "yes"
 common_nscd_netgroup_max_db_size: "33554432"
 
-# 24 # Smartmontools
+# 25 # Smartmontools
 ###############################################################################
 
 common_smartmontools_enable: false
@@ -442,7 +452,7 @@ common_smartmontools_daemon_options:
 common_smartmontools_mail_to: ~
 common_smartmontools_devices: ~
 
-# 26 # ZSH
+# 27 # ZSH
 ##############################################################################
 
 # common_zsh:

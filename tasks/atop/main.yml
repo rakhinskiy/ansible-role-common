@@ -1,0 +1,49 @@
+# code: language=ansible
+---
+
+- name: "Common | Atop | Install"
+  ansible.builtin.include_tasks: "atop/{{ dist_pkg_mgr }}.yml"
+  tags:
+    - common
+    - common-atop
+    - common-atop-install
+
+- name: "Common | Atop | Configure daemon options"
+  community.general.ini_file:
+    section: ''
+    path: "{{ common_atop_config }}"
+    option: "{{ item.option }}"
+    value: "\"{{ item.value }}\""
+    state: "{{ item.state | default('present') }}"
+    no_extra_spaces: true
+    owner: "root"
+    mode: "0644"
+  with_items: "{{ common_atop_options }}"
+  when:
+    - common_atop_options | is_dicts_list
+  notify:
+    - Restart Atop
+  become: true
+  tags:
+    - common
+    - common-atop
+    - common-atop-configure
+
+- name: "Common | Atop | Enable atop service"
+  ansible.builtin.service:
+    name: "{{ common_atop_service }}"
+    state: "started"
+    enabled: true
+  become: true
+  tags:
+    - common
+    - common-atop
+    - common-atop-configure
+
+- name: "Common | Atop | Flush handlers"
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - common
+    - common-atop
+    - common-atop-configure
+    - common-atop-install
