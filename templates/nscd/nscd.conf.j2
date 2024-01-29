@@ -1,0 +1,66 @@
+logfile                 {{ common_nscd_logfile }}
+{% if common_nscd_threads is defined and common_nscd_threads is number -%}
+threads                 {{ common_nscd_threads }}
+{% endif %}
+{% if common_nscd_max_threads is defined and common_nscd_threads is number -%}
+max-threads             {{ common_nscd_max_threads }}
+{% endif %}
+server-user             {{ common_nscd_server_user }}
+{% if common_nscd_stat_user is defined and common_nscd_stat_user is not none and common_nscd_stat_user != "" -%}
+stat-user               {{ common_nscd_stat_user }}
+{% endif %}
+debug-level             {{ common_nscd_debug_level }}
+{% if common_nscd_reload_count is defined and common_nscd_reload_count is number -%}
+reload-count            {{ common_nscd_reload_count }}
+{% endif %}
+paranoia                {{ common_nscd_paranoia }}
+{% if common_nscd_restart_interval is defined and common_nscd_restart_interval is number -%}
+restart-interval	    {{ common_nscd_restart_interval }}
+{% endif %}
+
+enable-cache            passwd      {{ common_nscd_passwd_enable_cache }}
+positive-time-to-live   passwd      {{ common_nscd_passwd_positive_time_to_live }}
+negative-time-to-live   passwd      {{ common_nscd_passwd_negative_time_to_live }}
+suggested-size          passwd      {{ common_nscd_passwd_suggested_size }}
+check-files             passwd      {{ common_nscd_passwd_check_files }}
+persistent              passwd      {{ common_nscd_passwd_persistent }}
+shared                  passwd      {{ common_nscd_passwd_shared }}
+max-db-size             passwd      {{ common_nscd_passwd_max_db_size }}
+auto-propagate          passwd      {{ common_nscd_passwd_auto_propagate }}
+
+enable-cache            group       {{ common_nscd_group_enable_cache }}
+positive-time-to-live   group       {{ common_nscd_group_positive_time_to_live }}
+negative-time-to-live   group       {{ common_nscd_group_negative_time_to_live }}
+suggested-size          group       {{ common_nscd_group_suggested_size }}
+check-files             group       {{ common_nscd_group_check_files }}
+persistent              group       {{ common_nscd_group_persistent }}
+shared                  group       {{ common_nscd_group_shared }}
+max-db-size             group       {{ common_nscd_group_max_db_size }}
+auto-propagate          group       {{ common_nscd_group_auto_propagate }}
+
+enable-cache            hosts       {{ common_nscd_hosts_enable_cache }}
+positive-time-to-live   hosts       {{ common_nscd_hosts_positive_time_to_live }}
+negative-time-to-live   hosts       {{ common_nscd_hosts_negative_time_to_live }}
+suggested-size          hosts       {{ common_nscd_hosts_suggested_size }}
+check-files             hosts       {{ common_nscd_hosts_check_files }}
+persistent              hosts       {{ common_nscd_hosts_persistent }}
+shared                  hosts       {{ common_nscd_hosts_shared }}
+max-db-size             hosts       {{ common_nscd_hosts_max_db_size }}
+
+enable-cache            services    {{ common_nscd_services_enable_cache }}
+positive-time-to-live   services    {{ common_nscd_services_positive_time_to_live }}
+negative-time-to-live   services    {{ common_nscd_services_negative_time_to_live }}
+suggested-size          services    {{ common_nscd_services_suggested_size }}
+check-files             services    {{ common_nscd_services_check_files }}
+persistent              services    {{ common_nscd_services_persistent }}
+shared                  services    {{ common_nscd_services_shared }}
+max-db-size             services    {{ common_nscd_services_max_db_size }}
+
+enable-cache            netgroup    {{ common_nscd_netgroup_enable_cache }}
+positive-time-to-live   netgroup    {{ common_nscd_netgroup_positive_time_to_live }}
+negative-time-to-live   netgroup    {{ common_nscd_netgroup_negative_time_to_live }}
+suggested-size          netgroup    {{ common_nscd_netgroup_suggested_size }}
+check-files             netgroup    {{ common_nscd_netgroup_check_files }}
+persistent              netgroup    {{ common_nscd_netgroup_persistent }}
+shared                  netgroup    {{ common_nscd_netgroup_shared }}
+max-db-size             netgroup    {{ common_nscd_netgroup_max_db_size }}

@@ -44,3 +44,7 @@ common_cron_packages:
   - "cron"
 
 common_cron_service: "cron"
+
+# 22 # NSCD
+
+common_nscd_server_user: "root"

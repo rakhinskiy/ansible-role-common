@@ -45,3 +45,7 @@ common_cron_packages:
   - "crontabs"
 
 common_cron_service: "crond"
+
+# 22 # NSCD
+
+common_nscd_server_user: "nscd"

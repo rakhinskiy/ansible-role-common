@@ -41,6 +41,12 @@
     state: restarted
   become: true
 
+- name: "Restart NSCD"
+  ansible.builtin.service:
+    name: "{{ common_nscd_service }}"
+    state: restarted
+  become: true
+
 - name: "Update dnf cache"
   ansible.builtin.dnf:
     update_cache: true

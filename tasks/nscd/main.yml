@@ -1,0 +1,57 @@
+# code: language=ansible
+---
+
+- name: "Common | NSCD | Install"
+  ansible.builtin.include_tasks: "nscd/{{ dist_pkg_mgr }}.yml"
+  tags:
+    - common
+    - common-nscd
+    - common-nscd-install
+
+- name: "Common | NSCD | Create log file"
+  ansible.builtin.file:
+    path: "{{ common_nscd_logfile }}"
+    state: "touch"
+    owner: "{{ common_nscd_server_user }}"
+    mode: "0644"
+    modification_time: "preserve"
+    access_time: "preserve"
+  become: true
+  tags:
+    - common
+    - common-nscd
+    - common-nscd-configure
+
+- name: "Common | NSCD | Configure"
+  ansible.builtin.template:
+    src: "nscd/nscd.conf.j2"
+    dest: "{{ common_nscd_config }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: false
+  notify:
+    - Restart NSCD
+  become: true
+  tags:
+    - common
+    - common-nscd
+    - common-nscd-configure
+
+- name: "Common | NSCD | Enable nscd service"
+  ansible.builtin.service:
+    name: "{{ common_nscd_service }}"
+    state: "started"
+    enabled: true
+  become: true
+  tags:
+    - common
+    - common-nscd
+    - common-nscd-configure
+
+- name: "Common | NSCD | Flush handlers"
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - common
+    - common-nscd
+    - common-nscd-configure
