@@ -219,6 +219,18 @@
     - common-nscd-install
     - common-nscd-configure
 
+# 24 # Smartmontools
+
+- name: "Common | Smartmontools"
+  ansible.builtin.include_tasks: "smartmontools/main.yml"
+  when:
+    - common_nscd_enable
+  tags:
+    - common
+    - common-smartmontools
+    - common-smartmontools-install
+    - common-smartmontools-configure
+
 # 26 # ZSH
 
 - name: "Common | ZSH"

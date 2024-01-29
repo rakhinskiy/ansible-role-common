@@ -34,6 +34,7 @@ Tasks
 |   20   |     cron      |       Install cron[d] and add tasks       |
 |   21   |   logwatch    |      Install and configure logwatch       |
 |   22   |     nscd      |        Install and configure NSCD         |
+|   24   | smartmontools |    Install and configure smartmontools    |
 |   26   |      zsh      |               Configure ZSH               |
 
 TODO
@@ -56,7 +57,6 @@ TODO
 |   17   |     aide      |             |
 |   18   |    auditd     |             |
 |   23   |   rkhunter    |             |
-|   24   | smartmontools |             |
 |   25   |     sshd      |             |
 
 
@@ -459,15 +459,9 @@ common_logwatch_hostlimit: ~
 # default: false
 common_nscd_enable: true
 
-common_nscd_config: "/etc/nscd.conf"
-
 common_nscd_logfile: "/var/log/nscd.log"
 common_nscd_threads: ~
 common_nscd_max_threads: ~
-# default: 
-#   Alma Linux / Rocky Linux: nscd
-#   Debian/Ubuntu: root 
-common_nscd_server_user: "root"
 common_nscd_stat_user: ~
 common_nscd_debug_level: "0"
 common_nscd_reload_count: ~
@@ -520,6 +514,22 @@ common_nscd_netgroup_check_files: "yes"
 common_nscd_netgroup_persistent: "yes"
 common_nscd_netgroup_shared: "yes"
 common_nscd_netgroup_max_db_size: "33554432"
+
+# 24 # Smartmontools
+
+# default: false
+# Enable on bare-metal servers
+common_smartmontools_enable: "{{ ansible_virtualization_role != 'guest' }}"
+common_smartmontools_daemon_options:
+  - option: "smartd_opts"
+    value: "-q never --capabilities"
+    state: "present"
+common_smartmontools_mail_to: "root"
+# default:
+#   Alma/Rocky Linux:    "-d removable -n standby,10,q -H -M exec /usr/libexec/smartmontools/smartdnotify"
+#   Debian/Ubuntu Linux: "-d removable -n standby,10,q -H -M exec /usr/share/smartmontools/smartd-runner"
+common_smartmontools_devicescan: "-H -d removable -n standby,10,q"
+common_smartmontools_devices: ~
 
 # 26 # ZSH
 

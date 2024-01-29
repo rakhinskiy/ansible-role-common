@@ -47,6 +47,12 @@
     state: restarted
   become: true
 
+- name: "Restart Smartmontools"
+  ansible.builtin.service:
+    name: "{{ common_smartmontools_service }}"
+    state: restarted
+  become: true
+
 - name: "Update dnf cache"
   ansible.builtin.dnf:
     update_cache: true

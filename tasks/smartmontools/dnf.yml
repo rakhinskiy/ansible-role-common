@@ -1,0 +1,13 @@
+# code: language=ansible
+---
+
+- name: "Common | Smartmontools | Install | Dnf"
+  ansible.builtin.dnf:
+    name: "{{ common_smartmontools_packages }}"
+    state: present
+    update_cache: false
+  become: true
+  tags:
+    - common
+    - common-smartmontools
+    - common-smartmontools-install
