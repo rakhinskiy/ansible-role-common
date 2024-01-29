@@ -26,7 +26,7 @@
 
 - name: "Common | Smartmontools | Configure daemon options"
   community.general.ini_file:
-    section: ~
+    section: ''
     path: "{{ common_smartmontools_daemon_options_config }}"
     option: "{{ item.option }}"
     value: "\"{{ item.value }}\""

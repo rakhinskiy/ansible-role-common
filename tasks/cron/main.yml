@@ -67,3 +67,4 @@
     - common
     - common-cron
     - common-cron-configure
+    - common-cron-install

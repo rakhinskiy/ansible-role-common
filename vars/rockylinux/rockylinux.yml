@@ -28,7 +28,11 @@ common_firewall_iptables_disable_services:
 common_firewall_ipset_config: "/etc/sysconfig/ipset"
 common_firewall_ipset_service: "ipset"
 
-# 19 # Chrony
+# 19 # Atop
+
+common_atop_config: "/etc/sysconfig/atop"
+
+# 20 # Chrony
 
 common_chrony_user: "chrony"
 common_chrony_group: "chrony"
@@ -38,7 +42,7 @@ common_chrony_service: "chronyd"
 common_chrony_config: "/etc/chrony.conf"
 common_chrony_keyfile: "/etc/chrony.keys"
 
-# 20 # Cron
+# 21 # Cron
 
 common_cron_packages:
   - "cronie"
@@ -47,11 +51,11 @@ common_cron_packages:
 
 common_cron_service: "crond"
 
-# 22 # NSCD
+# 23 # NSCD
 
 common_nscd_server_user: "nscd"
 
-# 24 # Smartmontools
+# 25 # Smartmontools
 
 common_smartmontools_config: "/etc/smartmontools/smartd.conf"
 common_smartmontools_daemon_options_config: "/etc/sysconfig/smartmontools"

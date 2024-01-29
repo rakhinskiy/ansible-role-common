@@ -30,12 +30,13 @@ Tasks
 |   13   |    sysctl     |           Configure sysctl.conf           |
 |   14   |     sysfs     |     Install and configure sysfs utils     |
 |   15   |   firewall    |            Configure iptables             |
-|   19   |    chrony     |       Install and configure chrony        |
-|   20   |     cron      |       Install cron[d] and add tasks       |
-|   21   |   logwatch    |      Install and configure logwatch       |
-|   22   |     nscd      |        Install and configure NSCD         |
-|   24   | smartmontools |    Install and configure smartmontools    |
-|   26   |      zsh      |               Configure ZSH               |
+|   18   |     atop      |               Install atop                |
+|   20   |    chrony     |       Install and configure chrony        |
+|   21   |     cron      |       Install cron[d] and add tasks       |
+|   22   |   logwatch    |      Install and configure logwatch       |
+|   23   |     nscd      |        Install and configure NSCD         |
+|   25   | smartmontools |    Install and configure smartmontools    |
+|   27   |      zsh      |               Configure ZSH               |
 
 TODO
 --------------
@@ -55,9 +56,9 @@ TODO
 |   16   |    selinux    |             |
 |        | --software--  |     --      |
 |   17   |     aide      |             |
-|   18   |    auditd     |             |
-|   23   |   rkhunter    |             |
-|   25   |     sshd      |             |
+|   19   |    auditd     |             |
+|   24   |   rkhunter    |             |
+|   26   |     sshd      |             |
 
 
 Role Variables
@@ -365,6 +366,20 @@ common_firewall:
       - "-A INPUT -i eth0 -p gre -j ACCEPT"
     nat: # *nat table | first rules
       - "-A POSTROUTING -o eht0 -j MASQUERADE"
+
+# 18 # Atop
+
+# default: false
+common_atop_enable: true
+
+# default: []
+common_atop_options:
+  # Load snapshot interval (default 600)
+  - option: "LOGINTERVAL"
+    value: "10"
+  # Load history (default 28 days)
+  - option: "LOGGENERATIONS"
+    value: "14"
 
 # 19 # Chrony
 

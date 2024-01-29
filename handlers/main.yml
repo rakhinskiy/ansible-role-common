@@ -29,6 +29,12 @@
     state: restarted
   become: true
 
+- name: "Restart Atop"
+  ansible.builtin.service:
+    name: "{{ common_atop_service }}"
+    state: restarted
+  become: true
+
 - name: "Restart chrony"
   ansible.builtin.service:
     name: "{{ common_chrony_service }}"
