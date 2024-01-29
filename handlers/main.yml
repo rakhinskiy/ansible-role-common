@@ -53,9 +53,21 @@
     state: restarted
   become: true
 
+- name: "Update RKHunter"
+  ansible.builtin.command:
+    cmd: "rkhunter --propupd --update"
+  become: true
+  changed_when: false
+
 - name: "Restart Smartmontools"
   ansible.builtin.service:
     name: "{{ common_smartmontools_service }}"
+    state: restarted
+  become: true
+
+- name: "Restart SSHD"
+  ansible.builtin.service:
+    name: "{{ common_sshd_service }}"
     state: restarted
   become: true
 

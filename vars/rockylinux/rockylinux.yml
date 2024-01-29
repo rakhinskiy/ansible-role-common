@@ -7,6 +7,7 @@ common_always_packages:
   - "dnf-utils"
   - "epel-release"
   - "python3-libselinux"
+  - "python3-policycoreutils"
   - "virt-what"
 
 # 08 # Locale

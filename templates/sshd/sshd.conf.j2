@@ -1,0 +1,4 @@
+#jinja2: lstrip_blocks: True, trim_blocks: True
+{% for item in common_sshd_options %}
+{{ item.option | correct_sshd_option }} {{ item.value }}
+{% endfor %}
