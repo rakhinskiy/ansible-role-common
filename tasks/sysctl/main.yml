@@ -10,7 +10,7 @@
     mode: "0644"
     backup: false
   notify:
-    - "Reload sysctl"
+    - "reload sysctl"
   become: true
   tags:
     - common

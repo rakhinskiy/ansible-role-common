@@ -1,13 +1,13 @@
 # code: language=ansible
 ---
 
-- name: "Reload sysctl"
+- name: "reload sysctl"
   ansible.builtin.command:
     cmd: "sysctl --system"
   become: true
   changed_when: false
 
-- name: "SELinux security contexts restore"
+- name: "selinux security contexts restore"
   ansible.builtin.command:
     cmd: "restorecon -R -v ~{{ item.user }}/.ssh"
   with_items: "{{ common_ssh_authorized_keys }}"
@@ -17,67 +17,73 @@
   become: true
   changed_when: false
 
-- name: "Restart IPSet"
+- name: "restart ipset"
   ansible.builtin.service:
     name: "{{ common_firewall_ipset_service }}"
     state: restarted
   become: true
 
-- name: "Restart IPTables"
+- name: "restart iptables"
   ansible.builtin.service:
     name: "{{ common_firewall_iptables_service }}"
     state: restarted
   become: true
 
-- name: "Restart Atop"
+- name: "restart atop"
   ansible.builtin.service:
     name: "{{ common_atop_service }}"
     state: restarted
   become: true
 
-- name: "Restart chrony"
+- name: "restart auditd"
   ansible.builtin.service:
     name: "{{ common_chrony_service }}"
     state: restarted
   become: true
 
-- name: "Restart cron"
+- name: "restart chrony"
+  ansible.builtin.service:
+    name: "{{ common_chrony_service }}"
+    state: restarted
+  become: true
+
+- name: "restart cron"
   ansible.builtin.service:
     name: "{{ common_cron_service }}"
     state: restarted
   become: true
 
-- name: "Restart NSCD"
+- name: "restart nscd"
   ansible.builtin.service:
     name: "{{ common_nscd_service }}"
     state: restarted
   become: true
 
-- name: "Update RKHunter"
+- name: "update rkhunter"
   ansible.builtin.command:
     cmd: "rkhunter --propupd --update"
   become: true
   changed_when: false
 
-- name: "Restart Smartmontools"
+- name: "restart smartmontools"
   ansible.builtin.service:
     name: "{{ common_smartmontools_service }}"
     state: restarted
   become: true
 
-- name: "Restart SSHD"
+- name: "restart sshd"
   ansible.builtin.service:
     name: "{{ common_sshd_service }}"
     state: restarted
   become: true
 
-- name: "Update dnf cache"
-  ansible.builtin.dnf:
-    update_cache: true
-  become: true
-
-- name: "Update apt cache"
+- name: "update apt cache"
   ansible.builtin.apt:
     update_cache: true
     force_apt_get: true
+  become: true
+
+- name: "update dnf cache"
+  ansible.builtin.dnf:
+    update_cache: true
   become: true

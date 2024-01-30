@@ -170,7 +170,7 @@
     - common-firewall-install
     - common-firewall-configure
 
-# 19 # Atop
+# 18 # Atop
 
 - name: "Common | Atop"
   ansible.builtin.include_tasks: "atop/main.yml"
@@ -181,6 +181,18 @@
     - common-atop
     - common-atop-install
     - common-atop-configure
+
+# 19 # Auditd
+
+- name: "Common | Auditd"
+  ansible.builtin.include_tasks: "auditd/main.yml"
+  when:
+    - common_auditd_enable
+  tags:
+    - common
+    - common-auditd
+    - common-auditd-install
+    - common-auditd-configure
 
 # 20 # Chrony
 

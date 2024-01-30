@@ -16,7 +16,7 @@
     state: "{{ item.state | default('present') }}"
   with_items: "{{ common_ssh_authorized_keys | default([]) }}"
   notify:
-    - "SELinux security contexts restore"
+    - "selinux security contexts restore"
   when:
     - common_ssh_authorized_keys | is_dicts_list
   become: true

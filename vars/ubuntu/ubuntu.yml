@@ -29,9 +29,17 @@ common_firewall_iptables_disable_services:
 common_firewall_ipset_config: "/etc/iptables/ipsets"
 common_firewall_ipset_service: "netfilter-persistent"
 
-# 19 # Atop
+# 18 # Atop
 
 common_atop_config: "/etc/default/atop"
+
+# 19 # Auditd
+
+common_auditd_packages:
+  - "auditd"
+  - "libaudit-common"
+  - "audispd-plugins"
+  - "python3-audit"
 
 # 20 # Chrony
 

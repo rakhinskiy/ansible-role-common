@@ -17,7 +17,7 @@
     mode: "0600"
     backup: false
   notify:
-    - Restart IPSet
+    - restart ipset
   become: true
   tags:
     - common
@@ -51,7 +51,7 @@
     mode: "0600"
     backup: false
   notify:
-    - Restart IPTables
+    - restart iptables
   become: true
   tags:
     - common
