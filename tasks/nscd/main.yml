@@ -31,7 +31,7 @@
     mode: "0644"
     backup: false
   notify:
-    - Restart NSCD
+    - restart nscd
   become: true
   tags:
     - common
@@ -55,3 +55,4 @@
     - common
     - common-nscd
     - common-nscd-configure
+    - common-nscd-install

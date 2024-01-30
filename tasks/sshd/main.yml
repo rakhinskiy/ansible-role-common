@@ -10,7 +10,7 @@
     mode: "0644"
     backup: false
   notify:
-    - Restart SSHD
+    - restart sshd
   when:
     - common_sshd_options | is_valid_sshd_options
   become: true

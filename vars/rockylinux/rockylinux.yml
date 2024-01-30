@@ -30,9 +30,18 @@ common_firewall_iptables_disable_services:
 common_firewall_ipset_config: "/etc/sysconfig/ipset"
 common_firewall_ipset_service: "ipset"
 
-# 19 # Atop
+# 18 # Atop
 
 common_atop_config: "/etc/sysconfig/atop"
+
+# 19 # Auditd
+
+common_auditd_packages:
+  - "audit"
+  - "audit-libs"
+  - "audispd-plugins"
+  - "python3-audit"
+  - "rpm-plugin-audit"
 
 # 20 # Chrony
 

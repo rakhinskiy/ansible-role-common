@@ -28,15 +28,16 @@ Tasks
 |   11   | environments  |            Configure env vars             |
 |   12   |    limits     |           Configure limits.conf           |
 |   13   |    sysctl     |           Configure sysctl.conf           |
-|   14   |     sysfs     |     Install and configure sysfs utils     |
+|   14   |     sysfs     |           Configure sysfs utils           |
 |   15   |   firewall    |            Configure iptables             |
 |   18   |     atop      |               Install atop                |
-|   20   |    chrony     |       Install and configure chrony        |
-|   21   |     cron      |       Install cron[d] and add tasks       |
-|   22   |   logwatch    |      Install and configure logwatch       |
-|   23   |     nscd      |        Install and configure NSCD         |
-|   24   |   rkhunter    |      Install and configure rkhunter       |
-|   25   | smartmontools |    Install and configure smartmontools    |
+|   19   |    auditd     |             Configure auditd              |
+|   20   |    chrony     |             Configure chrony              |
+|   21   |     cron      |      Configure cron[d] and add tasks      |
+|   22   |   logwatch    |            Configure logwatch             |
+|   23   |     nscd      |              Configure NSCD               |
+|   24   |   rkhunter    |            Configure rkhunter             |
+|   25   | smartmontools |          Configure smartmontools          |
 |   26   |     sshd      |           Configure SSHD daemon           |
 |   27   |      zsh      |               Configure ZSH               |
 
@@ -51,6 +52,8 @@ TODO
 - Add firewalld and ufw support
 - Add molecule tests (docker with systemd images)
 - Optimize vars/*
+- Audisp plugins config for auditd
+- Add support for go-audit (Slack) / go-libaudit (Elastic) versions of auditd
 
 | Number |     Task      | Description |
 |:------:|:-------------:|:-----------:|
@@ -58,7 +61,6 @@ TODO
 |   16   |    selinux    |             |
 |        | --software--  |     --      |
 |   17   |     aide      |             |
-|   19   |    auditd     |             |
 
 
 Role Variables
@@ -67,24 +69,26 @@ Role Variables
 By default, role only run always task, other tasks only if exist config in inventory
 
 ```yaml
-
 # 01 # Hostname
 
 # default: none
 common_hostname: "{{ inventory_hostname }}"
-
+```
+```yaml
 # 02 # Hosts
 
 # default: []
 common_hosts:
   - ip: "192.168.0.1"
     name: "gw-1 gw-1.example.com"
-
+```
+```yaml
 # 03 # Timezone
 
 # default: none
 common_timezone: "Etc/UTC"
-
+```
+```yaml
 # 04 # Repositories
 
 # default: []
@@ -148,7 +152,8 @@ common_repositories_disable:
   - "zabbix"  # Comment all deb / deb-src in /etc/apt/sources.list.d/zabbix.list
   # CentOS / AlmaLinux / Rocky example:
   - "epel"
-
+```
+```yaml
 # 05 # Packages
 
 # default: []
@@ -160,12 +165,14 @@ common_packages:
 # default: []
 common_packages_additional:
   - "zsh"
-
+```
+```yaml
 # 06 # Locale
 
 # default: none
 common_locale: "en_US.UTF-8"
-
+```
+```yaml
 # 07 # Users
 
 # default: []
@@ -178,7 +185,8 @@ common_users:
     system: false         # default: false
     append: true          # default: false
     state: present        # default: present
-
+```
+```yaml
 # 08 # Sudo
 
 # default: []
@@ -203,8 +211,9 @@ common_sudo:
         runas: "root"
         nopasswd: true
         cmd: "ALL"
-
-# 09 # SSh
+```
+```yaml
+# 09 # SSH
 
 # default: []
 common_ssh_authorized_keys:
@@ -218,7 +227,8 @@ common_ssh_keys:
     key_name: "id_rsa"
     key_public: "ssh-rsa ..."
     key_private: "..."
-
+```
+```yaml
 # 10 # Dirs
 
 # default: []
@@ -230,7 +240,8 @@ common_dirs:
     mode: "0750"
     force: "false"
     follow: "true"
-
+```
+```yaml
 # 11 # Environments
 
 # default: []
@@ -241,7 +252,8 @@ common_environments:
   - user: "deploy"
     variables:
       PATH: "${PATH}:/usr/local/bin:~/.bin/:~/bin/"
-
+```
+```yaml
 # 12 # Limits
 
 # default: []
@@ -253,7 +265,8 @@ common_limits:
     use_min: "false"      # default: false | Use min between exist limits.conf and new values
     use_max: "true"       # default: false | Use max between exist limits.conf and new values
     comment: ""
-
+```
+```yaml
 # 13 # Sysctl
 
 # default: 
@@ -264,7 +277,8 @@ common_sysctl_file: "k8s"
 common_sysctl_keys:
   - name: "net.core.somaxconn"
     value: "50000"
-
+```
+```yaml
 # 14 # SysFS
 
 # default: []
@@ -281,7 +295,8 @@ common_sysfs:
   - attribute: "sys/kernel/mm/transparent_hugepage/enabled"
     value: "madvise"
     type: "attribute"
-
+```
+```yaml
 # 15 # Firewall
 
 # default: 
@@ -366,7 +381,8 @@ common_firewall:
       - "-A INPUT -i eth0 -p gre -j ACCEPT"
     nat: # *nat table | first rules
       - "-A POSTROUTING -o eht0 -j MASQUERADE"
-
+```
+```yaml
 # 18 # Atop
 
 # default: false
@@ -380,7 +396,34 @@ common_atop_options:
   # Load history (default 28 days)
   - option: "LOGGENERATIONS"
     value: "14"
+```
+```yaml
+# 19 # Auditd
 
+# Before enable auditd, please open templates/auditd/audit.rules.j2
+# Before enable `common_auditd_rules_predefined` READ RULES IN TEMPLATE
+
+common_auditd_enable: true
+
+# default: []
+# Your custom rules
+common_auditd_rules: 
+  - '## Use these rules if you want to log container events'
+  - '## watch for container creation'
+  - '-a always,exit -F arch=b32 -S clone -F a0&0x7C020000 -F key=container-create'
+  - '-a always,exit -F arch=b64 -S clone -F a0&0x7C020000 -F key=container-create'
+
+# default: false
+common_auditd_rules_predefined: false
+
+# default: false | After enable immutable, you need to reboot for apply new rules
+common_auditd_rules_immutable: false
+
+common_auditd_rules_buffers: "8192"
+common_auditd_rules_backlog_wait_time: "60000"
+
+```
+```yaml
 # 20 # Chrony
 
 common_chrony_enable: false
@@ -417,7 +460,8 @@ common_chrony_rtc_on_utc: true
 common_chrony_rtc_sync: true
 common_chrony_servers: ~
 common_chrony_stratum_weight: "0.001"
-
+```
+```yaml
 # 21 # Cron
 
 # default: []
@@ -438,7 +482,8 @@ common_cron_tasks:
     weekday: "*"                  # default: *
     user: "root"                  # default: root
     disabled: "no"                # default: no
-
+```
+```yaml
 # 22 # Logwatch
 
 # default: false
@@ -468,7 +513,8 @@ common_logwatch_services:
 common_logwatch_logfile: ~
 common_logwatch_mailer: "/usr/sbin/sendmail -t"
 common_logwatch_hostlimit: ~
-
+```
+```yaml
 # 23 # NSCD
 
 # default: false
@@ -529,7 +575,8 @@ common_nscd_netgroup_check_files: "yes"
 common_nscd_netgroup_persistent: "yes"
 common_nscd_netgroup_shared: "yes"
 common_nscd_netgroup_max_db_size: "33554432"
-
+```
+```yaml
 # 24 # RKHunter
 
 common_rkhunter_enable: true
@@ -540,7 +587,8 @@ common_rkhunter_options:
   - option: "DISABLE_TESTS"
     value: "(.*)"
     state: "absent"
-
+```
+```yaml
 # 25 # Smartmontools
 
 # default: false
@@ -556,7 +604,8 @@ common_smartmontools_mail_to: "root"
 #   Debian/Ubuntu Linux: "-d removable -n standby,10,q -H -M exec /usr/share/smartmontools/smartd-runner"
 common_smartmontools_devicescan: "-H -d removable -n standby,10,q"
 common_smartmontools_devices: ~
-
+```
+```yaml
 # 26 # SSHD
 
 # default: []
@@ -571,14 +620,14 @@ common_sshd_options:
     value: "no"
   - option: "kerberos_authentication"
     value: "no"
-
+```
+```yaml
 # 27 # ZSH
 
 # default: []
 common_zsh:
   - user: "deploy"
   - user: "root"
-
 ```
 
 Dependencies

@@ -42,7 +42,7 @@
   with_items: "{{ common_repositories_add }}"
   when:
     - common_repositories_add | is_dicts_list
-  notify: Update dnf cache
+  notify: update dnf cache
   become: true
   tags:
     - common
@@ -79,7 +79,7 @@
     - item.name is defined
     - item.name in common_repositories_enable
     - not item.state
-  notify: Update dnf cache
+  notify: update dnf cache
   become: true
   tags:
     - common
@@ -99,7 +99,7 @@
     - item.name is defined
     - item.name in common_repositories_disable
     - item.state
-  notify: Update dnf cache
+  notify: update dnf cache
   become: true
   tags:
     - common

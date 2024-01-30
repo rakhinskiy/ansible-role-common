@@ -42,7 +42,7 @@
   with_items: "{{ common_repositories_add }}"
   when:
     - common_repositories_add | is_dicts_list
-  notify: Update apt cache
+  notify: update apt cache
   become: true
   tags:
     - common
@@ -72,7 +72,7 @@
     - item.name is defined
     - item.name in common_repositories_enable
     - not item.state
-  notify: Update apt cache
+  notify: update apt cache
   become: true
   tags:
     - common
@@ -90,7 +90,7 @@
     - item.name is defined
     - item.name in common_repositories_disable
     - item.state
-  notify: Update apt cache
+  notify: update apt cache
   become: true
   tags:
     - common

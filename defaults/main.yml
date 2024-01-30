@@ -276,6 +276,21 @@ common_atop_service: "atop"
 
 common_atop_options: []
 
+# 19 # Auditd
+###############################################################################
+
+common_auditd_enable: false
+common_auditd_config: "/etc/audit/rules.d/audit.rules"
+common_auditd_service: "auditd"
+common_auditd_rules: []
+common_auditd_rules_predefined: false
+
+common_auditd_rules_backlog_wait_time: "60000"
+common_auditd_rules_buffers: "8192"
+
+# TODO: Build go-audit deb/rpm and add as second backend
+common_auditd_backend: "auditd"
+
 # 20 # Chrony
 ###############################################################################
 

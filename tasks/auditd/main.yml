@@ -1,0 +1,44 @@
+# code: language=ansible
+---
+
+- name: "Common | Auditd | Install"
+  ansible.builtin.include_tasks: "auditd/{{ dist_pkg_mgr }}.yml"
+  tags:
+    - common
+    - common-auditd
+    - common-auditd-install
+
+- name: "Common | Auditd | Configure"
+  ansible.builtin.template:
+    src: "auditd/audit.rules.j2"
+    dest: "{{ common_auditd_config }}"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+    backup: false
+  notify:
+    - restart auditd
+  become: true
+  tags:
+    - common
+    - common-auditd
+    - common-auditd-configure
+
+- name: "Common | Auditd | Enable service"
+  ansible.builtin.service:
+    name: "{{ common_auditd_service }}"
+    state: "started"
+    enabled: true
+  become: true
+  tags:
+    - common
+    - common-auditd
+    - common-auditd-configure
+
+- name: "Common | Auditd | Flush handlers"
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - common
+    - common-auditd
+    - common-auditd-configure
+    - common-auditd-install
