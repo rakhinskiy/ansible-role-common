@@ -17,7 +17,7 @@
     mode: "0600"
     backup: false
   notify:
-    - restart auditd
+    - Restart auditd
   become: true
   tags:
     - common

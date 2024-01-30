@@ -157,7 +157,7 @@ common_repositories_disable:
 # 05 # Packages
 
 # default: []
-common_packages: 
+common_packages:
   - "strace"
   - "tcpdump"
   - "nano"
@@ -269,7 +269,7 @@ common_limits:
 ```yaml
 # 13 # Sysctl
 
-# default: 
+# default:
 # common_sysctl_file: "ansible"
 common_sysctl_file: "k8s"
 
@@ -299,7 +299,7 @@ common_sysfs:
 ```yaml
 # 15 # Firewall
 
-# default: 
+# default:
 #   Alma Linux / Rocky Linux -> firewalld
 #   Debian / Ubuntu -> ufw
 #   Only iptables currently supported
@@ -407,7 +407,7 @@ common_auditd_enable: true
 
 # default: []
 # Your custom rules
-common_auditd_rules: 
+common_auditd_rules:
   - '## Use these rules if you want to log container events'
   - '## watch for container creation'
   - '-a always,exit -F arch=b32 -S clone -F a0&0x7C020000 -F key=container-create'
@@ -421,7 +421,6 @@ common_auditd_rules_immutable: false
 
 common_auditd_rules_buffers: "8192"
 common_auditd_rules_backlog_wait_time: "60000"
-
 ```
 ```yaml
 # 20 # Chrony

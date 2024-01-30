@@ -31,7 +31,7 @@
     mode: "0644"
     backup: false
   notify:
-    - restart nscd
+    - Restart nscd
   become: true
   tags:
     - common

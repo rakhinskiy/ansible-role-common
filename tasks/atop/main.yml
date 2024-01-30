@@ -22,7 +22,7 @@
   when:
     - common_atop_options | is_dicts_list
   notify:
-    - restart atop
+    - Restart atop
   become: true
   tags:
     - common

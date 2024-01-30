@@ -7,7 +7,7 @@
     state: present
     update_cache: false
   notify:
-    - update rkhunter
+    - Update rkhunter
   become: true
   tags:
     - common

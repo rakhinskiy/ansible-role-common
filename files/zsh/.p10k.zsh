@@ -30,8 +30,8 @@
   # last prompt line gets hidden if it would overlap with left prompt.
   typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
     status                  # exit code of the last command
-    command_execution_time  # duration of the last command
-    background_jobs         # presence of background jobs
+    # command_execution_time  # duration of the last command
+    # background_jobs         # presence of background jobs
     # direnv                  # direnv status (https://direnv.net/)
     # asdf                    # asdf version manager (https://github.com/asdf-vm/asdf)
     virtualenv              # python virtual environment (https://docs.python.org/3/library/venv.html)
@@ -86,7 +86,7 @@
     # timewarrior             # timewarrior tracking status (https://timewarrior.net/)
     # taskwarrior             # taskwarrior task count (https://taskwarrior.org/)
     # cpu_arch              # CPU architecture
-    time                    # current time
+    # time                    # current time
     # ip                    # ip address and bandwidth usage for a specified network interface
     # public_ip             # public IP address
     # proxy                 # system-wide http/https/ftp proxy
