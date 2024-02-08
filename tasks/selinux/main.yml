@@ -1,0 +1,68 @@
+# code: language=ansible
+---
+
+- name: "Common | SELinux | Install"
+  ansible.builtin.dnf:
+    name: "{{ common_selinux_packages }}"
+    state: present
+    update_cache: false
+  become: true
+  tags:
+    - common
+    - common-selinux
+    - common-selinux-install
+
+- name: "Common | SELinux | Mode and policy"
+  ansible.posix.selinux:
+    configfile: "{{ common_selinux_config_file }}"
+    policy: "{{ common_selinux_policy }}"
+    state: "{{ common_selinux_state }}"
+    update_kernel_param: "{{ common_selinux_update_kernel }}"
+  become: true
+  tags:
+    - common
+    - common-selinux
+    - common-selinux-configure
+
+- name: "Common | SELinux | Booleans"
+  ansible.posix.seboolean:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+    persistent: "{{ item.persistent | default(false) }}"
+  with_items: "{{ common_selinux_booleans }}"
+  become: true
+  tags:
+    - common
+    - common-selinux
+    - common-selinux-configure
+
+- name: "Common | SELinux | File context | SE Type"
+  community.general.sefcontext:
+    target: "{{ item.target }}"
+    ftype: "{{ item.ftype | default('a') }}"
+    selevel: "{{ item.selevel | default('s0') }}"
+    setype: "{{ item.setype }}"
+    seuser: "{{ item.seuser | default('system_u') }}"
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ common_selinux_file_contexts }}"
+  when:
+    - item.setype is defined
+  become: true
+  tags:
+    - common
+    - common-selinux
+    - common-selinux-configure
+
+- name: "Common | SELinux | File context | SE Substitute"
+  community.general.sefcontext:
+    target: "{{ item.target }}"
+    substitute: "{{ item.substitute }}"
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ common_selinux_file_contexts }}"
+  when:
+    - item.setype is defined
+  become: true
+  tags:
+    - common
+    - common-selinux
+    - common-selinux-configure

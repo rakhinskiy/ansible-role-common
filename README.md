@@ -30,6 +30,7 @@ Tasks
 |   13   |    sysctl     |           Configure sysctl.conf           |       |
 |   14   |     sysfs     |           Configure sysfs utils           |       |
 |   15   |   firewall    |            Configure iptables             |       |
+|   16   |    selinux    |       Simple SELinux configuration        |       |
 |   18   |     atop      |               Install atop                |       |
 |   19   |    auditd     |             Configure auditd              |  ---  |
 |   20   |    chrony     |             Configure chrony              |       |
@@ -56,7 +57,6 @@ TODO
 
 | Number |     Task      | Description |
 |:------:|:-------------:|:-----------:|
-|   16   |    selinux    |             |
 |   17   |     aide      |             |
 
 Role Variables
@@ -379,6 +379,41 @@ common_firewall:
       - "-A POSTROUTING -o eht0 -j MASQUERADE"
 ```
 ```yaml
+# 16 # SELinux
+
+# default: false | true only run selinux tasks
+common_selinux_enable: true
+
+# default: targeted | ["targeted", "minimum", "mls"]
+common_selinux_policy: "targeted"
+
+# default: enforcing | ["disabled", "enforcing", "permissive"]
+common_selinux_state: "enforcing"
+
+# default: false
+common_selinux_update_kernel: false
+
+# default: []
+# https://docs.ansible.com/ansible/latest/collections/ansible/posix/seboolean_module.html
+common_selinux_booleans:
+  - name: "httpd_can_network_connect"
+    state: true
+    persistent: true
+  - name: "httpd_use_nfs"
+    state: true
+    persistent: true
+
+# default: []
+# https://docs.ansible.com/ansible/latest/collections/community/general/sefcontext_module.html
+common_selinux_file_contexts:
+  - target: "/srv/git_repos(/.*)?"
+    setype: httpd_sys_rw_content_t
+    state: present
+  - target: /srv/containers
+    substitute: /var/lib/containers
+    state: present
+```
+```yaml
 # 18 # Atop
 
 # default: false
@@ -628,7 +663,10 @@ common_zsh:
 Dependencies
 ------------
 
-Zero
+```shell
+ansible-galaxy collection install ansible.posix
+ansible-galaxy collection install community.general
+```
 
 License
 -------
