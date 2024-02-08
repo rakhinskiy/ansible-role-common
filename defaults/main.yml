@@ -266,6 +266,43 @@ common_firewall_backend: ~
 #             - any
 common_firewall: []
 
+# 16 # SELinux
+###############################################################################
+
+common_selinux_enable: false
+
+common_selinux_packages:
+  - "grubby"
+  - "libselinux"
+  - "libselinux-utils"
+  - "python3-libselinux"
+  - "selinux-policy"
+  - "selinux-policy-targeted"
+  - "rpm-plugin-selinux"
+
+common_selinux_config_file: "/etc/selinux/config"
+common_selinux_policy: "targeted"
+common_selinux_state: "enforcing"
+common_selinux_update_kernel: false
+
+# common_selinux_booleans:
+#   - name: "httpd_can_network_connect"
+#     state: true
+#     persistent: true
+#   - name: "httpd_use_nfs"
+#     state: true
+#     persistent: true
+common_selinux_booleans: []
+
+# common_selinux_file_contexts:
+#   - target: "/srv/git_repos(/.*)?"
+#     setype: httpd_sys_rw_content_t
+#     state: present
+#   - target: /srv/containers
+#     substitute: /var/lib/containers
+#     state: present
+common_selinux_file_contexts: []
+
 # 18 # Atop
 ###############################################################################
 

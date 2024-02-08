@@ -170,6 +170,19 @@
     - common-firewall-install
     - common-firewall-configure
 
+# 16 # SELinux
+
+- name: "Common | SELinux"
+  ansible.builtin.include_tasks: "selinux/main.yml"
+  when:
+    - common_selinux_enable
+    - dist_name in ["alma", "centos", "oracle", "rocky"]
+  tags:
+    - common
+    - common-selinux
+    - common-selinux-install
+    - common-selinux-configure
+
 # 18 # Atop
 
 - name: "Common | Atop"
