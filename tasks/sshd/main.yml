@@ -1,6 +1,34 @@
 # code: language=ansible
 ---
 
+- name: "Common | SSHD | Add include sshd_config.d"
+  ansible.builtin.lineinfile:
+    path: "/etc/ssh/sshd_config"
+    line: "Include /etc/ssh/sshd_config.d/*.conf"
+    insertbefore: "BOF"
+    state: "present"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+  become: true
+  tags:
+    - common
+    - common-sshd
+    - common-sshd-configure
+
+- name: "Common | SSHD | Create sshd_config.d"
+  ansible.builtin.file:
+    path: "/etc/ssh/sshd_config.d"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0700"
+  become: true
+  tags:
+    - common
+    - common-sshd
+    - common-sshd-configure
+
 - name: "Common | SSHD | Configure"
   ansible.builtin.template:
     src: "sshd/sshd.conf.j2"

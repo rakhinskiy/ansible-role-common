@@ -9,6 +9,18 @@
     - common
     - common-locale
 
+- name: "Common | Locale | Create locale.conf"
+  ansible.builtin.file:
+    path: "{{ common_locale_config }}"
+    state: "touch"
+    mode: "0644"
+    modification_time: "preserve"
+    access_time: "preserve"
+  become: true
+  tags:
+    - common
+    - common-locale
+
 - name: "Common | Locale | Set default locale"
   ansible.builtin.lineinfile:
     dest: "{{ common_locale_config }}"

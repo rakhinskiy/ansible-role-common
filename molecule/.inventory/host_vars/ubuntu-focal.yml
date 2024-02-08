@@ -1,0 +1,24 @@
+---
+
+common_rkhunter_options:
+  - option: "MIRRORS_MODE"
+    value: "1"
+    state: absent
+  - option: "UPDATE_MIRRORS"
+    value: "0"
+    state: absent
+  - option: "WEB_CMD"
+    value: "\"/bin/false\""
+    state: absent
+  - option: "ALLOW_SSH_ROOT_USER"
+    value: "yes"
+  - option: "SCRIPTWHITELIST"
+    value: "/usr/bin/fgrep"
+  - option: "SCRIPTWHITELIST"
+    value: "/usr/bin/egrep"
+  - option: "WEB_CMD"
+    value: "\"\""
+  - option: "UPDATE_MIRRORS"
+    value: "1"
+  - option: "MIRRORS_MODE"
+    value: "0"

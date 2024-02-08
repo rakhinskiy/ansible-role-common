@@ -260,7 +260,7 @@
 - name: "Common | Smartmontools"
   ansible.builtin.include_tasks: "smartmontools/main.yml"
   when:
-    - common_nscd_enable
+    - common_smartmontools_enable
   tags:
     - common
     - common-smartmontools

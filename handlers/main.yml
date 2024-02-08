@@ -3,7 +3,7 @@
 
 - name: "Reload sysctl"
   ansible.builtin.command:
-    cmd: "sysctl --system"
+    cmd: "/sbin/sysctl --system"
   become: true
   changed_when: false
 
@@ -20,61 +20,70 @@
 - name: "Restart ipset"
   ansible.builtin.service:
     name: "{{ common_firewall_ipset_service }}"
-    state: restarted
+    state: "restarted"
   become: true
 
 - name: "Restart iptables"
   ansible.builtin.service:
     name: "{{ common_firewall_iptables_service }}"
-    state: restarted
+    state: "restarted"
   become: true
 
 - name: "Restart atop"
   ansible.builtin.service:
     name: "{{ common_atop_service }}"
-    state: restarted
+    state: "restarted"
   become: true
 
 - name: "Restart auditd"
   ansible.builtin.service:
     name: "{{ common_chrony_service }}"
-    state: restarted
+    state: "restarted"
+    use: "service"
   become: true
 
 - name: "Restart chrony"
   ansible.builtin.service:
     name: "{{ common_chrony_service }}"
-    state: restarted
+    state: "restarted"
   become: true
 
 - name: "Restart cron"
   ansible.builtin.service:
     name: "{{ common_cron_service }}"
-    state: restarted
+    state: "restarted"
   become: true
 
 - name: "Restart nscd"
   ansible.builtin.service:
     name: "{{ common_nscd_service }}"
-    state: restarted
+    state: "restarted"
   become: true
+
+- name: "Prop update rkhunter"
+  ansible.builtin.command:
+    cmd: "rkhunter --propupd"
+  become: true
+  changed_when: false
 
 - name: "Update rkhunter"
   ansible.builtin.command:
-    cmd: "rkhunter --propupd --update"
+    cmd: "rkhunter --update"
+  register: rkhunter_update
   become: true
   changed_when: false
+  failed_when: not rkhunter_update.rc in [0, 2]
 
 - name: "Restart smartmontools"
   ansible.builtin.service:
     name: "{{ common_smartmontools_service }}"
-    state: restarted
+    state: "restarted"
   become: true
 
 - name: "Restart sshd"
   ansible.builtin.service:
     name: "{{ common_sshd_service }}"
-    state: restarted
+    state: "restarted"
   become: true
 
 - name: "Update apt cache"

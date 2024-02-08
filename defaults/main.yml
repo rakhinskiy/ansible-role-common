@@ -7,7 +7,7 @@
 # Fix sudo error when hostname changed
 ansible_become_flags: "--host=127.0.0.1 --set-home"
 
-dist_name: "{{ ansible_distribution | lower }}"
+dist_name: "{{ ansible_distribution | lower | replace('linux', '') }}"
 dist_version: "{{ ansible_distribution_major_version }}"
 dist_codename: "{{ ansible_lsb.codename | default() | lower }}"
 dist_pkg_mgr: "{{ ansible_pkg_mgr | lower }}"
@@ -272,6 +272,8 @@ common_firewall: []
 common_atop_enable: false
 common_atop_packages:
   - "atop"
+  - "findutils"
+
 common_atop_service: "atop"
 
 common_atop_options: []
@@ -459,6 +461,7 @@ common_nscd_netgroup_max_db_size: "33554432"
 common_rkhunter_enable: false
 common_rkhunter_packages:
   - "rkhunter"
+  - "wget"
 common_rkhunter_config: "/etc/rkhunter.conf"
 common_rkhunter_options: []
 
@@ -479,7 +482,7 @@ common_smartmontools_devices: ~
 # 26 # SSHD
 ###############################################################################
 
-common_sshd_config: "/etc/ssh/sshd_config.d/99-custom.conf"
+common_sshd_config: "/etc/ssh/sshd_config.d/00-custom.conf"
 common_sshd_service: "sshd"
 common_sshd_options: []
 

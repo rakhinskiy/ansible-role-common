@@ -1,0 +1,75 @@
+---
+# code: language=ansible
+
+# 00 # Always
+
+common_always_packages:
+  - "dnf-utils"
+  - "oracle-epel-release-el{{ dist_version }}"
+  - "procps-ng"
+  - "python3-libselinux"
+  - "python3-policycoreutils"
+  - "virt-what"
+
+# 08 # Locale
+
+common_locale_packages:
+  - "glibc-common"
+  - "glibc-all-langpacks"
+
+common_locale_config: "/etc/locale.conf"
+
+# 15 # Firewall
+
+common_firewall_default_backend: "firewalld"
+
+common_firewall_iptables_config: "/etc/sysconfig/iptables"
+common_firewall_iptables_service: "iptables"
+common_firewall_iptables_disable_services:
+  - "firewalld"
+
+common_firewall_ipset_config: "/etc/sysconfig/ipset"
+common_firewall_ipset_service: "ipset"
+
+# 18 # Atop
+
+common_atop_config: "/etc/sysconfig/atop"
+
+# 19 # Auditd
+
+common_auditd_packages:
+  - "audit"
+  - "audit-libs"
+  - "audispd-plugins"
+  - "python3-audit"
+  - "rpm-plugin-audit"
+
+# 20 # Chrony
+
+common_chrony_user: "chrony"
+common_chrony_group: "chrony"
+
+common_chrony_service: "chronyd"
+
+common_chrony_config: "/etc/chrony.conf"
+common_chrony_keyfile: "/etc/chrony.keys"
+
+# 21 # Cron
+
+common_cron_packages:
+  - "cronie"
+  - "cronie-anacron"
+  - "crontabs"
+
+common_cron_service: "crond"
+
+# 23 # NSCD
+
+common_nscd_server_user: "nscd"
+
+# 25 # Smartmontools
+
+common_smartmontools_config: "/etc/smartmontools/smartd.conf"
+common_smartmontools_daemon_options_config: "/etc/sysconfig/smartmontools"
+common_smartmontools_service: "smartd"
+common_smartmontools_devicescan: "-d removable -n standby,10,q -H -M exec /usr/libexec/smartmontools/smartdnotify"

@@ -26,3 +26,11 @@
     - common
     - common-rkhunter
     - common-rkhunter-configure
+
+- name: "Common | Rootkit Hunter | Flush handlers"
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - common
+    - common-rkhunter
+    - common-rkhunter-configure
+    - common-rkhunter-install

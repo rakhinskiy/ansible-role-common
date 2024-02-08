@@ -12,34 +12,34 @@ Requirements
 Tasks
 --------------
 
-| Number |     Task      |                Description                |
-|:------:|:-------------:|:-----------------------------------------:|
-|   00   |    always     | Check OS and install ansible dependencies |
-|   01   |   hostname    |            Set server hostname            |
-|   02   |     hosts     |             Manage /etc/hosts             |
-|   03   |   timezone    |            Set server timezone            |
-|   04   | repositories  |    Add or enable/disable repositories     |
-|   05   |   packages    |             Install packages              |
-|   06   |    locale     |             Configure locales             |
-|   07   |     users     |            Manage local users             |
-|   08   |     sudo      |        Install sudo and configure         |
-|   09   |      ssh      |         Configure ssh client keys         |
-|   10   |     dirs      |           Create local folders            |
-|   11   | environments  |            Configure env vars             |
-|   12   |    limits     |           Configure limits.conf           |
-|   13   |    sysctl     |           Configure sysctl.conf           |
-|   14   |     sysfs     |           Configure sysfs utils           |
-|   15   |   firewall    |            Configure iptables             |
-|   18   |     atop      |               Install atop                |
-|   19   |    auditd     |             Configure auditd              |
-|   20   |    chrony     |             Configure chrony              |
-|   21   |     cron      |      Configure cron[d] and add tasks      |
-|   22   |   logwatch    |            Configure logwatch             |
-|   23   |     nscd      |              Configure NSCD               |
-|   24   |   rkhunter    |            Configure rkhunter             |
-|   25   | smartmontools |          Configure smartmontools          |
-|   26   |     sshd      |           Configure SSHD daemon           |
-|   27   |      zsh      |               Configure ZSH               |
+| Number |     Task      |                Description                | Tests |
+|:------:|:-------------:|:-----------------------------------------:|:-----:|
+|   00   |    always     | Check OS and install ansible dependencies |  ---  |
+|   01   |   hostname    |            Set server hostname            |       |
+|   02   |     hosts     |             Manage /etc/hosts             |  ---  |
+|   03   |   timezone    |            Set server timezone            |       |
+|   04   | repositories  |    Add or enable/disable repositories     |       |
+|   05   |   packages    |             Install packages              |       |
+|   06   |    locale     |             Configure locales             |       |
+|   07   |     users     |            Manage local users             |       |
+|   08   |     sudo      |        Install sudo and configure         |       |
+|   09   |      ssh      |         Configure ssh client keys         |       |
+|   10   |     dirs      |           Create local folders            |       |
+|   11   | environments  |            Configure env vars             |       |
+|   12   |    limits     |           Configure limits.conf           |       |
+|   13   |    sysctl     |           Configure sysctl.conf           |       |
+|   14   |     sysfs     |           Configure sysfs utils           |       |
+|   15   |   firewall    |            Configure iptables             |       |
+|   18   |     atop      |               Install atop                |       |
+|   19   |    auditd     |             Configure auditd              |  ---  |
+|   20   |    chrony     |             Configure chrony              |       |
+|   21   |     cron      |      Configure cron[d] and add tasks      |       |
+|   22   |   logwatch    |            Configure logwatch             |       |
+|   23   |     nscd      |              Configure NSCD               |       |
+|   24   |   rkhunter    |            Configure rkhunter             |       |
+|   25   | smartmontools |          Configure smartmontools          |       |
+|   26   |     sshd      |           Configure SSHD daemon           |       |
+|   27   |      zsh      |               Configure ZSH               |       |
 
 TODO
 --------------
@@ -50,18 +50,14 @@ TODO
 - Add iptables restart script with save docker / k8s rules
 - Fix ipset service restart in Debian / Ubuntu (ipset is symlink to netfilter-persistent)
 - Add firewalld and ufw support
-- Add molecule tests (docker with systemd images)
-- Optimize vars/*
 - Audisp plugins config for auditd
 - Add support for go-audit (Slack) / go-libaudit (Elastic) versions of auditd
+- Rewrite rkhunter configure tasks
 
 | Number |     Task      | Description |
 |:------:|:-------------:|:-----------:|
-|        | --security--  |     --      |
 |   16   |    selinux    |             |
-|        | --software--  |     --      |
 |   17   |     aide      |             |
-
 
 Role Variables
 --------------
@@ -608,7 +604,7 @@ common_smartmontools_devices: ~
 # 26 # SSHD
 
 # default: []
-# config location: /etc/ssh/sshd_config.d/99-custom.conf
+# config location: /etc/ssh/sshd_config.d/00-custom.conf
 # option name converted at filter_plugins -> filter.py -> def correct_sshd_option
 common_sshd_options:
   - option: "pub_key_authentication"

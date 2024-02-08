@@ -8,6 +8,7 @@
     update_cache: false
   notify:
     - Update rkhunter
+    - Prop update rkhunter
   become: true
   tags:
     - common

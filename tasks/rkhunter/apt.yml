@@ -10,6 +10,7 @@
     cache_valid_time: 3600
   notify:
     - Update rkhunter
+    - Prop update rkhunter
   become: true
   tags:
     - common
