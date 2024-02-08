@@ -1,0 +1,15 @@
+---
+
+common_repositories_enable:
+  - "crb"
+  - "extras"
+  - "highavailability"
+  - "plus"
+
+common_rkhunter_options:
+  - option: "ALLOW_SSH_ROOT_USER"
+    value: "yes"
+  - option: "SCRIPTWHITELIST"
+    value: "/usr/bin/fgrep"
+  - option: "SCRIPTWHITELIST"
+    value: "/usr/bin/egrep"

@@ -32,7 +32,7 @@
     mode: "0640"
     backup: false
   notify:
-    - restart chrony
+    - Restart chrony
   become: true
   tags:
     - common

@@ -7,20 +7,20 @@
   ansible.builtin.fail:
     msg: "Unsupported distribution {{ dist_name }}"
   when:
-    - dist_name not in ["almalinux", "debian", "rockylinux", "ubuntu"]
+    - dist_name not in ["alma", "centos", "debian", "oracle", "rocky", "ubuntu"]
   tags:
     - always
 
-- name: "Common | Always | Check alma/rocky linux version"
+- name: "Common | Always | Check alma/centos/oracle/rocky linux versions"
   ansible.builtin.fail:
     msg: "Unsupported distribution version {{ dist_name }}: {{ dist_version }}"
   when:
-    - dist_name in ["almalinux", "rockylinux"]
+    - dist_name in ["almalinux", "centos", "oracle", "rockylinux"]
     - dist_version not in ["8", "9"]
   tags:
     - always
 
-- name: "Common | Always | Check Debian / Ubuntu codename"
+- name: "Common | Always | Check Debian / Ubuntu codenames"
   ansible.builtin.fail:
     msg: "Unsupported distribution version {{ dist_name }}: {{ dist_codename }}"
   when:
@@ -32,21 +32,7 @@
 # Include distribution specified vars
 
 - name: "Common | Always | Include distribution vars"
-  ansible.builtin.include_vars: "{{ dist_name }}/{{ dist_name }}.yml"
-  tags:
-    - always
-
-- name: "Common | Always | Include alma/rocky linux version vars"
-  ansible.builtin.include_vars: "{{ dist_name }}/{{ dist_name }}-{{ dist_version }}.yml"
-  when:
-    - dist_name in ["almalinux", "rockylinux"]
-  tags:
-    - always
-
-- name: "Common | Always | Include debian/ubuntu codename vars"
-  ansible.builtin.include_vars: "{{ dist_name }}/{{ dist_name }}-{{ dist_codename }}.yml"
-  when:
-    - dist_name in ["debian", "ubuntu"]
+  ansible.builtin.include_vars: "{{ dist_name }}.yml"
   tags:
     - always
 

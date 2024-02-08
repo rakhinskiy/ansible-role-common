@@ -1,0 +1,45 @@
+---
+dependency:
+  name: galaxy
+
+driver:
+  name: docker
+
+scenario:
+  name: "docker-al-9"
+
+platforms:
+  # Alma Linux 9
+  - name: "alma-linux-9"
+    image: "reg.sys.im/tools-molecule-systemd:al-9"
+    privileged: true
+    pre_build_image: true
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
+    security_opt:
+      - seccomp=unconfined
+    capabilities:
+      - CAP_SYS_ADMIN
+    override_command: false
+    cgroupns: private
+    cgroup_parent: "docker.slice"
+    groups:
+      - alma
+      - el
+
+provisioner:
+  name: ansible
+  lint:
+    name: ansible-lint
+    enabled: true
+  options:
+    vvv: true
+  inventory:
+    links:
+      host_vars: ../.inventory/host_vars
+      group_vars: ../.inventory/group_vars
+
+verifier:
+  name: ansible

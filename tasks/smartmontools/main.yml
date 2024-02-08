@@ -17,7 +17,7 @@
     mode: "0644"
     backup: false
   notify:
-    - restart smartmontools
+    - Restart smartmontools
   become: true
   tags:
     - common
@@ -37,7 +37,7 @@
   when:
     - common_smartmontools_daemon_options | is_ne_list
   notify:
-    - restart smartmontools
+    - Restart smartmontools
   become: true
   tags:
     - common

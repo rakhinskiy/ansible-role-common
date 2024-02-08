@@ -9,7 +9,8 @@
     force_apt_get: true
     cache_valid_time: 3600
   notify:
-    - update rkhunter
+    - Update rkhunter
+    - Prop update rkhunter
   become: true
   tags:
     - common

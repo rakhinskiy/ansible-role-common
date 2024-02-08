@@ -21,7 +21,7 @@
     - "{{ common_cron_environments | default([]) }}"
     - vars
   notify:
-    - restart cron
+    - Restart cron
   become: true
   tags:
     - common
@@ -43,7 +43,7 @@
   when:
     - common_cron_tasks | is_ne_list
   notify:
-    - restart cron
+    - Restart cron
   become: true
   tags:
     - common

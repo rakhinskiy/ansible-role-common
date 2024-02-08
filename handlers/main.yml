@@ -1,13 +1,13 @@
 # code: language=ansible
 ---
 
-- name: "reload sysctl"
+- name: "Reload sysctl"
   ansible.builtin.command:
-    cmd: "sysctl --system"
+    cmd: "/sbin/sysctl --system"
   become: true
   changed_when: false
 
-- name: "selinux security contexts restore"
+- name: "Selinux security contexts restore"
   ansible.builtin.command:
     cmd: "restorecon -R -v ~{{ item.user }}/.ssh"
   with_items: "{{ common_ssh_authorized_keys }}"
@@ -17,73 +17,82 @@
   become: true
   changed_when: false
 
-- name: "restart ipset"
+- name: "Restart ipset"
   ansible.builtin.service:
     name: "{{ common_firewall_ipset_service }}"
-    state: restarted
+    state: "restarted"
   become: true
 
-- name: "restart iptables"
+- name: "Restart iptables"
   ansible.builtin.service:
     name: "{{ common_firewall_iptables_service }}"
-    state: restarted
+    state: "restarted"
   become: true
 
-- name: "restart atop"
+- name: "Restart atop"
   ansible.builtin.service:
     name: "{{ common_atop_service }}"
-    state: restarted
+    state: "restarted"
   become: true
 
-- name: "restart auditd"
+- name: "Restart auditd"
   ansible.builtin.service:
     name: "{{ common_chrony_service }}"
-    state: restarted
+    state: "restarted"
+    use: "service"
   become: true
 
-- name: "restart chrony"
+- name: "Restart chrony"
   ansible.builtin.service:
     name: "{{ common_chrony_service }}"
-    state: restarted
+    state: "restarted"
   become: true
 
-- name: "restart cron"
+- name: "Restart cron"
   ansible.builtin.service:
     name: "{{ common_cron_service }}"
-    state: restarted
+    state: "restarted"
   become: true
 
-- name: "restart nscd"
+- name: "Restart nscd"
   ansible.builtin.service:
     name: "{{ common_nscd_service }}"
-    state: restarted
+    state: "restarted"
   become: true
 
-- name: "update rkhunter"
+- name: "Prop update rkhunter"
   ansible.builtin.command:
-    cmd: "rkhunter --propupd --update"
+    cmd: "rkhunter --propupd"
   become: true
   changed_when: false
 
-- name: "restart smartmontools"
+- name: "Update rkhunter"
+  ansible.builtin.command:
+    cmd: "rkhunter --update"
+  register: rkhunter_update
+  become: true
+  changed_when: false
+  failed_when: not rkhunter_update.rc in [0, 2]
+
+- name: "Restart smartmontools"
   ansible.builtin.service:
     name: "{{ common_smartmontools_service }}"
-    state: restarted
+    state: "restarted"
   become: true
 
-- name: "restart sshd"
+- name: "Restart sshd"
   ansible.builtin.service:
     name: "{{ common_sshd_service }}"
-    state: restarted
+    state: "restarted"
   become: true
 
-- name: "update apt cache"
+- name: "Update apt cache"
   ansible.builtin.apt:
     update_cache: true
     force_apt_get: true
   become: true
 
-- name: "update dnf cache"
+- name: "Update dnf cache"
   ansible.builtin.dnf:
     update_cache: true
   become: true
