@@ -31,6 +31,7 @@ Tasks
 |   14   |     sysfs     |           Configure sysfs utils           |       |
 |   15   |   firewall    |            Configure iptables             |       |
 |   16   |    selinux    |       Simple SELinux configuration        |       |
+|   17   |     aide      |        Install and configure Aide         |       |
 |   18   |     atop      |               Install atop                |       |
 |   19   |    auditd     |             Configure auditd              |  ---  |
 |   20   |    chrony     |             Configure chrony              |       |
@@ -54,10 +55,6 @@ TODO
 - Audisp plugins config for auditd
 - Add support for go-audit (Slack) / go-libaudit (Elastic) versions of auditd
 - Rewrite rkhunter configure tasks
-
-| Number |     Task      | Description |
-|:------:|:-------------:|:-----------:|
-|   17   |     aide      |             |
 
 Role Variables
 --------------
@@ -412,6 +409,31 @@ common_selinux_file_contexts:
   - target: /srv/containers
     substitute: /var/lib/containers
     state: present
+```
+```yaml
+# 17 # AIDE
+
+# By default, only install aide and init database
+# You can write your own aide.conf and put it to
+# inventory and set common_aide_config_file
+# then your config uploaded to servers
+# don't forget to set common_aide_db_new
+# and common_aide_db if not standard path used
+
+# default: false
+common_aide_enable: true
+
+# default: not defined | not required
+common_aide_config_file: "{{ inventory_dir }}/.files/{{ ansible_os_family | lower }}/aide.conf"
+
+# default:
+#   debian family: /var/lib/aide/aide.db.new
+#   redhat family: /var/lib/aide/aide.db.new.gz
+common_aide_db_new: "/var/lib/aide/aide.db.new.gz"
+# default:
+#   debian family: /var/lib/aide/aide.db
+#   redhat family: /var/lib/aide/aide.db.gz
+common_aide_db: "/var/lib/aide/aide.db.gz"
 ```
 ```yaml
 # 18 # Atop

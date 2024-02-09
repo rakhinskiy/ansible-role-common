@@ -303,6 +303,13 @@ common_selinux_booleans: []
 #     state: present
 common_selinux_file_contexts: []
 
+# 17 # AIDE
+###############################################################################
+
+common_aide_enable: false
+common_aide_packages:
+  - "aide"
+
 # 18 # Atop
 ###############################################################################
 

@@ -1,0 +1,13 @@
+# code: language=ansible
+---
+
+- name: "Common | AIDE | Install | Dnf"
+  ansible.builtin.dnf:
+    name: "{{ common_aide_packages }}"
+    state: present
+    update_cache: false
+  become: true
+  tags:
+    - common
+    - common-aide
+    - common-aide-install

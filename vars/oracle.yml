@@ -31,6 +31,13 @@ common_firewall_iptables_disable_services:
 common_firewall_ipset_config: "/etc/sysconfig/ipset"
 common_firewall_ipset_service: "ipset"
 
+# 17 # AIDE
+
+common_aide_config_path: "/etc/aide.conf"
+common_aide_binary: "/usr/sbin/aide"
+common_aide_db_new: "/var/lib/aide/aide.db.new.gz"
+common_aide_db: "/var/lib/aide/aide.db.gz"
+
 # 18 # Atop
 
 common_atop_config: "/etc/sysconfig/atop"

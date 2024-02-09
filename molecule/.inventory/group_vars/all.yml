@@ -84,6 +84,9 @@ common_sysfs:
     value: "madvise"
     type: "attribute"
 
+common_aide_enable: true
+common_aide_config_file: "{{ inventory_dir }}/.files/{{ ansible_os_family | lower }}.aide.conf"
+
 common_atop_enable: true
 common_atop_options:
   - option: "LOGINTERVAL"

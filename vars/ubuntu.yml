@@ -31,6 +31,13 @@ common_firewall_iptables_disable_services:
 common_firewall_ipset_config: "/etc/iptables/ipsets"
 common_firewall_ipset_service: "netfilter-persistent"
 
+# 17 # AIDE
+
+common_aide_config_path: "/etc/aide/aide.conf"
+common_aide_binary: "/usr/bin/aide"
+common_aide_db_new: "/var/lib/aide/aide.db.new"
+common_aide_db: "/var/lib/aide/aide.db"
+
 # 18 # Atop
 
 common_atop_config: "/etc/default/atop"

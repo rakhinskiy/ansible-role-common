@@ -38,6 +38,7 @@ provisioner:
     vvv: true
   inventory:
     links:
+      .files: ../.inventory/.files
       host_vars: ../.inventory/host_vars
       group_vars: ../.inventory/group_vars
 
