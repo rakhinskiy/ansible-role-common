@@ -1,0 +1,43 @@
+# code: language=ansible
+---
+
+- name: "Common | AIDE | Install"
+  ansible.builtin.include_tasks: "aide/{{ dist_pkg_mgr }}.yml"
+  tags:
+    - common
+    - common-aide
+    - common-aide-install
+
+- name: "Common | AIDE | Configure"
+  ansible.builtin.copy:
+    src: "{{ common_aide_config_file }}"
+    dest: "{{ common_aide_config_path }}"
+    owner: "root"
+    mode: "0600"
+    remote_src: false
+  when:
+    - common_aide_config_file is defined
+  tags:
+    - common
+    - common-aide
+    - common-aide-configure
+
+- name: "Common | AIDE | Init DB"
+  ansible.builtin.command:
+    cmd: "{{ common_aide_binary }} -c {{ common_aide_config_path }} --init"
+    creates: "{{ common_aide_db_new }}"
+  become: true
+  tags:
+    - common
+    - common-aide
+    - common-aide-configure
+
+- name: "Common | AIDE | Copy DB"
+  ansible.builtin.command:
+    cmd: "cp {{ common_aide_db_new }} {{ common_aide_db }}"
+    creates: "{{ common_aide_db }}"
+  become: true
+  tags:
+    - common
+    - common-aide
+    - common-aide-configure

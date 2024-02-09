@@ -183,6 +183,18 @@
     - common-selinux-install
     - common-selinux-configure
 
+# 17 # AIDE
+
+- name: "Common | AIDE"
+  ansible.builtin.include_tasks: "aide/main.yml"
+  when:
+    - common_aide_enable
+  tags:
+    - common
+    - common-aide
+    - common-aide-install
+    - common-aide-configure
+
 # 18 # Atop
 
 - name: "Common | Atop"
