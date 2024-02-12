@@ -6,12 +6,12 @@ driver:
   name: docker
 
 scenario:
-  name: "docker"
+  name: "default"
 
 platforms:
 
   # Alma Linux 8
-  - name: "alma-linux-8"
+  - name: "alma-8"
     image: "reg.sys.im/tools-molecule-systemd:al-8"
     privileged: true
     pre_build_image: true
@@ -30,7 +30,7 @@ platforms:
       - el
 
   # Alma Linux 9
-  - name: "alma-linux-9"
+  - name: "alma-9"
     image: "reg.sys.im/tools-molecule-systemd:al-9"
     privileged: true
     pre_build_image: true
@@ -50,7 +50,7 @@ platforms:
       - el
 
   # CentOS Linux 8 Stream
-  - name: "centos-linux-8"
+  - name: "centos-8"
     image: "reg.sys.im/tools-molecule-systemd:co-8"
     privileged: true
     pre_build_image: true
@@ -69,7 +69,7 @@ platforms:
       - el
 
   # CentOS Linux 9 Stream
-  - name: "centos-linux-9"
+  - name: "centos-9"
     image: "reg.sys.im/tools-molecule-systemd:co-9"
     privileged: true
     pre_build_image: true
@@ -89,7 +89,7 @@ platforms:
       - el
 
   # Oracle Linux 8
-  - name: "oracle-linux-8"
+  - name: "oracle-8"
     image: "reg.sys.im/tools-molecule-systemd:ol-8"
     privileged: true
     pre_build_image: true
@@ -108,7 +108,7 @@ platforms:
       - el
 
   # Oracle Linux 9
-  - name: "oracle-linux-9"
+  - name: "oracle-9"
     image: "reg.sys.im/tools-molecule-systemd:ol-9"
     privileged: true
     pre_build_image: true
@@ -128,7 +128,7 @@ platforms:
       - el
 
   # Rocky Linux 8
-  - name: "rocky-linux-8"
+  - name: "rocky-8"
     image: "reg.sys.im/tools-molecule-systemd:rl-8"
     privileged: true
     pre_build_image: true
@@ -148,7 +148,7 @@ platforms:
       - el
 
   # Rocky Linux 9
-  - name: "rocky-linux-9"
+  - name: "rocky-9"
     image: "reg.sys.im/tools-molecule-systemd:rl-9"
     privileged: true
     pre_build_image: true
@@ -256,9 +256,9 @@ provisioner:
     vvv: true
   inventory:
     links:
-      .files: ../.inventory/.files
-      host_vars: ../.inventory/host_vars
-      group_vars: ../.inventory/group_vars
+      .files: inventory/.files
+      host_vars: inventory/host_vars
+      group_vars: inventory/group_vars
 
 verifier:
   name: ansible

@@ -1,0 +1,70 @@
+# code: language=ansible
+---
+
+- name: "Common | Tuned | Install"
+  ansible.builtin.include_tasks: "tuned/{{ dist_pkg_mgr }}.yml"
+  tags:
+    - common
+    - common-tuned
+    - common-tuned-install
+
+- name: "Common | Tuned | Create profile folder"
+  ansible.builtin.file:
+    path: "/etc/tuned/{{ common_tuned_profile_name }}"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  become: true
+  tags:
+    - common
+    - common-tuned
+    - common-tuned-configure
+
+- name: "Common | Tuned | Create profile"
+  ansible.builtin.template:
+    src: "tuned/tuned.conf.j2"
+    dest: "/etc/tuned/{{ common_tuned_profile_name }}/tuned.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    backup: "false"
+  become: true
+  tags:
+    - common
+    - common-sysfs
+    - common-sysfs-configure
+
+- name: "Common | Tuned | Enable service"
+  ansible.builtin.service:
+    name: "{{ common_tuned_service }}"
+    enabled: true
+    state: "started"
+  become: true
+  tags:
+    - common
+    - common-tuned
+    - common-tuned-configure
+
+- name: "Common | Tuned | Get current profile"
+  ansible.builtin.command:
+    cmd: "/usr/sbin/tuned-adm active"
+  register: common_tuned_current_profile
+  changed_when: false
+  become: true
+  tags:
+    - common
+    - common-tuned
+    - common-tuned-configure
+
+- name: "Common | Tuned | Activate profile"
+  ansible.builtin.command:
+    cmd: "/usr/sbin/tuned-adm profile {{ common_tuned_profile_name }}"
+  when:
+    - common_tuned_profile_name not in common_tuned_current_profile.stdout
+  become: true
+  changed_when: true
+  tags:
+    - common
+    - common-tuned
+    - common-tuned-configure

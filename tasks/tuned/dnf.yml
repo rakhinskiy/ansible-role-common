@@ -1,0 +1,13 @@
+# code: language=ansible
+---
+
+- name: "Common | Tuned | Install | Dnf"
+  ansible.builtin.dnf:
+    name: "{{ common_tuned_packages }}"
+    state: "present"
+    update_cache: false
+  become: true
+  tags:
+    - common
+    - common-tuned
+    - common-tuned-install
