@@ -29,24 +29,24 @@ Tasks
 |   12   |    limits     |           Configure limits.conf           |       |
 |   13   |    sysctl     |           Configure sysctl.conf           |       |
 |   14   |     sysfs     |           Configure sysfs utils           |       |
-|   15   |   firewall    |            Configure iptables             |       |
-|   16   |    selinux    |       Simple SELinux configuration        |       |
-|   17   |     aide      |        Install and configure Aide         |       |
-|   18   |     atop      |               Install atop                |       |
-|   19   |    auditd     |             Configure auditd              |  ---  |
-|   20   |    chrony     |             Configure chrony              |       |
-|   21   |     cron      |      Configure cron[d] and add tasks      |       |
-|   22   |   logwatch    |            Configure logwatch             |       |
-|   23   |     nscd      |              Configure NSCD               |       |
-|   24   |   rkhunter    |            Configure rkhunter             |       |
-|   25   | smartmontools |          Configure smartmontools          |       |
-|   26   |     sshd      |           Configure SSHD daemon           |       |
-|   27   |      zsh      |               Configure ZSH               |       |
+|   15   |     tuned     |        Install and configure tuned        |       |
+|   16   |   firewall    |            Configure iptables             |       |
+|   17   |    selinux    |       Simple SELinux configuration        |       |
+|   18   |     aide      |        Install and configure Aide         |       |
+|   19   |     atop      |               Install atop                |       |
+|   20   |    auditd     |             Configure auditd              |  ---  |
+|   21   |    chrony     |             Configure chrony              |       |
+|   22   |     cron      |      Configure cron[d] and add tasks      |       |
+|   23   |   logwatch    |            Configure logwatch             |       |
+|   24   |     nscd      |              Configure NSCD               |       |
+|   25   |   rkhunter    |            Configure rkhunter             |       |
+|   26   | smartmontools |          Configure smartmontools          |       |
+|   27   |     sshd      |           Configure SSHD daemon           |       |
+|   28   |      zsh      |               Configure ZSH               |       |
 
 TODO
 --------------
 
-- Replace sysfs utils with tuned
 - Add to iptables forward / output zone rules
 - Add to iptables src nat / dst nat zone rules
 - Add iptables restart script with save docker / k8s rules
@@ -290,7 +290,35 @@ common_sysfs:
     type: "attribute"
 ```
 ```yaml
-# 15 # Firewall
+# 15 # Tuned
+
+# default: false
+common_tuned_enable: true
+
+# default: "profile-custom"
+common_tuned_profile_name: "profile-kubernetes"
+
+# default: []
+common_tuned_profile_config:
+  - name: "main"
+    params:
+      - option: "summary"
+        value: "Test"
+      - option: "include"
+        value: "throughput-performance"
+  - name: "sysctl"
+    params:
+      - option: "vm.dirty_ratio"
+        value: "30"
+      - option: "vm.swappiness"
+        value: "30"
+  - name: "vm"
+    params:
+      - option: "transparent_hugepages"
+        value: "never"
+```
+```yaml
+# 16 # Firewall
 
 # default:
 #   Alma Linux / Rocky Linux -> firewalld
@@ -376,7 +404,7 @@ common_firewall:
       - "-A POSTROUTING -o eht0 -j MASQUERADE"
 ```
 ```yaml
-# 16 # SELinux
+# 17 # SELinux
 
 # default: false | true only run selinux tasks
 common_selinux_enable: true
@@ -411,7 +439,7 @@ common_selinux_file_contexts:
     state: present
 ```
 ```yaml
-# 17 # AIDE
+# 18 # AIDE
 
 # By default, only install aide and init database
 # You can write your own aide.conf and put it to
@@ -436,7 +464,7 @@ common_aide_db_new: "/var/lib/aide/aide.db.new.gz"
 common_aide_db: "/var/lib/aide/aide.db.gz"
 ```
 ```yaml
-# 18 # Atop
+# 19 # Atop
 
 # default: false
 common_atop_enable: true
@@ -451,7 +479,7 @@ common_atop_options:
     value: "14"
 ```
 ```yaml
-# 19 # Auditd
+# 20 # Auditd
 
 # Before enable auditd, please open templates/auditd/audit.rules.j2
 # Before enable `common_auditd_rules_predefined` READ RULES IN TEMPLATE
@@ -476,7 +504,7 @@ common_auditd_rules_buffers: "8192"
 common_auditd_rules_backlog_wait_time: "60000"
 ```
 ```yaml
-# 20 # Chrony
+# 21 # Chrony
 
 common_chrony_enable: false
 
@@ -514,7 +542,7 @@ common_chrony_servers: ~
 common_chrony_stratum_weight: "0.001"
 ```
 ```yaml
-# 21 # Cron
+# 22 # Cron
 
 # default: []
 common_cron_environments:
@@ -536,7 +564,7 @@ common_cron_tasks:
     disabled: "no"                # default: no
 ```
 ```yaml
-# 22 # Logwatch
+# 23 # Logwatch
 
 # default: false
 common_logwatch_enable: true
@@ -567,7 +595,7 @@ common_logwatch_mailer: "/usr/sbin/sendmail -t"
 common_logwatch_hostlimit: ~
 ```
 ```yaml
-# 23 # NSCD
+# 24 # NSCD
 
 # default: false
 common_nscd_enable: true
@@ -629,7 +657,7 @@ common_nscd_netgroup_shared: "yes"
 common_nscd_netgroup_max_db_size: "33554432"
 ```
 ```yaml
-# 24 # RKHunter
+# 25 # RKHunter
 
 common_rkhunter_enable: true
 common_rkhunter_options:
@@ -641,7 +669,7 @@ common_rkhunter_options:
     state: "absent"
 ```
 ```yaml
-# 25 # Smartmontools
+# 26 # Smartmontools
 
 # default: false
 # Enable on bare-metal servers
@@ -658,7 +686,7 @@ common_smartmontools_devicescan: "-H -d removable -n standby,10,q"
 common_smartmontools_devices: ~
 ```
 ```yaml
-# 26 # SSHD
+# 27 # SSHD
 
 # default: []
 # config location: /etc/ssh/sshd_config.d/00-custom.conf
@@ -674,7 +702,7 @@ common_sshd_options:
     value: "no"
 ```
 ```yaml
-# 27 # ZSH
+# 28 # ZSH
 
 # default: []
 common_zsh:

@@ -158,7 +158,19 @@
     - common-sysfs-install
     - common-sysfs-configure
 
-# 15 # Firewall
+# 15 # Tuned
+
+- name: "Common | Tuned"
+  ansible.builtin.include_tasks: "tuned/main.yml"
+  when:
+    - common_tuned_enable
+  tags:
+    - common
+    - common-tuned
+    - common-tuned-install
+    - common-tuned-configure
+
+# 16 # Firewall
 
 - name: "Common | Firewall"
   ansible.builtin.include_tasks: "firewall/main.yml"
@@ -170,7 +182,7 @@
     - common-firewall-install
     - common-firewall-configure
 
-# 16 # SELinux
+# 17 # SELinux
 
 - name: "Common | SELinux"
   ansible.builtin.include_tasks: "selinux/main.yml"
@@ -183,7 +195,7 @@
     - common-selinux-install
     - common-selinux-configure
 
-# 17 # AIDE
+# 18 # AIDE
 
 - name: "Common | AIDE"
   ansible.builtin.include_tasks: "aide/main.yml"
@@ -195,7 +207,7 @@
     - common-aide-install
     - common-aide-configure
 
-# 18 # Atop
+# 19 # Atop
 
 - name: "Common | Atop"
   ansible.builtin.include_tasks: "atop/main.yml"
@@ -207,7 +219,7 @@
     - common-atop-install
     - common-atop-configure
 
-# 19 # Auditd
+# 20 # Auditd
 
 - name: "Common | Auditd"
   ansible.builtin.include_tasks: "auditd/main.yml"
@@ -219,7 +231,7 @@
     - common-auditd-install
     - common-auditd-configure
 
-# 20 # Chrony
+# 21 # Chrony
 
 - name: "Common | Chrony"
   ansible.builtin.include_tasks: "chrony/main.yml"
@@ -231,7 +243,7 @@
     - common-chrony-install
     - common-chrony-configure
 
-# 21 # Cron
+# 22 # Cron
 
 - name: "Common | Cron"
   ansible.builtin.include_tasks: "cron/main.yml"
@@ -244,7 +256,7 @@
     - common-cron-install
     - common-cron-configure
 
-# 22 # Logwatch
+# 23 # Logwatch
 
 - name: "Common | Logwatch"
   ansible.builtin.include_tasks: "logwatch/main.yml"
@@ -256,7 +268,7 @@
     - common-logwatch-install
     - common-logwatch-configure
 
-# 23 # NSCD
+# 24 # NSCD
 
 - name: "Common | NSCD"
   ansible.builtin.include_tasks: "nscd/main.yml"
@@ -268,7 +280,7 @@
     - common-nscd-install
     - common-nscd-configure
 
-# 24 # Rootkit Hunter
+# 25 # Rootkit Hunter
 
 - name: "Common | Rootkit Hunter"
   ansible.builtin.include_tasks: "rkhunter/main.yml"
@@ -280,7 +292,7 @@
     - common-rkhunter-install
     - common-rkhunter-configure
 
-# 25 # Smartmontools
+# 26 # Smartmontools
 
 - name: "Common | Smartmontools"
   ansible.builtin.include_tasks: "smartmontools/main.yml"
@@ -292,7 +304,7 @@
     - common-smartmontools-install
     - common-smartmontools-configure
 
-# 26 # SSHD
+# 27 # SSHD
 
 - name: "Common | SSHD"
   ansible.builtin.include_tasks: "sshd/main.yml"
@@ -304,7 +316,7 @@
     - common-sshd-install
     - common-sshd-configure
 
-# 27 # ZSH
+# 28 # ZSH
 
 - name: "Common | ZSH"
   ansible.builtin.include_tasks: "zsh/main.yml"

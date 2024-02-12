@@ -19,7 +19,7 @@ common_locale_packages:
 
 common_locale_config: "/etc/locale.conf"
 
-# 15 # Firewall
+# 16 # Firewall
 
 common_firewall_default_backend: "firewalld"
 
@@ -31,18 +31,18 @@ common_firewall_iptables_disable_services:
 common_firewall_ipset_config: "/etc/sysconfig/ipset"
 common_firewall_ipset_service: "ipset"
 
-# 17 # AIDE
+# 18 # AIDE
 
 common_aide_config_path: "/etc/aide.conf"
 common_aide_binary: "/usr/sbin/aide"
 common_aide_db_new: "/var/lib/aide/aide.db.new.gz"
 common_aide_db: "/var/lib/aide/aide.db.gz"
 
-# 18 # Atop
+# 19 # Atop
 
 common_atop_config: "/etc/sysconfig/atop"
 
-# 19 # Auditd
+# 20 # Auditd
 
 common_auditd_packages:
   - "audit"
@@ -51,7 +51,7 @@ common_auditd_packages:
   - "python3-audit"
   - "rpm-plugin-audit"
 
-# 20 # Chrony
+# 21 # Chrony
 
 common_chrony_user: "chrony"
 common_chrony_group: "chrony"
@@ -61,7 +61,7 @@ common_chrony_service: "chronyd"
 common_chrony_config: "/etc/chrony.conf"
 common_chrony_keyfile: "/etc/chrony.keys"
 
-# 21 # Cron
+# 22 # Cron
 
 common_cron_packages:
   - "cronie"
@@ -70,11 +70,11 @@ common_cron_packages:
 
 common_cron_service: "crond"
 
-# 23 # NSCD
+# 24 # NSCD
 
 common_nscd_server_user: "nscd"
 
-# 25 # Smartmontools
+# 26 # Smartmontools
 
 common_smartmontools_config: "/etc/smartmontools/smartd.conf"
 common_smartmontools_daemon_options_config: "/etc/sysconfig/smartmontools"
