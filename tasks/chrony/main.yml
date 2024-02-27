@@ -2,7 +2,7 @@
 ---
 
 - name: "Common | Chrony | Install"
-  ansible.builtin.include_tasks: "chrony/{{ dist_pkg_mgr }}.yml"
+  ansible.builtin.include_tasks: "chrony/install/{{ dist_pkg_mgr }}.yml"
   tags:
     - common
     - common-chrony
@@ -34,13 +34,6 @@
   notify:
     - Restart chrony
   become: true
-  tags:
-    - common
-    - common-chrony
-    - common-chrony-configure
-
-- name: "Common | Chrony | Get services facts"
-  ansible.builtin.service_facts:
   tags:
     - common
     - common-chrony

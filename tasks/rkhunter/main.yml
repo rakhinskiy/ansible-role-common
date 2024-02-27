@@ -2,7 +2,7 @@
 ---
 
 - name: "Common | Rootkit Hunter | Install"
-  ansible.builtin.include_tasks: "rkhunter/{{ dist_pkg_mgr }}.yml"
+  ansible.builtin.include_tasks: "rkhunter/install/{{ dist_pkg_mgr }}.yml"
   tags:
     - common
     - common-rkhunter
@@ -20,7 +20,7 @@
     backup: false
   with_items: "{{ common_rkhunter_options | default([]) }}"
   when:
-    - common_rkhunter_options | default([]) | is_dicts_list
+    - common_rkhunter_options | default([]) | is_ne_list_dicts
   become: true
   tags:
     - common

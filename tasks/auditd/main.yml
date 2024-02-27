@@ -2,7 +2,7 @@
 ---
 
 - name: "Common | Auditd | Install"
-  ansible.builtin.include_tasks: "auditd/{{ dist_pkg_mgr }}.yml"
+  ansible.builtin.include_tasks: "auditd/install/{{ dist_pkg_mgr }}.yml"
   tags:
     - common
     - common-auditd

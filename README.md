@@ -49,9 +49,9 @@ TODO
 
 - Add to iptables forward / output zone rules
 - Add to iptables src nat / dst nat zone rules
-- Add iptables restart script with save docker / k8s rules
-- Fix ipset service restart in Debian / Ubuntu (ipset is symlink to netfilter-persistent)
-- Add firewalld and ufw support
+- Add iptables restart script with save docker / k8s rules ???
+- Add firewalld support
+- Add ufw support
 - Audisp plugins config for auditd
 - Add support for go-audit (Slack) / go-libaudit (Elastic) versions of auditd
 - Rewrite rkhunter configure tasks
@@ -402,6 +402,11 @@ common_firewall:
       - "-A INPUT -i eth0 -p gre -j ACCEPT"
     nat: # *nat table | first rules
       - "-A POSTROUTING -o eht0 -j MASQUERADE"
+
+# default: false
+common_firewall_allow_restart_docker: true
+# default: false
+common_firewall_allow_restart_kube_proxy: true
 ```
 ```yaml
 # 17 # SELinux
@@ -690,7 +695,7 @@ common_smartmontools_devices: ~
 
 # default: []
 # config location: /etc/ssh/sshd_config.d/00-custom.conf
-# option name converted at filter_plugins -> filter.py -> def correct_sshd_option
+# option name converted at filter_plugins -> filter.py -> def get_sshd_option
 common_sshd_options:
   - option: "pub_key_authentication"
     value: "yes"

@@ -10,7 +10,7 @@
     mode: '0644'
   with_items: "{{ common_repositories_manager }}"
   when:
-    - common_repositories_manager | is_dicts_list
+    - common_repositories_manager | is_ne_list_dicts
   become: true
   tags:
     - common
@@ -23,7 +23,7 @@
     state: present
   with_items: "{{ common_repositories_add }}"
   when:
-    - common_repositories_add | is_dicts_list
+    - common_repositories_add | is_ne_list_dicts
     - item.key is defined
   become: true
   tags:
@@ -41,7 +41,7 @@
     backup: false
   with_items: "{{ common_repositories_add }}"
   when:
-    - common_repositories_add | is_dicts_list
+    - common_repositories_add | is_ne_list_dicts
   notify:
     - Update dnf cache
   become: true

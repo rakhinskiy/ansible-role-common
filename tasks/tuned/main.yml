@@ -2,7 +2,7 @@
 ---
 
 - name: "Common | Tuned | Install"
-  ansible.builtin.include_tasks: "tuned/{{ dist_pkg_mgr }}.yml"
+  ansible.builtin.include_tasks: "tuned/install/{{ dist_pkg_mgr }}.yml"
   tags:
     - common
     - common-tuned

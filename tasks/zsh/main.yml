@@ -2,7 +2,7 @@
 ---
 
 - name: "Common | ZSH | Install"
-  ansible.builtin.include_tasks: "zsh/{{ dist_pkg_mgr }}.yml"
+  ansible.builtin.include_tasks: "zsh/install/{{ dist_pkg_mgr }}.yml"
   tags:
     - common
     - common-zsh

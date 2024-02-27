@@ -40,7 +40,7 @@
   notify:
     - Restart sshd
   when:
-    - common_sshd_options | is_valid_sshd_options
+    - common_sshd_options | is_sshd_options
   become: true
   tags:
     - common
@@ -56,7 +56,7 @@
   with_items: "{{ common_sshd_options }}"
   when:
     - ansible_facts.selinux.status == "enabled"
-    - common_sshd_options | is_valid_sshd_options
+    - common_sshd_options | is_sshd_options
     - item.option | lower == "port"
   become: true
   tags:

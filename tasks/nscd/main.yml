@@ -2,7 +2,7 @@
 ---
 
 - name: "Common | NSCD | Install"
-  ansible.builtin.include_tasks: "nscd/{{ dist_pkg_mgr }}.yml"
+  ansible.builtin.include_tasks: "nscd/install/{{ dist_pkg_mgr }}.yml"
   tags:
     - common
     - common-nscd
