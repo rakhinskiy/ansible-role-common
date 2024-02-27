@@ -39,7 +39,7 @@
 
 - name: "Restart ipset"
   ansible.builtin.command:
-    name: "/usr/local/bin/ipset-restart.sh"
+    cmd: "/usr/local/bin/ipset-restart.sh"
   become: true
   changed_when: false
 
