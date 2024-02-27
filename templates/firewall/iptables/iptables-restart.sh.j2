@@ -2,10 +2,24 @@
 
 # Save docker rules
 
-# Save kubernetes rules
+echo '#!/usr/bin/env bash' > iptables-docker.sh
+
+{
+  # NAT
+  iptables -t nat -S PREROUTING | grep -i '\-j docker' | xargs -i echo "iptables -t nat {}"
+  iptables -t nat -S OUTPUT | grep -i '\-j docker' | xargs -i echo "iptables -t nat {}"
+  iptables -t nat -S POSTROUTING | grep -i '\-j docker' | xargs -i echo "iptables -t nat {}"
+  iptables -t nat -S DOCKER | xargs -i echo "iptables -t nat {}"
+
+  # Filter
+  iptables -t filter -S DOCKER-USER | xargs -i echo "iptables -t filter {}"
+  iptables -t filter -S DOCKER-ISOLATION-STAGE-2 | xargs -i echo "iptables -t filter {}"
+  iptables -t filter -S DOCKER-ISOLATION-STAGE-1 | xargs -i echo "iptables -t filter {}"
+  iptables -t filter -S DOCKER | xargs -i echo "iptables -t filter {}"
+  iptables -t filter -S FORWARD | grep -i docker | xargs -i echo "iptables -t filter {}"
+
+} >> iptables-docker.sh
 
 # Restore iptables
 
 # Restore docker rules
-
-# Restore kubernetes rules

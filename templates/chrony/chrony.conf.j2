@@ -16,7 +16,7 @@ makestep {{ common_chrony_make_step }}
 {% if common_chrony_rtc_sync -%}
 rtcsync
 {% endif -%}
-{% if common_chrony_hw_timestamp | is_ne_string -%}
+{% if common_chrony_hw_timestamp | is_ne_str -%}
 hwtimestamp {{ common_chrony_hw_timestamp }}
 {% endif -%}
 {% if common_chrony_min_sources is defined and common_chrony_min_sources is not none -%}
@@ -27,7 +27,7 @@ minsources {{ common_chrony_min_sources }}
 allow {{ allow }}
 {% endfor -%}
 {% endif -%}
-{% if common_chrony_keyfile | is_ne_string -%}
+{% if common_chrony_keyfile | is_ne_str -%}
 keyfile {{ common_chrony_keyfile }}
 {% endif -%}
 {% if common_chrony_command_key is defined and common_chrony_command_key is not none -%}
@@ -51,7 +51,7 @@ maxupdateskew {{ common_chrony_max_update_skew }}
 {% if common_chrony_dump_on_exit -%}
 dumponexit
 {% endif -%}
-{% if common_chrony_dump_dir | is_ne_string -%}
+{% if common_chrony_dump_dir | is_ne_str -%}
 dumpdir {{ common_chrony_dump_dir }}
 {% endif -%}
 {% if common_chrony_log | is_ne_list -%}
@@ -60,18 +60,18 @@ log {{ common_chrony_log | join(' ') }}
 {% if common_chrony_local_stratum is defined and common_chrony_local_stratum is not none -%}
 local stratum {{ common_chrony_local_stratum }}
 {% endif -%}
-{% if common_chrony_mail_on_change | is_ne_string -%}
+{% if common_chrony_mail_on_change | is_ne_str -%}
 mailonchange {{ common_chrony_mail_on_change }}
 {% endif -%}
-{% if common_chrony_rtc_file | is_ne_string -%}
+{% if common_chrony_rtc_file | is_ne_str -%}
 rtcfile {{ common_chrony_rtc_file }}
 {% endif -%}
 {% if common_chrony_rtc_on_utc -%}
 rtconutc
 {% endif -%}
-{% if common_chrony_leap_sec_tz | is_ne_string -%}
+{% if common_chrony_leap_sec_tz | is_ne_str -%}
 leapsectz {{ common_chrony_leap_sec_tz }}
 {% endif -%}
-{% if common_chrony_hw_clock_file | is_ne_string -%}
+{% if common_chrony_hw_clock_file | is_ne_str -%}
 hwclockfile {{ common_chrony_hw_clock_file }}
 {% endif -%}

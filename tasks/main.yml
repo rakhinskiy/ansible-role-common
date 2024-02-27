@@ -13,7 +13,7 @@
 - name: "Common | Hostname"
   ansible.builtin.include_tasks: "hostname/main.yml"
   when:
-    - common_hostname | is_ne_string
+    - common_hostname | is_ne_str
   tags:
     - common
     - common-hostname
@@ -23,7 +23,7 @@
 - name: "Common | Hosts"
   ansible.builtin.include_tasks: "hosts/main.yml"
   when:
-    - common_hosts | is_dicts_list
+    - common_hosts | is_ne_list_dicts
   tags:
     - common
     - common-hosts
@@ -33,7 +33,7 @@
 - name: "Common | Timezone"
   ansible.builtin.include_tasks: "timezone/main.yml"
   when:
-    - common_timezone | is_ne_string
+    - common_timezone | is_ne_str
   tags:
     - common
     - common-timezone
@@ -43,8 +43,8 @@
 - name: "Common | Repositories"
   ansible.builtin.include_tasks: "repositories/{{ dist_pkg_mgr }}.yml"
   when:
-    - common_repositories_manager | is_dicts_list or
-      common_repositories_add | is_dicts_list or
+    - common_repositories_manager | is_ne_list_dicts or
+      common_repositories_add | is_ne_list_dicts or
       common_repositories_enable | is_ne_list
   tags:
     - common
@@ -68,7 +68,7 @@
 - name: "Common | Locale"
   ansible.builtin.include_tasks: "locale/main.yml"
   when:
-    - common_locale | is_ne_string
+    - common_locale | is_ne_str
   tags:
     - common
     - common-locale
@@ -78,7 +78,7 @@
 - name: "Common | Users"
   ansible.builtin.include_tasks: "users/main.yml"
   when:
-    - common_users | is_dicts_list
+    - common_users | is_ne_list_dicts
   tags:
     - common
     - common-users
@@ -88,7 +88,7 @@
 - name: "Common | Sudo"
   ansible.builtin.include_tasks: "sudo/main.yml"
   when:
-    - common_sudo | is_dicts_list
+    - common_sudo | is_ne_list_dicts
   tags:
     - common
     - common-sudo
@@ -100,8 +100,8 @@
 - name: "Common | SSH"
   ansible.builtin.include_tasks: "ssh/main.yml"
   when:
-    - common_ssh_authorized_keys | is_dicts_list or
-      common_ssh_keys | is_dicts_list
+    - common_ssh_authorized_keys | is_ne_list_dicts or
+      common_ssh_keys | is_ne_list_dicts
   tags:
     - common
     - common-ssh
@@ -111,7 +111,7 @@
 - name: "Common | Dirs"
   ansible.builtin.include_tasks: "dirs/main.yml"
   when:
-    - common_dirs | is_dicts_list
+    - common_dirs | is_ne_list_dicts
   tags:
     - common
     - common-dirs
@@ -121,7 +121,7 @@
 - name: "Common | Environments"
   ansible.builtin.include_tasks: "environments/main.yml"
   when:
-    - common_environments | is_dicts_list
+    - common_environments | is_ne_list_dicts
   tags:
     - common
     - common-environments
@@ -131,7 +131,7 @@
 - name: "Common | Limits"
   ansible.builtin.include_tasks: "limits/main.yml"
   when:
-    - common_limits | is_dicts_list
+    - common_limits | is_ne_list_dicts
   tags:
     - common
     - common-limits
@@ -141,7 +141,7 @@
 - name: "Common | Sysctl"
   ansible.builtin.include_tasks: "sysctl/main.yml"
   when:
-    - common_sysctl_keys | is_dicts_list
+    - common_sysctl_keys | is_ne_list_dicts
   tags:
     - common
     - common-sysctl
@@ -151,7 +151,7 @@
 - name: "Common | Sysfs"
   ansible.builtin.include_tasks: "sysfs/main.yml"
   when:
-    - common_sysfs | is_dicts_list
+    - common_sysfs | is_ne_list_dicts
   tags:
     - common
     - common-sysfs
@@ -248,8 +248,8 @@
 - name: "Common | Cron"
   ansible.builtin.include_tasks: "cron/main.yml"
   when:
-    - common_cron_environments | is_dicts_list or
-      common_cron_tasks | is_dicts_list
+    - common_cron_environments | is_ne_list_dicts or
+      common_cron_tasks | is_ne_list_dicts
   tags:
     - common
     - common-cron
@@ -309,7 +309,7 @@
 - name: "Common | SSHD"
   ansible.builtin.include_tasks: "sshd/main.yml"
   when:
-    - common_sshd_options | is_dicts_list
+    - common_sshd_options | is_ne_list_dicts
   tags:
     - common
     - common-sshd
@@ -321,7 +321,7 @@
 - name: "Common | ZSH"
   ansible.builtin.include_tasks: "zsh/main.yml"
   when:
-    - common_zsh | is_dicts_list
+    - common_zsh | is_ne_list_dicts
   tags:
     - common
     - common-zsh

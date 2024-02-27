@@ -10,7 +10,7 @@
     mode: "0644"
     backup: false
   when:
-    - common_repositories_manager | is_dicts_list
+    - common_repositories_manager | is_ne_list_dicts
   become: true
   tags:
     - common
@@ -24,7 +24,7 @@
   with_items: "{{ common_repositories_add }}"
   when:
     - item.key is defined
-    - common_repositories_add | is_dicts_list
+    - common_repositories_add | is_ne_list_dicts
   become: true
   tags:
     - common
@@ -41,7 +41,7 @@
     backup: false
   with_items: "{{ common_repositories_add }}"
   when:
-    - common_repositories_add | is_dicts_list
+    - common_repositories_add | is_ne_list_dicts
   notify:
     - Update apt cache
   become: true

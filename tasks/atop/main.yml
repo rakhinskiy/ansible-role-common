@@ -2,7 +2,7 @@
 ---
 
 - name: "Common | Atop | Install"
-  ansible.builtin.include_tasks: "atop/{{ dist_pkg_mgr }}.yml"
+  ansible.builtin.include_tasks: "atop/install/{{ dist_pkg_mgr }}.yml"
   tags:
     - common
     - common-atop
@@ -20,7 +20,7 @@
     mode: "0644"
   with_items: "{{ common_atop_options }}"
   when:
-    - common_atop_options | is_dicts_list
+    - common_atop_options | is_ne_list_dicts
   notify:
     - Restart atop
   become: true

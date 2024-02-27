@@ -24,6 +24,20 @@
     - common-firewall
     - common-firewall-configure
 
+- name: "Common | Firewall | IPTables | IPSet Restart Script"
+  ansible.builtin.template:
+    src: "firewall/iptables/ipset-restart.sh.j2"
+    dest: "/usr/local/bin/ipset-restart.sh"
+    owner: "root"
+    group: "root"
+    mode: "0700"
+    backup: false
+  become: true
+  tags:
+    - common
+    - common-firewall
+    - common-firewall-configure
+
 - name: "Common | Firewall | IPTables | Enable ipset service"
   ansible.builtin.service:
     name: "{{ common_firewall_ipset_service }}"
@@ -52,6 +66,8 @@
     backup: false
   notify:
     - Restart iptables
+    - Restart docker
+    - Restart kube-proxy
   become: true
   tags:
     - common

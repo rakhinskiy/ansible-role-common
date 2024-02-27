@@ -39,8 +39,13 @@
 # Install role packages dependencies
 
 - name: "Common | Always | Install packages"
-  ansible.builtin.include_tasks: "always/{{ dist_pkg_mgr }}.yml"
+  ansible.builtin.include_tasks: "always/install/{{ dist_pkg_mgr }}.yml"
   when:
     - common_always_packages | is_ne_list
+  tags:
+    - always
+
+- name: "Common | Always | Get services facts"
+  ansible.builtin.service_facts:
   tags:
     - always

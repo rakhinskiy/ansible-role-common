@@ -2,7 +2,7 @@
 ---
 
 - name: "Common | Cron | Install"
-  ansible.builtin.include_tasks: "cron/{{ dist_pkg_mgr }}.yml"
+  ansible.builtin.include_tasks: "cron/install/{{ dist_pkg_mgr }}.yml"
   tags:
     - common
     - common-cron
@@ -16,7 +16,7 @@
     user: "{{ item.0.user }}"
   when:
     - common_cron_environments | is_ne_list
-    - item.0.user | default('') | is_ne_string
+    - item.0.user | default('') | is_ne_str
   with_subelements:
     - "{{ common_cron_environments | default([]) }}"
     - vars

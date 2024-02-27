@@ -13,15 +13,35 @@
   with_items: "{{ common_ssh_authorized_keys }}"
   when:
     - ansible_facts.selinux.status == "enabled"
-    - common_ssh_authorized_keys | is_dicts_list
+    - common_ssh_authorized_keys | is_ne_list_dicts
   become: true
   changed_when: false
 
-- name: "Restart ipset"
+- name: "Restart docker"
   ansible.builtin.service:
-    name: "{{ common_firewall_ipset_service }}"
+    name: "docker"
     state: "restarted"
   become: true
+  when:
+    - common_firewall_allow_restart_docker
+    - '"docker.service" in ansible_facts.services.keys() | list'
+    - 'ansible_facts.services["docker.service"].status == "loaded"'
+
+- name: "Restart kube-proxy"
+  ansible.builtin.service:
+    name: "kube-proxy"
+    state: "restarted"
+  become: true
+  when:
+    - common_firewall_allow_restart_kube_proxy
+    - '"kube-proxy.service" in ansible_facts.services.keys() | list'
+    - 'ansible_facts.services["kube-proxy.service"].status == "loaded"'
+
+- name: "Restart ipset"
+  ansible.builtin.command:
+    name: "/usr/local/bin/ipset-restart.sh"
+  become: true
+  changed_when: false
 
 - name: "Restart iptables"
   ansible.builtin.service:

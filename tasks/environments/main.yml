@@ -24,7 +24,7 @@
   become: true
   with_items: "{{ common_environments }}"
   when:
-    - item.user | is_ne_string
+    - item.user | is_ne_str
   tags:
     - common
     - common-environments
@@ -39,7 +39,7 @@
   become: true
   with_items: "{{ common_environments }}"
   when:
-    - item.user | is_ne_string
+    - item.user | is_ne_str
   tags:
     - common
     - common-environments

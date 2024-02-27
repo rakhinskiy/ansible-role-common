@@ -2,6 +2,12 @@ from __future__ import annotations
 
 from typing import ClassVar
 
+from ansible.parsing.yaml.objects import (
+    AnsibleUnicode,
+    AnsibleVaultEncryptedUnicode,
+)
+from ansible.utils.unsafe_proxy import AnsibleUnsafeText
+
 
 class FilterModule:
     STRING_CLASSES: ClassVar[list[str]] = [
@@ -93,56 +99,56 @@ class FilterModule:
     def filters(self):
         return {
             "is_list": self.is_list,
-            "is_ne_list": self.is_not_empty_list,
+            "is_ne_list": self.is_ne_list,
+            "is_ne_list_dicts": self.is_ne_list_dicts,
             "is_dict": self.is_dict,
-            "is_dicts_list": self.is_dicts_list,
-            "is_ne_dict": self.is_not_empty_dict,
-            "is_string": self.is_string,
-            "is_ne_string": self.is_not_empty_string,
-            "is_valid_sshd_options": self.is_valid_sshd_options,
-            "correct_sshd_option": self.correct_sshd_option,
+            "is_ne_dict": self.is_ne_dict,
+            "is_str": self.is_str,
+            "is_ne_str": self.is_ne_str,
+            "is_sshd_options": self.is_sshd_options,
+            "get_sshd_option": self.get_sshd_option,
         }
 
     @staticmethod
-    def is_list(var, *args, **kwargs):
-        return var and var.__class__.__name__ == "list"
+    def is_list(var):
+        return var and isinstance(var, list)
+
+    def is_ne_list(self, var):
+        return self.is_list(var) and len(var) > 0
 
     @staticmethod
-    def is_not_empty_list(var, *args, **kwargs):
-        if var and isinstance(var, list) and len(var) > 0:
-            return True
-        return False
+    def is_dict(var):
+        return var and isinstance(var, dict)
 
-    @staticmethod
-    def is_dict(var, *args, **kwargs):
-        return var and var.__class__.__name__ == "dict"
+    def is_ne_dict(self, var):
+        return self.is_dict(var) and var != {}
 
-    @staticmethod
-    def is_not_empty_dict(var, *args, **kwargs):
-        return var and var.__class__.__name__ == "dict" and var != {}
-
-    @staticmethod
-    def is_dicts_list(var, *args, **kwargs):
-        if not var.__class__.__name__ == "list" or len(var) == 0:
+    def is_ne_list_dicts(self, var):
+        if not self.is_ne_list(var):
             return False
 
-        for d in var:
-            if not d.__class__.__name__ == "dict" or d == {}:
+        for element in var:
+            if not self.is_ne_dict(element):
                 return False
 
         return True
 
-    def is_string(self, var, *args, **kwargs):
-        return var and var.__class__.__name__ in self.STRING_CLASSES
-
-    def is_not_empty_string(self, var, *args, **kwargs):
-        return (
-            var
-            and var.__class__.__name__ in self.STRING_CLASSES
-            and len(var) > 0
+    @staticmethod
+    def is_str(var):
+        return var and isinstance(
+            var,
+            (
+                str,
+                AnsibleUnicode,
+                AnsibleVaultEncryptedUnicode,
+                AnsibleUnsafeText,
+            ),
         )
 
-    def is_valid_sshd_options(self, var, *args, **kwargs):
+    def is_ne_str(self, var):
+        return self.is_str(var) and len(var) > 0
+
+    def is_sshd_options(self, var):
         for item in var:
             find = False
             for option in self.SSHD_OPTIONS:
@@ -159,12 +165,12 @@ class FilterModule:
 
         return True
 
-    def correct_sshd_option(self, var, *args, **kwargs):
+    def get_sshd_option(self, var):
+        var = str(var).lower()
+        var = var.replace("_", "")
+        var = var.replace("-", "")
         for option in self.SSHD_OPTIONS:
-            if (
-                str(var).lower().replace("_", "").replace("-", "")
-                == str(option).lower()
-            ):
+            if var == str(option).lower():
                 return str(option)
 
         raise Exception(

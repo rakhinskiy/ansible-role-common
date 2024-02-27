@@ -277,6 +277,9 @@ common_firewall_backend: ~
 #             - any
 common_firewall: []
 
+common_firewall_allow_restart_docker: false
+common_firewall_allow_restart_kube_proxy: false
+
 # 17 # SELinux
 ###############################################################################
 

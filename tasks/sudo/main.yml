@@ -2,7 +2,7 @@
 ---
 
 - name: "Common | Sudo | Install"
-  ansible.builtin.include_tasks: "sudo/{{ dist_pkg_mgr }}.yml"
+  ansible.builtin.include_tasks: "sudo/install/{{ dist_pkg_mgr }}.yml"
   tags:
     - common
     - common-sudo
@@ -15,7 +15,7 @@
     mode: "0440"
     validate: 'visudo -cf %s'
   when:
-    - item.name | default('') | is_ne_string
+    - item.name | default('') | is_ne_str
   with_items: "{{ common_sudo }}"
   become: true
   tags:
