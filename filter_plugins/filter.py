@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import ClassVar
+from typing import Any, ClassVar
 
 from ansible.parsing.yaml.objects import (
     AnsibleUnicode,
@@ -10,13 +10,9 @@ from ansible.utils.unsafe_proxy import AnsibleUnsafeText
 
 
 class FilterModule:
-    STRING_CLASSES: ClassVar[list[str]] = [
-        "str",
-        "string",
-        "AnsibleUnicode",
-        "AnsibleUnsafeText",
-        "AnsibleVaultEncryptedUnicode",
-    ]
+    """
+    Custom jinja filters
+    """
 
     SSHD_OPTIONS: ClassVar[list[str]] = [
         "AcceptEnv",
@@ -96,7 +92,10 @@ class FilterModule:
         "XAuthLocation",
     ]
 
-    def filters(self):
+    def filters(self) -> dict:
+        """
+        :return: filters dict
+        """
         return {
             "is_list": self.is_list,
             "is_ne_list": self.is_ne_list,
@@ -110,20 +109,40 @@ class FilterModule:
         }
 
     @staticmethod
-    def is_list(var):
+    def is_list(var: Any) -> bool:
+        """
+        :param var: any variable
+        :return: true if var is list
+        """
         return var and isinstance(var, list)
 
-    def is_ne_list(self, var):
+    def is_ne_list(self, var: Any) -> bool:
+        """
+        :param var: any variable
+        :return: true if var is not empty list
+        """
         return self.is_list(var) and len(var) > 0
 
     @staticmethod
-    def is_dict(var):
+    def is_dict(var: Any) -> bool:
+        """
+        :param var: any variable
+        :return: true if variable is dict
+        """
         return var and isinstance(var, dict)
 
-    def is_ne_dict(self, var):
+    def is_ne_dict(self, var: Any) -> bool:
+        """
+        :param var: any variable
+        :return: true if variable is not empty dict
+        """
         return self.is_dict(var) and var != {}
 
-    def is_ne_list_dicts(self, var):
+    def is_ne_list_dicts(self, var: Any) -> bool:
+        """
+        :param var: any variable
+        :return: true if variable is list of dicts
+        """
         if not self.is_ne_list(var):
             return False
 
@@ -134,7 +153,11 @@ class FilterModule:
         return True
 
     @staticmethod
-    def is_str(var):
+    def is_str(var: Any) -> bool:
+        """
+        :param var: any variable
+        :return: true if variable is one of instance of string
+        """
         return var and isinstance(
             var,
             (
@@ -145,10 +168,18 @@ class FilterModule:
             ),
         )
 
-    def is_ne_str(self, var):
+    def is_ne_str(self, var: Any) -> bool:
+        """
+        :param var: any variable
+        :return: true if variable is one of instance of string and not empty
+        """
         return self.is_str(var) and len(var) > 0
 
-    def is_sshd_options(self, var):
+    def is_sshd_options(self, var: list):
+        """
+        :param var: list of sshd options dict {option: "name", value: "value" }
+        :return: true if all option names is correct
+        """
         for item in var:
             find = False
             for option in self.SSHD_OPTIONS:
@@ -165,7 +196,11 @@ class FilterModule:
 
         return True
 
-    def get_sshd_option(self, var):
+    def get_sshd_option(self, var: Any) -> str:
+        """
+        :param var: sshd option name in any case
+        :return: real name of sshd option
+        """
         var = str(var).lower()
         var = var.replace("_", "")
         var = var.replace("-", "")
