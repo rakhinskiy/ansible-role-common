@@ -442,6 +442,15 @@ common_selinux_file_contexts:
   - target: /srv/containers
     substitute: /var/lib/containers
     state: present
+
+# default: []
+# https://docs.ansible.com/ansible/latest/collections/community/general/seport_module.html
+common_selinux_ports:
+  - port: 6443
+    proto: tcp
+    setype: http_port_t
+    state: present
+
 ```
 ```yaml
 # 18 # AIDE

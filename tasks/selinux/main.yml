@@ -66,3 +66,18 @@
     - common
     - common-selinux
     - common-selinux-configure
+
+- name: "Common | SELinux | SE Ports"
+  community.general.seport:
+    ports: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+    setype: "{{ item.setype }}"
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ common_selinux_ports | default([])}}"
+  when:
+    - item.setype is defined
+  become: true
+  tags:
+    - common
+    - common-selinux
+    - common-selinux-configure

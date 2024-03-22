@@ -317,6 +317,13 @@ common_selinux_booleans: []
 #     state: present
 common_selinux_file_contexts: []
 
+# common_selinux_ports:
+#   - port: 6443
+#     proto: tcp
+#     setype: http_port_t
+#     state: present
+common_selinux_ports: []
+
 # 18 # AIDE
 ###############################################################################
 
