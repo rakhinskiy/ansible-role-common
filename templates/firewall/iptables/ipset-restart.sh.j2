@@ -12,6 +12,7 @@ ipset add NEW-Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | 
 ipset add NEW-Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }} {{ source }}
         {% endif %}
       {% endfor %}
+ipset create -! Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }} hash:net family inet hashsize 1024 maxelem 65536 bucketsize 12
 ipset swap NEW-Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }} Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }}
 ipset destroy NEW-Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }}
     {% endif %}
