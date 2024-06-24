@@ -90,6 +90,7 @@ class FilterModule:
         "X11Forwarding",
         "X11UseLocalhost",
         "XAuthLocation",
+        "Include",
     ]
 
     def filters(self) -> dict:

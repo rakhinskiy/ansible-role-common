@@ -15,10 +15,10 @@
     owner: "root"
     group: "root"
     mode: "0644"
-    backup: false
+    backup: no
   notify:
     - Restart smartmontools
-  become: true
+  become: yes
   tags:
     - common
     - common-smartmontools
@@ -31,14 +31,14 @@
     option: "{{ item.option }}"
     value: "\"{{ item.value }}\""
     state: "{{ item.state | default('present') }}"
-    no_extra_spaces: true
+    no_extra_spaces: yes
     mode: "0644"
   with_items: "{{ common_smartmontools_daemon_options }}"
   when:
     - common_smartmontools_daemon_options | is_ne_list
   notify:
     - Restart smartmontools
-  become: true
+  become: yes
   tags:
     - common
     - common-smartmontools
@@ -47,9 +47,9 @@
 - name: "Common | Smartmontools | Enable service"
   ansible.builtin.service:
     name: "{{ common_smartmontools_service }}"
-    enabled: true
+    enabled: yes
     state: "started"
-  become: true
+  become: yes
   tags:
     - common
     - common-smartmontools

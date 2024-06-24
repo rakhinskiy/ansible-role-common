@@ -54,9 +54,9 @@ common_timezone: ~
 #   - name: installonly_limit
 #     value: 3
 #   - name: clean_requirements_on_remove
-#     value: True
+#     value: "True"
 #   - name: skip_if_unavailable
-#     value: False
+#     value: "False"
 common_repositories_manager: []
 
 # common_repositories_add:
@@ -109,9 +109,9 @@ common_locale: ~
 #     group: "deploy"
 #     groups: ["docker"]
 #     shell: "/bin/zsh"
-#     create_home: true
-#     system: false
-#     append: true
+#     create_home: yes
+#     system: no
+#     append: yes
 #     state: present
 common_users: []
 
@@ -126,7 +126,7 @@ common_users: []
 #     permissions:
 #       - host: "ALL"
 #         runas: "root"
-#         nopasswd: true
+#         nopasswd: yes
 #         cmd: "ALL"
 common_sudo: []
 
@@ -155,8 +155,8 @@ common_ssh_keys: []
 #     owner: "root"
 #     group: "root"
 #     mode: "0750"
-#     force: "false"
-#     follow: "true"
+#     force: no
+#     follow: yes
 common_dirs: []
 
 # 11 # Environments
@@ -179,8 +179,8 @@ common_environments: []
 #     limit_type: "hard"
 #     limit_item: "core"
 #     value: "100000"
-#     use_min: "false"
-#     use_max: "true"
+#     use_min: no
+#     use_max: yes
 #     comment: ""
 common_limits: []
 
@@ -221,7 +221,7 @@ common_sysfs: []
 # 15 # Tuned
 ##############################################################################
 
-common_tuned_enable: false
+common_tuned_enable: no
 common_tuned_packages:
   - "tuned"
 common_tuned_service: "tuned"
@@ -236,6 +236,13 @@ common_tuned_profile_config: []
 # default [from vars]: ufw [Debian / Ubuntu]
 # allowed: firewalld / iptables / ufw
 common_firewall_backend: ~
+
+# common_firewall_ipset_zones:
+#   - zone: WHITELIST
+#     sources:
+#       - 10.0.0.0/16
+#       - 192.168.99.0/24
+common_firewall_ipset_zones: []
 
 # common_firewall:
 #   filter:
@@ -277,13 +284,13 @@ common_firewall_backend: ~
 #             - any
 common_firewall: []
 
-common_firewall_allow_restart_docker: false
-common_firewall_allow_restart_kube_proxy: false
+common_firewall_allow_restart_docker: no
+common_firewall_allow_restart_kube_proxy: no
 
 # 17 # SELinux
 ###############################################################################
 
-common_selinux_enable: false
+common_selinux_enable: no
 
 common_selinux_packages:
   - "grubby"
@@ -297,15 +304,15 @@ common_selinux_packages:
 common_selinux_config_file: "/etc/selinux/config"
 common_selinux_policy: "targeted"
 common_selinux_state: "enforcing"
-common_selinux_update_kernel: false
+common_selinux_update_kernel: no
 
 # common_selinux_booleans:
 #   - name: "httpd_can_network_connect"
-#     state: true
-#     persistent: true
+#     state: yes
+#     persistent: yes
 #   - name: "httpd_use_nfs"
-#     state: true
-#     persistent: true
+#     state: yes
+#     persistent: yes
 common_selinux_booleans: []
 
 # common_selinux_file_contexts:
@@ -327,14 +334,14 @@ common_selinux_ports: []
 # 18 # AIDE
 ###############################################################################
 
-common_aide_enable: false
+common_aide_enable: no
 common_aide_packages:
   - "aide"
 
 # 19 # Atop
 ###############################################################################
 
-common_atop_enable: false
+common_atop_enable: no
 common_atop_packages:
   - "atop"
   - "findutils"
@@ -346,11 +353,11 @@ common_atop_options: []
 # 20 # Auditd
 ###############################################################################
 
-common_auditd_enable: false
+common_auditd_enable: no
 common_auditd_config: "/etc/audit/rules.d/audit.rules"
 common_auditd_service: "auditd"
 common_auditd_rules: []
-common_auditd_rules_predefined: false
+common_auditd_rules_predefined: no
 
 common_auditd_rules_backlog_wait_time: "60000"
 common_auditd_rules_buffers: "8192"
@@ -361,7 +368,7 @@ common_auditd_backend: "auditd"
 # 21 # Chrony
 ###############################################################################
 
-common_chrony_enable: false
+common_chrony_enable: no
 common_chrony_packages:
   - "chrony"
 
@@ -372,8 +379,8 @@ common_chrony_allows:
 common_chrony_command_key: ~
 common_chrony_dump_dir: "/var/lib/chrony"
 common_chrony_drift_file: "{{ common_chrony_dump_dir }}/chrony.drift"
-common_chrony_dump_on_exit: true
-common_chrony_generate_command_key: false
+common_chrony_dump_on_exit: yes
+common_chrony_generate_command_key: no
 common_chrony_hw_clock_file: ~
 common_chrony_hw_timestamp: ~
 common_chrony_leap_sec_tz: "right/UTC"
@@ -388,12 +395,12 @@ common_chrony_mail_on_change: ~
 common_chrony_make_step: "1.0 3"
 common_chrony_max_update_skew: "100.0"
 common_chrony_min_sources: ~
-common_chrony_no_client_log: true
+common_chrony_no_client_log: yes
 common_chrony_pools:
   - "pool.ntp.org iburst maxsources 5"
 common_chrony_rtc_file: ~
-common_chrony_rtc_on_utc: true
-common_chrony_rtc_sync: true
+common_chrony_rtc_on_utc: yes
+common_chrony_rtc_sync: yes
 common_chrony_servers: ~
 common_chrony_stratum_weight: "0.001"
 
@@ -426,7 +433,7 @@ common_cron_tasks: []
 # 23 # Logwatch
 ###############################################################################
 
-common_logwatch_enable: false
+common_logwatch_enable: no
 
 common_logwatch_config: "/etc/logwatch/conf/logwatch.conf"
 common_logwatch_packages:
@@ -457,7 +464,7 @@ common_logwatch_hostlimit: ~
 # 24 # NSCD
 ###############################################################################
 
-common_nscd_enable: false
+common_nscd_enable: no
 common_nscd_packages:
   - "nscd"
 common_nscd_service: "nscd"
@@ -523,7 +530,7 @@ common_nscd_netgroup_max_db_size: "33554432"
 # 25 # Rkhunter
 ###############################################################################
 
-common_rkhunter_enable: false
+common_rkhunter_enable: no
 common_rkhunter_packages:
   - "rkhunter"
   - "wget"
@@ -533,7 +540,7 @@ common_rkhunter_options: []
 # 26 # Smartmontools
 ###############################################################################
 
-common_smartmontools_enable: false
+common_smartmontools_enable: no
 common_smartmontools_packages:
   - "smartmontools"
 common_smartmontools_daemon_options:

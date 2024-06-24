@@ -4,8 +4,8 @@
 - name: "Reload sysctl"
   ansible.builtin.command:
     cmd: "/sbin/sysctl --system"
-  become: true
-  changed_when: false
+  become: yes
+  changed_when: no
 
 - name: "Selinux security contexts restore"
   ansible.builtin.command:
@@ -14,14 +14,14 @@
   when:
     - ansible_facts.selinux.status == "enabled"
     - common_ssh_authorized_keys | is_ne_list_dicts
-  become: true
-  changed_when: false
+  become: yes
+  changed_when: no
 
 - name: "Restart docker"
   ansible.builtin.service:
     name: "docker"
     state: "restarted"
-  become: true
+  become: yes
   when:
     - common_firewall_allow_restart_docker
     - '"docker.service" in ansible_facts.services.keys() | list'
@@ -31,7 +31,7 @@
   ansible.builtin.service:
     name: "kube-proxy"
     state: "restarted"
-  become: true
+  become: yes
   when:
     - common_firewall_allow_restart_kube_proxy
     - '"kube-proxy.service" in ansible_facts.services.keys() | list'
@@ -40,79 +40,79 @@
 - name: "Restart ipset"
   ansible.builtin.command:
     cmd: "/usr/local/bin/ipset-restart.sh"
-  become: true
-  changed_when: false
+  become: yes
+  changed_when: no
 
 - name: "Restart iptables"
   ansible.builtin.service:
     name: "{{ common_firewall_iptables_service }}"
     state: "restarted"
-  become: true
+  become: yes
 
 - name: "Restart atop"
   ansible.builtin.service:
     name: "{{ common_atop_service }}"
     state: "restarted"
-  become: true
+  become: yes
 
 - name: "Restart auditd"
   ansible.builtin.service:
     name: "{{ common_chrony_service }}"
     state: "restarted"
     use: "service"
-  become: true
+  become: yes
 
 - name: "Restart chrony"
   ansible.builtin.service:
     name: "{{ common_chrony_service }}"
     state: "restarted"
-  become: true
+  become: yes
 
 - name: "Restart cron"
   ansible.builtin.service:
     name: "{{ common_cron_service }}"
     state: "restarted"
-  become: true
+  become: yes
 
 - name: "Restart nscd"
   ansible.builtin.service:
     name: "{{ common_nscd_service }}"
     state: "restarted"
-  become: true
+  become: yes
 
 - name: "Prop update rkhunter"
   ansible.builtin.command:
     cmd: "rkhunter --propupd"
-  become: true
-  changed_when: false
+  become: yes
+  changed_when: no
 
 - name: "Update rkhunter"
   ansible.builtin.command:
     cmd: "rkhunter --update"
   register: rkhunter_update
-  become: true
-  changed_when: false
+  become: yes
+  changed_when: no
   failed_when: not rkhunter_update.rc in [0, 2]
 
 - name: "Restart smartmontools"
   ansible.builtin.service:
     name: "{{ common_smartmontools_service }}"
     state: "restarted"
-  become: true
+  become: yes
 
 - name: "Restart sshd"
   ansible.builtin.service:
     name: "{{ common_sshd_service }}"
     state: "restarted"
-  become: true
+  become: yes
 
 - name: "Update apt cache"
   ansible.builtin.apt:
-    update_cache: true
-    force_apt_get: true
-  become: true
+    update_cache: yes
+    force_apt_get: yes
+  become: yes
 
 - name: "Update dnf cache"
   ansible.builtin.dnf:
-    update_cache: true
-  become: true
+    update_cache: yes
+  become: yes

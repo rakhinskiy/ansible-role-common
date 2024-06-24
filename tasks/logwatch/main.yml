@@ -16,8 +16,8 @@
     group: "root"
     mode: "0755"
     force: "no"
-    follow: true
-  become: true
+    follow: yes
+  become: yes
   tags:
     - common
     - common-logwatch
@@ -30,8 +30,8 @@
     owner: "root"
     group: "root"
     mode: "0644"
-    backup: false
-  become: true
+    backup: no
+  become: yes
   tags:
     - common
     - common-logwatch

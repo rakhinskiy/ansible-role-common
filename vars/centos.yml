@@ -8,6 +8,7 @@ common_always_packages:
   - "epel-release"
   - "procps-ng"
   - "python3-libselinux"
+  - "python3-netaddr"
   - "python3-policycoreutils"
   - "virt-what"
 

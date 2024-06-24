@@ -15,7 +15,7 @@
     owner: "root"
     group: "root"
     mode: "0755"
-  become: true
+  become: yes
   tags:
     - common
     - common-tuned
@@ -28,8 +28,8 @@
     owner: "root"
     group: "root"
     mode: "0644"
-    backup: "false"
-  become: true
+    backup: no
+  become: yes
   tags:
     - common
     - common-sysfs
@@ -38,9 +38,9 @@
 - name: "Common | Tuned | Enable service"
   ansible.builtin.service:
     name: "{{ common_tuned_service }}"
-    enabled: true
+    enabled: yes
     state: "started"
-  become: true
+  become: yes
   tags:
     - common
     - common-tuned
@@ -50,8 +50,8 @@
   ansible.builtin.command:
     cmd: "/usr/sbin/tuned-adm active"
   register: common_tuned_current_profile
-  changed_when: false
-  become: true
+  changed_when: no
+  become: yes
   tags:
     - common
     - common-tuned
@@ -62,8 +62,8 @@
     cmd: "/usr/sbin/tuned-adm profile {{ common_tuned_profile_name }}"
   when:
     - common_tuned_profile_name not in common_tuned_current_profile.stdout
-  become: true
-  changed_when: true
+  become: yes
+  changed_when: yes
   tags:
     - common
     - common-tuned

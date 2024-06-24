@@ -25,7 +25,7 @@
     msg: "Unsupported distribution version {{ dist_name }}: {{ dist_codename }}"
   when:
     - dist_name in ["debian", "ubuntu"]
-    - dist_codename not in ["buster", "bullseye", "bookworm", "focal", "jammy"]
+    - dist_codename not in ["buster", "bullseye", "bookworm", "focal", "jammy", "noble"]
   tags:
     - always
 

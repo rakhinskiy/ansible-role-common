@@ -16,7 +16,7 @@
     mode: "0644"
     modification_time: "preserve"
     access_time: "preserve"
-  become: true
+  become: yes
   tags:
     - common
     - common-locale
@@ -26,7 +26,7 @@
     dest: "{{ common_locale_config }}"
     regexp: "^LANG="
     line: "LANG={{ common_locale }}"
-  become: true
+  become: yes
   tags:
     - common
     - common-locale

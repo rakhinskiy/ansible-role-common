@@ -17,11 +17,11 @@
     owner: "root"
     group: "root"
     mode: "0644"
-    backup: false
+    backup: no
   with_items: "{{ common_rkhunter_options | default([]) }}"
   when:
     - common_rkhunter_options | default([]) | is_ne_list_dicts
-  become: true
+  become: yes
   tags:
     - common
     - common-rkhunter

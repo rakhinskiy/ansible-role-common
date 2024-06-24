@@ -5,8 +5,8 @@
   ansible.builtin.dnf:
     name: "{{ common_logwatch_packages }}"
     state: present
-    update_cache: false
-  become: true
+    update_cache: no
+  become: yes
   tags:
     - common
     - common-logwatch

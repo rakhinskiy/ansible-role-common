@@ -5,10 +5,10 @@
   ansible.builtin.dnf:
     name: "{{ common_packages }}"
     state: present
-    update_cache: false
+    update_cache: no
   when:
     - common_packages | is_ne_list
-  become: true
+  become: yes
   tags:
     - common
     - common-packages
@@ -17,10 +17,10 @@
   ansible.builtin.dnf:
     name: "{{ common_packages_additional }}"
     state: present
-    update_cache: false
+    update_cache: no
   when:
     - common_packages_additional | is_ne_list
-  become: true
+  become: yes
   tags:
     - common
     - common-packages

@@ -8,8 +8,8 @@
     owner: "root"
     group: "root"
     mode: "0644"
-    backup: false
-  become: true
+    backup: no
+  become: yes
   tags:
     - common
     - common-environments
@@ -20,8 +20,8 @@
     state: "directory"
     owner: "{{ item.user }}"
     mode: "0700"
-    follow: true
-  become: true
+    follow: yes
+  become: yes
   with_items: "{{ common_environments }}"
   when:
     - item.user | is_ne_str
@@ -35,8 +35,8 @@
     dest: "~{{ item.user }}/.config/shell/env.sh"
     owner: "{{ item.user }}"
     mode: "0700"
-    backup: false
-  become: true
+    backup: no
+  become: yes
   with_items: "{{ common_environments }}"
   when:
     - item.user | is_ne_str

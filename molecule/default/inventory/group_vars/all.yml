@@ -24,7 +24,7 @@ common_locale: "en_US.UTF-8"
 common_users:
   - name: "molecule"
     shell: "/bin/zsh"
-    append: true
+    append: yes
     state: "present"
 
 common_sudo:
@@ -40,7 +40,7 @@ common_sudo:
     permissions:
       - host: "ALL"
         runas: "ALL"
-        nopasswd: true
+        nopasswd: yes
         cmd: "ALL"
 
 common_dirs:
@@ -49,8 +49,8 @@ common_dirs:
     owner: "root"
     group: "root"
     mode: "0750"
-    force: "false"
-    follow: "true"
+    force: no
+    follow: yes
 
 common_environments:
   - user: "root"
@@ -67,12 +67,12 @@ common_limits:
     limit_type: "soft"
     limit_item: "nofile"
     value: "65536"
-    use_max: true
+    use_max: yes
   - domain: "*"
     limit_type: "hard"
     limit_item: "nofile"
     value: "65536"
-    use_max: true
+    use_max: yes
 
 common_sysctl_file: "ansible-common.conf"
 common_sysctl_keys:
@@ -84,7 +84,7 @@ common_sysfs:
     value: "madvise"
     type: "attribute"
 
-common_tuned_enable: true
+common_tuned_enable: yes
 common_tuned_profile_name: "molecule"
 common_tuned_profile_config:
   - name: "main"
@@ -104,17 +104,17 @@ common_tuned_profile_config:
       - option: "transparent_hugepages"
         value: "never"
 
-common_aide_enable: true
+common_aide_enable: yes
 common_aide_config_file: "{{ inventory_dir }}/.files/{{ ansible_os_family | lower }}.aide.conf"
 
-common_atop_enable: true
+common_atop_enable: yes
 common_atop_options:
   - option: "LOGINTERVAL"
     value: "5"
   - option: "LOGGENERATIONS"
     value: "7"
 
-common_chrony_enable: true
+common_chrony_enable: yes
 
 common_cron_environments:
   - user: "molecule"
@@ -122,14 +122,14 @@ common_cron_environments:
       - name: "MAILTO"
         value: "molecule@exmaple.com"
 
-common_logwatch_enable: true
+common_logwatch_enable: yes
 common_logwatch_mail_to: "molecule@example.com"
 common_logwatch_mail_from: "logwatch@{{ inventory_hostname }}"
 common_logwatch_hostname: "{{ inventory_hostname }}"
 
-common_nscd_enable: true
+common_nscd_enable: yes
 
-common_rkhunter_enable: true
+common_rkhunter_enable: yes
 
 common_sshd_options:
   - option: "pub_key_authentication"

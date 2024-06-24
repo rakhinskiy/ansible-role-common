@@ -16,7 +16,7 @@
     mode: "0644"
     modification_time: "preserve"
     access_time: "preserve"
-  become: true
+  become: yes
   tags:
     - common
     - common-nscd
@@ -29,10 +29,10 @@
     owner: "root"
     group: "root"
     mode: "0644"
-    backup: false
+    backup: no
   notify:
     - Restart nscd
-  become: true
+  become: yes
   tags:
     - common
     - common-nscd
@@ -42,8 +42,8 @@
   ansible.builtin.service:
     name: "{{ common_nscd_service }}"
     state: "started"
-    enabled: true
-  become: true
+    enabled: yes
+  become: yes
   tags:
     - common
     - common-nscd

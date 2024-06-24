@@ -9,8 +9,8 @@
       - "ipset"
       - "ipset-service"
     state: "present"
-    update_cache: false
-  become: true
+    update_cache: no
+  become: yes
   tags:
     - common
     - common-firewall

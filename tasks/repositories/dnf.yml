@@ -11,7 +11,7 @@
   with_items: "{{ common_repositories_manager }}"
   when:
     - common_repositories_manager | is_ne_list_dicts
-  become: true
+  become: yes
   tags:
     - common
     - common-repositories
@@ -25,7 +25,7 @@
   when:
     - common_repositories_add | is_ne_list_dicts
     - item.key is defined
-  become: true
+  become: yes
   tags:
     - common
     - common-repositories
@@ -38,13 +38,13 @@
     owner: "root"
     group: "root"
     mode: "0644"
-    backup: false
+    backup: no
   with_items: "{{ common_repositories_add }}"
   when:
     - common_repositories_add | is_ne_list_dicts
   notify:
     - Update dnf cache
-  become: true
+  become: yes
   tags:
     - common
     - common-repositories
@@ -52,7 +52,7 @@
 
 - name: "Common | Repositories | Dnf / Yum | Get Repositories List"
   scan_repositories:
-  become: true
+  become: yes
   when:
     - common_repositories_enable | is_ne_list or
       common_repositories_disable | is_ne_list
@@ -82,7 +82,7 @@
     - not item.state
   notify:
     - Update dnf cache
-  become: true
+  become: yes
   tags:
     - common
     - common-repositories
@@ -103,7 +103,7 @@
     - item.state
   notify:
     - Update dnf cache
-  become: true
+  become: yes
   tags:
     - common
     - common-repositories
