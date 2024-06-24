@@ -12,6 +12,7 @@
   notify:
     - Reload sysctl
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-sysctl

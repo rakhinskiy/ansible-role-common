@@ -9,6 +9,7 @@
     force_apt_get: yes
     cache_valid_time: 3600
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-auditd

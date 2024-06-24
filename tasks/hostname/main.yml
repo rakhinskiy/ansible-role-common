@@ -5,6 +5,7 @@
   ansible.builtin.hostname:
     name: "{{ common_hostname }}"
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-hostname

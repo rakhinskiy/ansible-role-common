@@ -7,6 +7,7 @@
     state: present
     update_cache: no
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-selinux
@@ -19,6 +20,7 @@
     state: "{{ common_selinux_state }}"
     update_kernel_param: "{{ common_selinux_update_kernel }}"
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-selinux
@@ -31,6 +33,7 @@
     persistent: "{{ item.persistent | default(no) }}"
   with_items: "{{ common_selinux_booleans }}"
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-selinux
@@ -48,6 +51,7 @@
   when:
     - item.setype is defined
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-selinux
@@ -62,6 +66,7 @@
   when:
     - item.setype is defined
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-selinux
@@ -77,6 +82,7 @@
   when:
     - item.setype is defined
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-selinux

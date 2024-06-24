@@ -24,6 +24,7 @@
   notify:
     - Restart atop
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-atop
@@ -35,6 +36,7 @@
     state: "started"
     enabled: yes
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-atop

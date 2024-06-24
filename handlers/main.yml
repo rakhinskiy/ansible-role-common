@@ -5,6 +5,7 @@
   ansible.builtin.command:
     cmd: "/sbin/sysctl --system"
   become: yes
+  become_user: "{{ ansible_become_user }}"
   changed_when: no
 
 - name: "Selinux security contexts restore"
@@ -15,6 +16,7 @@
     - ansible_facts.selinux.status == "enabled"
     - common_ssh_authorized_keys | is_ne_list_dicts
   become: yes
+  become_user: "{{ ansible_become_user }}"
   changed_when: no
 
 - name: "Restart docker"
@@ -22,6 +24,7 @@
     name: "docker"
     state: "restarted"
   become: yes
+  become_user: "{{ ansible_become_user }}"
   when:
     - common_firewall_allow_restart_docker
     - '"docker.service" in ansible_facts.services.keys() | list'
@@ -32,6 +35,7 @@
     name: "kube-proxy"
     state: "restarted"
   become: yes
+  become_user: "{{ ansible_become_user }}"
   when:
     - common_firewall_allow_restart_kube_proxy
     - '"kube-proxy.service" in ansible_facts.services.keys() | list'
@@ -41,6 +45,7 @@
   ansible.builtin.command:
     cmd: "/usr/local/bin/ipset-restart.sh"
   become: yes
+  become_user: "{{ ansible_become_user }}"
   changed_when: no
 
 - name: "Restart iptables"
@@ -48,12 +53,14 @@
     name: "{{ common_firewall_iptables_service }}"
     state: "restarted"
   become: yes
+  become_user: "{{ ansible_become_user }}"
 
 - name: "Restart atop"
   ansible.builtin.service:
     name: "{{ common_atop_service }}"
     state: "restarted"
   become: yes
+  become_user: "{{ ansible_become_user }}"
 
 - name: "Restart auditd"
   ansible.builtin.service:
@@ -61,29 +68,34 @@
     state: "restarted"
     use: "service"
   become: yes
+  become_user: "{{ ansible_become_user }}"
 
 - name: "Restart chrony"
   ansible.builtin.service:
     name: "{{ common_chrony_service }}"
     state: "restarted"
   become: yes
+  become_user: "{{ ansible_become_user }}"
 
 - name: "Restart cron"
   ansible.builtin.service:
     name: "{{ common_cron_service }}"
     state: "restarted"
   become: yes
+  become_user: "{{ ansible_become_user }}"
 
 - name: "Restart nscd"
   ansible.builtin.service:
     name: "{{ common_nscd_service }}"
     state: "restarted"
   become: yes
+  become_user: "{{ ansible_become_user }}"
 
 - name: "Prop update rkhunter"
   ansible.builtin.command:
     cmd: "rkhunter --propupd"
   become: yes
+  become_user: "{{ ansible_become_user }}"
   changed_when: no
 
 - name: "Update rkhunter"
@@ -91,6 +103,7 @@
     cmd: "rkhunter --update"
   register: rkhunter_update
   become: yes
+  become_user: "{{ ansible_become_user }}"
   changed_when: no
   failed_when: not rkhunter_update.rc in [0, 2]
 
@@ -99,20 +112,24 @@
     name: "{{ common_smartmontools_service }}"
     state: "restarted"
   become: yes
+  become_user: "{{ ansible_become_user }}"
 
 - name: "Restart sshd"
   ansible.builtin.service:
     name: "{{ common_sshd_service }}"
     state: "restarted"
   become: yes
+  become_user: "{{ ansible_become_user }}"
 
 - name: "Update apt cache"
   ansible.builtin.apt:
     update_cache: yes
     force_apt_get: yes
   become: yes
+  become_user: "{{ ansible_become_user }}"
 
 - name: "Update dnf cache"
   ansible.builtin.dnf:
     update_cache: yes
   become: yes
+  become_user: "{{ ansible_become_user }}"

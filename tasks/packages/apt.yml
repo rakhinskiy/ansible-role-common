@@ -11,6 +11,7 @@
   when:
     - common_packages | is_ne_list
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-packages
@@ -25,6 +26,7 @@
   when:
     - common_packages_additional | is_ne_list
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-packages

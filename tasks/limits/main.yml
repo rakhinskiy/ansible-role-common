@@ -12,6 +12,7 @@
     comment: "{{ item.comment | default('') }}"
   with_items: "{{ common_limits }}"
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-limits

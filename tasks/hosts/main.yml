@@ -10,6 +10,7 @@
     mode: "0644"
     backup: no
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-hosts

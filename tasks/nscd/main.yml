@@ -17,6 +17,7 @@
     modification_time: "preserve"
     access_time: "preserve"
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-nscd
@@ -33,6 +34,7 @@
   notify:
     - Restart nscd
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-nscd
@@ -44,6 +46,7 @@
     state: "started"
     enabled: yes
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-nscd

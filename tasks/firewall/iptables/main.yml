@@ -19,6 +19,7 @@
   notify:
     - Restart ipset
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-firewall
@@ -33,6 +34,7 @@
     mode: "0700"
     backup: no
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-firewall
@@ -44,6 +46,7 @@
     enabled: yes
     state: started
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-firewall
@@ -69,6 +72,7 @@
     - Restart docker
     - Restart kube-proxy
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-firewall
@@ -81,6 +85,7 @@
     state: stopped
   with_items: "{{ common_firewall_iptables_disable_services }}"
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-firewall
@@ -92,6 +97,7 @@
     enabled: yes
     state: started
   become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-firewall
