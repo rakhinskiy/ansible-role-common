@@ -8,10 +8,11 @@
     owner: "root"
     group: "root"
     mode: "0644"
-    backup: false
+    backup: no
   notify:
     - Reload sysctl
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-sysctl

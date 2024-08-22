@@ -14,7 +14,7 @@
     dest: "{{ common_aide_config_path }}"
     owner: "root"
     mode: "0600"
-    remote_src: false
+    remote_src: no
   when:
     - common_aide_config_file is defined
   tags:
@@ -26,7 +26,8 @@
   ansible.builtin.command:
     cmd: "{{ common_aide_binary }} -c {{ common_aide_config_path }} --init"
     creates: "{{ common_aide_db_new }}"
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-aide
@@ -36,7 +37,8 @@
   ansible.builtin.command:
     cmd: "cp {{ common_aide_db_new }} {{ common_aide_db }}"
     creates: "{{ common_aide_db }}"
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-aide

@@ -22,7 +22,7 @@ repos:
     - id: ruff
 
 - repo: https://github.com/ansible-community/ansible-lint.git
-  rev: v6.22.2
+  rev: v24.6.1
   hooks:
     - id: ansible-lint
       files: \.(yaml|yml)$

@@ -19,7 +19,8 @@
     - Selinux security contexts restore
   when:
     - common_ssh_authorized_keys | is_ne_list_dicts
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-ssh
@@ -33,7 +34,8 @@
   with_items: "{{ common_ssh_keys | default([]) }}"
   when:
     - common_ssh_keys | is_ne_list_dicts
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-ssh
@@ -47,7 +49,8 @@
   with_items: "{{ common_ssh_keys | default([]) }}"
   when:
     - common_ssh_keys | is_ne_list_dicts
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-ssh

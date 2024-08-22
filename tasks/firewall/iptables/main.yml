@@ -15,10 +15,11 @@
     owner: "root"
     group: "root"
     mode: "0600"
-    backup: false
+    backup: no
   notify:
     - Restart ipset
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-firewall
@@ -31,8 +32,9 @@
     owner: "root"
     group: "root"
     mode: "0700"
-    backup: false
-  become: true
+    backup: no
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-firewall
@@ -41,9 +43,10 @@
 - name: "Common | Firewall | IPTables | Enable ipset service"
   ansible.builtin.service:
     name: "{{ common_firewall_ipset_service }}"
-    enabled: true
+    enabled: yes
     state: started
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-firewall
@@ -63,12 +66,13 @@
     owner: "root"
     group: "root"
     mode: "0600"
-    backup: false
+    backup: no
   notify:
     - Restart iptables
     - Restart docker
     - Restart kube-proxy
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-firewall
@@ -77,10 +81,11 @@
 - name: "Common | Firewall | IPTables | Disable firewalld / ufw services"
   ansible.builtin.service:
     name: "{{ item }}"
-    enabled: false
+    enabled: no
     state: stopped
   with_items: "{{ common_firewall_iptables_disable_services }}"
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-firewall
@@ -89,9 +94,10 @@
 - name: "Common | Firewall | IPTables | Enable iptables service"
   ansible.builtin.service:
     name: "{{ common_firewall_iptables_service }}"
-    enabled: true
+    enabled: yes
     state: started
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-firewall

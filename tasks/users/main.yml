@@ -6,7 +6,8 @@
     name: "{{ item.group | default(item.name) }}"
     state: "present"
   with_items: "{{ common_users }}"
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-users
@@ -22,7 +23,8 @@
     append: "{{ item.append | default('false') }}"
     state: "{{ item.state | default('present') }}"
   with_items: "{{ common_users }}"
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-users

@@ -1,20 +1,34 @@
 #jinja2: lstrip_blocks: True, trim_blocks: True
 #!/usr/bin/env bash
 
-{% for item in common_firewall.filter | default([]) %}
-  {% for service in item.services %}
-    {% if "any" not in service.sources %}
+{% for item in common_firewall_ipset_zones | default([]) %}
+ipset create NEW-{{ item.zone | replace(' ', '-') }} hash:net family inet hashsize 1024 maxelem 65536 bucketsize 12
+
+  {% for source in item.sources | default([]) | ansible.utils.ipv4 %}
+ipset add NEW-{{ item.zone | replace(' ', '-') }} {{ source }}{% if "/" not in source %}/32{% endif %}
+
+  {% endfor %}
+
+ipset create -! {{ item.zone | replace(' ', '-') }} hash:net family inet hashsize 1024 maxelem 65536 bucketsize 12
+ipset swap NEW-{{ item.zone | replace(' ', '-') }} {{ item.zone | replace(' ', '-') }}
+ipset destroy NEW-{{ item.zone | replace(' ', '-') }}
+
+{% endfor %}
+
+{% for item in common_firewall.get('filter', {}).get('input', []) %}
+  {% for service in item.get('services', []) %}
+    {% if "any" not in service.sources | default([]) and service.sources | default([]) | ansible.utils.ipv4 | length > 0  %}
 ipset create NEW-Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }} hash:net family inet hashsize 1024 maxelem 65536 bucketsize 12
-      {% for source in service.sources %}
-        {% if "/" not in source %}
-ipset add NEW-Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }} {{ source }}/32
-        {% else %}
-ipset add NEW-Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }} {{ source }}
-        {% endif %}
+
+      {% for source in service.sources | default([]) | ansible.utils.ipv4 %}
+ipset add NEW-Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }} {{ source }}{% if "/" not in source %}/32{% endif %}
+
       {% endfor %}
+
 ipset create -! Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }} hash:net family inet hashsize 1024 maxelem 65536 bucketsize 12
 ipset swap NEW-Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }} Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }}
 ipset destroy NEW-Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }}
+
     {% endif %}
   {% endfor %}
 {% endfor %}

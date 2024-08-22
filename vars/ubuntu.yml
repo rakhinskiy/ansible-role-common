@@ -9,6 +9,7 @@ common_always_packages:
   - "gnupg2"
   - "procps"
   - "python3-apt"
+  - "python3-netaddr"
   - "virt-what"
 
 # 08 # Locale

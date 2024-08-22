@@ -47,14 +47,14 @@ Tasks
 TODO
 --------------
 
-- Add to iptables forward / output zone rules
-- Add to iptables src nat / dst nat zone rules
-- Add iptables restart script with save docker / k8s rules ???
-- Add firewalld support
-- Add ufw support
 - Audisp plugins config for auditd
-- Add support for go-audit (Slack) / go-libaudit (Elastic) versions of auditd
+- Add support for go-audit (Slack) / go-libaudit (Elastic) versions of audit daemons
 - Rewrite rkhunter configure tasks
+- Add to iptables output zone rules | ```low priority```
+- Add to iptables src nat / dst nat zone rules | ```low priority```
+- Add iptables restart script with save docker / k8s rules | ```low priority```
+- Add firewalld support | ```low priority```
+- Add ufw support | ```low priority```
 
 Role Variables
 --------------
@@ -174,9 +174,9 @@ common_users:
     group: "deploy"       # default: item.name
     groups: ["docker"]    # default: []
     shell: "/bin/zsh"     # default: /bin/bash
-    create_home: true     # default: true
-    system: false         # default: false
-    append: true          # default: false
+    create_home: yes      # default: yes
+    system: no            # default: no
+    append: yes           # default: no
     state: present        # default: present
 ```
 ```yaml
@@ -192,7 +192,7 @@ common_sudo:
     permissions:
       - host: "ALL"
         runas: "root"
-        nopasswd: false
+        nopasswd: no
         cmd: "ALL"
   # group example
   - name: "%wheel"
@@ -202,7 +202,7 @@ common_sudo:
     permissions:
       - host: "ALL"
         runas: "root"
-        nopasswd: true
+        nopasswd: yes
         cmd: "ALL"
 ```
 ```yaml
@@ -231,8 +231,8 @@ common_dirs:
     owner: "root"
     group: "root"
     mode: "0750"
-    force: "false"
-    follow: "true"
+    force: no
+    follow: yes
 ```
 ```yaml
 # 11 # Environments
@@ -255,8 +255,8 @@ common_limits:
     limit_type: "hard"    # Required hard / soft
     limit_item: "core"    # Required
     value: "100000"       # Required
-    use_min: "false"      # default: false | Use min between exist limits.conf and new values
-    use_max: "true"       # default: false | Use max between exist limits.conf and new values
+    use_min: no           # default: no | Use min between exist limits.conf and new values
+    use_max: yes          # default: no | Use max between exist limits.conf and new values
     comment: ""
 ```
 ```yaml
@@ -292,8 +292,8 @@ common_sysfs:
 ```yaml
 # 15 # Tuned
 
-# default: false
-common_tuned_enable: true
+# default: no
+common_tuned_enable: yes
 
 # default: "profile-custom"
 common_tuned_profile_name: "profile-kubernetes"
@@ -326,71 +326,110 @@ common_tuned_profile_config:
 #   Only iptables currently supported
 common_firewall_backend: "iptables"
 
+common_firewall_ipset_zones:
+  - zone: "WHITELIST"
+    sources:
+      - "192.168.23.0/24"
+      - "192.168.99.0/24"
+  - zone: "VPN_OPEN_CONNECT_NETWORKS"
+    sources:
+      - "192.168.199.0/24"
+  - zone: "VPN_IPSEC_NETWORKS"
+    sources:
+      - "192.168.200.0/24"
+      - "192.168.201.0/24"
+  - zone: "DMZ"
+    sources:
+      - "192.168.202.0/24"
+  - zone: "ALL"
+    sources:
+        - "0.0.0.0/0"
+
 # default: []
 # default input / forward policy is DROP
 # default zone chains policy is RETURN
 common_firewall:
-  tcp_mss: true
+  tcp_mss: yes
   masquerade:
     interfaces:
       - "eth0"
   filter:
-    # eth0:vip VRRP
-    - zone: "public"
-      ip_addresses:
-        - "10.0.10.10"
-      default: "drop"  # Chain policy
-      services:
-        - name: "HTTP"
-          ports:
-            - "tcp/80"
-            - "tcp/443"
-          sources:
-            - "any"
-        - name: "Kubernetes"
-          ports:
-            - "tcp/6443"
-          sources:
-            - "any"
-          action: "reject" # default action is accept
-    # eth0 internal network
-    - zone: "dmz"
-      interfaces:
-        - "eth0"
-      default: "return"
-      services:
-        - name: "Whitelist"
-          ports:
-            - "any"
-          sources:
-            - "1.1.1.1"
-            - "10.0.0.0/16"
-        - name: "SSH"
-          ports:
-            - "tcp/22"
-          sources:
-            - "192.168.1.0/24"
-            - "10.0.0.0/16"
-        - name: "HTTP"
-          ports:
-            - "tcp/80"
-            - "tcp/443"
-          sources:
-            - "any"
-        - name: "IPSec"
-          # ports rules:
-          # udp/53 -> protocol: udp  / port: 53
-          # tcp/80 -> protocol: tcp  / port: 80
-          # 80     -> protocol: tcp  / port: 80
-          # gre/   -> protocol: gre  / port: not used | enable GRE on chain
-          # icmp/  -> protocol: icmp / port: not used | enable pings on chain
-          ports:
-            - "esp/"
-            - "gre/"
-            - "udp/500"
-            - "udp/4500"
-          sources:
-            - "any"
+    input:
+      # eth0:vip VRRP
+      - zone: "public"
+        ip_addresses:
+          - "10.0.10.10"
+        default: "drop"  # Chain policy
+        services:
+          - name: "HTTP"
+            ports:
+              - "tcp/80"
+              - "tcp/443"
+            sources:
+              - "any"
+          - name: "Kubernetes"
+            ports:
+              - "tcp/6443"
+            sources:
+              - "BLACKLIST"
+            action: "reject" # default action is accept
+      # eth0 internal network
+      - zone: "dmz"
+        interfaces:
+          - "eth0"
+        default: "return"
+        services:
+          - name: "Whitelist"
+            ports:
+              - "any"
+            sources:
+              - "1.1.1.1"
+              - "10.0.0.0/16"
+          - name: "SSH"
+            ports:
+              - "tcp/22"
+            sources:
+              - "192.168.1.0/24"
+              - "10.0.0.0/16"
+          - name: "HTTP"
+            ports:
+              - "tcp/80"
+              - "tcp/443"
+            sources:
+              - "any"
+          - name: "IPSec"
+            # ports rules:
+            # udp/53 -> protocol: udp  / port: 53
+            # tcp/80 -> protocol: tcp  / port: 80
+            # 80     -> protocol: tcp  / port: 80
+            # gre/   -> protocol: gre  / port: not used | enable GRE on chain
+            # icmp/  -> protocol: icmp / port: not used | enable pings on chain
+            ports:
+              - "esp/"
+              - "gre/"
+              - "udp/500"
+              - "udp/4500"
+            sources:
+              - "any"
+  forward:
+    # Allow forward between all pairs
+    #    ppp+ <-> tun+
+    #    ppp+ <-> eth0
+    #    tun+ <-> eth0
+    - interfaces:
+      - 'ppp+'
+      - 'tun+'
+      - 'eth0'
+    - networks:
+      - '192.168.23.0/24'
+      - '192.168.24.0/24'
+    - zones:
+      - "ALL"
+      - "DMZ"
+    - zones:
+      - "ALL"
+      - "VPN_OPEN_CONNECT_NETWORKS"
+
   # Direct rules example
   direct:
     mangle: # *mangle table | first rules
@@ -403,16 +442,16 @@ common_firewall:
     nat: # *nat table | first rules
       - "-A POSTROUTING -o eht0 -j MASQUERADE"
 
-# default: false
-common_firewall_allow_restart_docker: true
-# default: false
-common_firewall_allow_restart_kube_proxy: true
+# default: no
+common_firewall_allow_restart_docker: yes
+# default: no
+common_firewall_allow_restart_kube_proxy: yes
 ```
 ```yaml
 # 17 # SELinux
 
-# default: false | true only run selinux tasks
-common_selinux_enable: true
+# default: no | yes only run selinux tasks
+common_selinux_enable: yes
 
 # default: targeted | ["targeted", "minimum", "mls"]
 common_selinux_policy: "targeted"
@@ -420,18 +459,18 @@ common_selinux_policy: "targeted"
 # default: enforcing | ["disabled", "enforcing", "permissive"]
 common_selinux_state: "enforcing"
 
-# default: false
-common_selinux_update_kernel: false
+# default: no
+common_selinux_update_kernel: no
 
 # default: []
 # https://docs.ansible.com/ansible/latest/collections/ansible/posix/seboolean_module.html
 common_selinux_booleans:
   - name: "httpd_can_network_connect"
-    state: true
-    persistent: true
+    state: yes
+    persistent: yes
   - name: "httpd_use_nfs"
-    state: true
-    persistent: true
+    state: yes
+    persistent: yes
 
 # default: []
 # https://docs.ansible.com/ansible/latest/collections/community/general/sefcontext_module.html
@@ -462,8 +501,8 @@ common_selinux_ports:
 # don't forget to set common_aide_db_new
 # and common_aide_db if not standard path used
 
-# default: false
-common_aide_enable: true
+# default: no
+common_aide_enable: yes
 
 # default: not defined | not required
 common_aide_config_file: "{{ inventory_dir }}/.files/{{ ansible_os_family | lower }}/aide.conf"
@@ -480,8 +519,8 @@ common_aide_db: "/var/lib/aide/aide.db.gz"
 ```yaml
 # 19 # Atop
 
-# default: false
-common_atop_enable: true
+# default: no
+common_atop_enable: yes
 
 # default: []
 common_atop_options:
@@ -498,7 +537,7 @@ common_atop_options:
 # Before enable auditd, please open templates/auditd/audit.rules.j2
 # Before enable `common_auditd_rules_predefined` READ RULES IN TEMPLATE
 
-common_auditd_enable: true
+common_auditd_enable: yes
 
 # default: []
 # Your custom rules
@@ -508,11 +547,11 @@ common_auditd_rules:
   - '-a always,exit -F arch=b32 -S clone -F a0&0x7C020000 -F key=container-create'
   - '-a always,exit -F arch=b64 -S clone -F a0&0x7C020000 -F key=container-create'
 
-# default: false
-common_auditd_rules_predefined: false
+# default: no
+common_auditd_rules_predefined: no
 
-# default: false | After enable immutable, you need to reboot for apply new rules
-common_auditd_rules_immutable: false
+# default: no | After enable immutable, you need to reboot for apply new rules
+common_auditd_rules_immutable: no
 
 common_auditd_rules_buffers: "8192"
 common_auditd_rules_backlog_wait_time: "60000"
@@ -520,7 +559,7 @@ common_auditd_rules_backlog_wait_time: "60000"
 ```yaml
 # 21 # Chrony
 
-common_chrony_enable: false
+common_chrony_enable: no
 
 common_chrony_allows:
   - "10/8"
@@ -529,8 +568,8 @@ common_chrony_allows:
 common_chrony_command_key: ~
 common_chrony_dump_dir: "/var/lib/chrony"
 common_chrony_drift_file: "{{ common_chrony_dump_dir }}/chrony.drift"
-common_chrony_dump_on_exit: true
-common_chrony_generate_command_key: false
+common_chrony_dump_on_exit: yes
+common_chrony_generate_command_key: no
 common_chrony_hw_clock_file: ~
 common_chrony_hw_timestamp: ~
 common_chrony_keyfile: "/etc/chrony/chrony.keys"
@@ -546,12 +585,12 @@ common_chrony_mail_on_change: ~
 common_chrony_make_step: "1.0 3"
 common_chrony_max_update_skew: "100.0"
 common_chrony_min_sources: ~
-common_chrony_no_client_log: true
+common_chrony_no_client_log: yes
 common_chrony_pools:
   - "pool.ntp.org iburst maxsources 5"
 common_chrony_rtc_file: ~
-common_chrony_rtc_on_utc: true
-common_chrony_rtc_sync: true
+common_chrony_rtc_on_utc: yes
+common_chrony_rtc_sync: yes
 common_chrony_servers: ~
 common_chrony_stratum_weight: "0.001"
 ```
@@ -580,8 +619,8 @@ common_cron_tasks:
 ```yaml
 # 23 # Logwatch
 
-# default: false
-common_logwatch_enable: true
+# default: no
+common_logwatch_enable: yes
 
 common_logwatch_config: "/etc/logwatch/conf/logwatch.conf"
 common_logwatch_packages:
@@ -611,8 +650,8 @@ common_logwatch_hostlimit: ~
 ```yaml
 # 24 # NSCD
 
-# default: false
-common_nscd_enable: true
+# default: no
+common_nscd_enable: yes
 
 common_nscd_logfile: "/var/log/nscd.log"
 common_nscd_threads: ~
@@ -673,7 +712,7 @@ common_nscd_netgroup_max_db_size: "33554432"
 ```yaml
 # 25 # RKHunter
 
-common_rkhunter_enable: true
+common_rkhunter_enable: yes
 common_rkhunter_options:
   - option: "SCRIPTWHITELIST"
     value: "/usr/sbin/adduser"
@@ -685,7 +724,7 @@ common_rkhunter_options:
 ```yaml
 # 26 # Smartmontools
 
-# default: false
+# default: no
 # Enable on bare-metal servers
 common_smartmontools_enable: "{{ ansible_virtualization_role != 'guest' }}"
 common_smartmontools_daemon_options:

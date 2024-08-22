@@ -10,7 +10,8 @@
     mode: "{{ item.mode | default('755') }}"
     force: "{{ item.force | default(false) }}"
     follow: "{{ item.follow | default(true) }}"
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   with_items: "{{ common_dirs }}"
   tags:
     - common

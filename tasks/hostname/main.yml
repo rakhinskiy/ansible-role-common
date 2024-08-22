@@ -4,7 +4,8 @@
 - name: "Common | Hostname | Set hostname"
   ansible.builtin.hostname:
     name: "{{ common_hostname }}"
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-hostname

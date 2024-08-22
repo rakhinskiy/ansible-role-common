@@ -1,14 +1,31 @@
 #jinja2: lstrip_blocks: True, trim_blocks: True
-{% for item in common_firewall.filter | default([]) %}
-  {% for service in item.services %}
-    {% if "any" not in service.sources %}
+
+# ------------------------------------------------
+# Custom zones
+# ------------------------------------------------
+
+{% for item in common_firewall_ipset_zones | default([]) %}
+
+create {{ item.zone | replace(' ', '-') }} hash:net family inet hashsize 1024 maxelem 65536 bucketsize 12
+
+  {% for source in item.sources | default([]) | ansible.utils.ipv4 %}
+add {{ item.zone | replace(' ', '-') }} {{ source }}{% if "/" not in source %}/32{% endif %}
+
+  {% endfor %}
+{% endfor %}
+
+# ------------------------------------------------
+# Generated zones
+# ------------------------------------------------
+{% for item in common_firewall.get('filter', {}).get('input', []) %}
+  {% for service in item.get('services', []) %}
+    {% if "any" not in service.sources and service.sources | default([]) | ansible.utils.ipv4 | length > 0 %}
+
 create Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }} hash:net family inet hashsize 1024 maxelem 65536 bucketsize 12
-      {% for source in service.sources %}
-        {% if "/" not in source %}
-add Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }} {{ source }}/32
-        {% else %}
-add Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }} {{ source }}
-        {% endif %}
+
+      {% for source in service.sources | default([]) | ansible.utils.ipv4 %}
+add Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }} {{ source }}{% if "/" not in source %}/32{% endif %}
+
       {% endfor %}
     {% endif %}
   {% endfor %}

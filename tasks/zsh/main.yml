@@ -13,11 +13,11 @@
     repo: "https://github.com/ohmyzsh/ohmyzsh.git"
     dest: "~{{ item.user }}/.oh-my-zsh"
     version: "{{ common_zsh_omz_version }}"
-    single_branch: true
-    clone: true
-    update: false
+    single_branch: yes
+    clone: yes
+    update: no
   with_items: "{{ common_zsh }}"
-  become: true
+  become: yes
   become_user: "{{ item.user }}"
   tags:
     - common
@@ -29,12 +29,12 @@
     repo: "https://github.com/romkatv/powerlevel10k.git"
     dest: "~{{ item.user }}/.oh-my-zsh/custom/themes/powerlevel10k"
     version: "{{ common_zsh_p10k_version }}"
-    single_branch: true
+    single_branch: yes
     depth: 1
-    clone: true
-    update: false
+    clone: yes
+    update: no
   with_items: "{{ common_zsh }}"
-  become: true
+  become: yes
   become_user: "{{ item.user }}"
   tags:
     - common
@@ -47,9 +47,9 @@
     dest: "~{{ item.user }}/.zshrc"
     owner: "{{ item.user }}"
     mode: "0644"
-    backup: false
+    backup: no
   with_items: "{{ common_zsh }}"
-  become: true
+  become: yes
   become_user: "{{ item.user }}"
   tags:
     - common
@@ -62,9 +62,39 @@
     dest: "~{{ item.user }}/.p10k.zsh"
     owner: "{{ item.user }}"
     mode: "0644"
-    backup: false
+    backup: no
   with_items: "{{ common_zsh }}"
-  become: true
+  become: yes
+  become_user: "{{ item.user }}"
+  tags:
+    - common
+    - common-zsh
+    - common-zsh-configure
+
+- name: "Common | ZSH | Create user config directory"
+  ansible.builtin.file:
+    path: "~{{ item.user }}/.config/zsh"
+    state: "directory"
+    owner: "{{ item.user }}"
+    mode: "0700"
+    follow: yes
+  with_items: "{{ common_zsh }}"
+  become: yes
+  become_user: "{{ item.user }}"
+  tags:
+    - common
+    - common-zsh
+    - common-zsh-configure
+
+- name: "Common | ZSH | Configure aliases"
+  ansible.builtin.copy:
+    src: "zsh/aliases.zsh"
+    dest: "~{{ item.user }}/.config/zsh/aliases.zsh"
+    owner: "{{ item.user }}"
+    mode: "0600"
+    backup: no
+  with_items: "{{ common_zsh }}"
+  become: yes
   become_user: "{{ item.user }}"
   tags:
     - common

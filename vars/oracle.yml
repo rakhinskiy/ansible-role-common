@@ -8,6 +8,7 @@ common_always_packages:
   - "oracle-epel-release-el{{ dist_version }}"
   - "procps-ng"
   - "python3-libselinux"
+  - "python3-netaddr"
   - "python3-policycoreutils"
   - "virt-what"
 

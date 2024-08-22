@@ -25,7 +25,7 @@
     msg: "Unsupported distribution version {{ dist_name }}: {{ dist_codename }}"
   when:
     - dist_name in ["debian", "ubuntu"]
-    - dist_codename not in ["buster", "bullseye", "bookworm", "focal", "jammy"]
+    - dist_codename not in ["buster", "bullseye", "bookworm", "focal", "jammy", "noble"]
   tags:
     - always
 
@@ -35,6 +35,13 @@
   ansible.builtin.include_vars: "{{ dist_name }}.yml"
   tags:
     - always
+
+# Debug python
+
+- name: "Common | Always | Debug python version"
+  ansible.builtin.debug:
+    msg: "Python version: {{ ansible_python_version }} | Python path {{ ansible_python_interpreter }}"
+    verbosity: 1
 
 # Install role packages dependencies
 

@@ -5,8 +5,9 @@
   ansible.builtin.dnf:
     name: "{{ common_selinux_packages }}"
     state: present
-    update_cache: false
-  become: true
+    update_cache: no
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-selinux
@@ -18,7 +19,8 @@
     policy: "{{ common_selinux_policy }}"
     state: "{{ common_selinux_state }}"
     update_kernel_param: "{{ common_selinux_update_kernel }}"
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-selinux
@@ -28,9 +30,10 @@
   ansible.posix.seboolean:
     name: "{{ item.name }}"
     state: "{{ item.state }}"
-    persistent: "{{ item.persistent | default(false) }}"
+    persistent: "{{ item.persistent | default(no) }}"
   with_items: "{{ common_selinux_booleans }}"
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-selinux
@@ -47,7 +50,8 @@
   with_items: "{{ common_selinux_file_contexts }}"
   when:
     - item.setype is defined
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-selinux
@@ -61,7 +65,8 @@
   with_items: "{{ common_selinux_file_contexts }}"
   when:
     - item.setype is defined
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-selinux
@@ -73,10 +78,11 @@
     proto: "{{ item.proto }}"
     setype: "{{ item.setype }}"
     state: "{{ item.state | default('present') }}"
-  with_items: "{{ common_selinux_ports | default([])}}"
+  with_items: "{{ common_selinux_ports | default([]) }}"
   when:
     - item.setype is defined
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-selinux

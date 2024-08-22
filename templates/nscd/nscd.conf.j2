@@ -6,7 +6,7 @@ threads                 {{ common_nscd_threads }}
 max-threads             {{ common_nscd_max_threads }}
 {% endif %}
 server-user             {{ common_nscd_server_user }}
-{% if common_nscd_stat_user is defined and common_nscd_stat_user is not none and common_nscd_stat_user != "" -%}
+{% if common_nscd_stat_user is defined and common_nscd_stat_user is not none and common_nscd_stat_user -%}
 stat-user               {{ common_nscd_stat_user }}
 {% endif %}
 debug-level             {{ common_nscd_debug_level }}

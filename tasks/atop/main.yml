@@ -15,7 +15,7 @@
     option: "{{ item.option }}"
     value: "\"{{ item.value }}\""
     state: "{{ item.state | default('present') }}"
-    no_extra_spaces: true
+    no_extra_spaces: yes
     owner: "root"
     mode: "0644"
   with_items: "{{ common_atop_options }}"
@@ -23,7 +23,8 @@
     - common_atop_options | is_ne_list_dicts
   notify:
     - Restart atop
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-atop
@@ -33,8 +34,9 @@
   ansible.builtin.service:
     name: "{{ common_atop_service }}"
     state: "started"
-    enabled: true
-  become: true
+    enabled: yes
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-atop

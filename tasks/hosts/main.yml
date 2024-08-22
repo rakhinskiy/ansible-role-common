@@ -8,8 +8,9 @@
     owner: "root"
     group: "root"
     mode: "0644"
-    backup: false
-  become: true
+    backup: no
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-hosts

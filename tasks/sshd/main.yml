@@ -10,7 +10,8 @@
     owner: "root"
     group: "root"
     mode: "0600"
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-sshd
@@ -23,7 +24,8 @@
     owner: "root"
     group: "root"
     mode: "0700"
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-sshd
@@ -36,12 +38,13 @@
     owner: "root"
     group: "root"
     mode: "0644"
-    backup: false
+    backup: no
   notify:
     - Restart sshd
   when:
     - common_sshd_options | is_sshd_options
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-sshd
@@ -58,7 +61,8 @@
     - ansible_facts.selinux.status == "enabled"
     - common_sshd_options | is_sshd_options
     - item.option | lower == "port"
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-sshd

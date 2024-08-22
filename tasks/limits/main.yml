@@ -11,7 +11,8 @@
     use_max: "{{ item.use_max | default(false) }}"
     comment: "{{ item.comment | default('') }}"
   with_items: "{{ common_limits }}"
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-limits

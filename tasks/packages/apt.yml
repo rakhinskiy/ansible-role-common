@@ -5,12 +5,13 @@
   ansible.builtin.apt:
     name: "{{ common_packages }}"
     state: present
-    update_cache: false
-    force_apt_get: true
+    update_cache: no
+    force_apt_get: yes
     cache_valid_time: 3600
   when:
     - common_packages | is_ne_list
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-packages
@@ -19,12 +20,13 @@
   ansible.builtin.apt:
     name: "{{ common_packages_additional }}"
     state: present
-    update_cache: false
-    force_apt_get: true
+    update_cache: no
+    force_apt_get: yes
     cache_valid_time: 3600
   when:
     - common_packages_additional | is_ne_list
-  become: true
+  become: yes
+  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-packages
