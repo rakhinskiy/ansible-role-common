@@ -12,7 +12,7 @@ platforms:
 
   # Alma Linux 8
   - name: "alma-8"
-    image: "reg.sys.im/tools-molecule-systemd:al-8"
+    image: "reg.sys.im/tools-systemd:al-8"
     privileged: yes
     pre_build_image: yes
     tmpfs:
@@ -31,7 +31,7 @@ platforms:
 
   # Alma Linux 9
   - name: "alma-9"
-    image: "reg.sys.im/tools-molecule-systemd:al-9"
+    image: "reg.sys.im/tools-systemd:al-9"
     privileged: yes
     pre_build_image: yes
     tmpfs:
@@ -51,7 +51,7 @@ platforms:
 
   # CentOS Linux 8 Stream
   - name: "centos-8"
-    image: "reg.sys.im/tools-molecule-systemd:co-8"
+    image: "reg.sys.im/tools-systemd:co-8"
     privileged: yes
     pre_build_image: yes
     tmpfs:
@@ -70,7 +70,7 @@ platforms:
 
   # CentOS Linux 9 Stream
   - name: "centos-9"
-    image: "reg.sys.im/tools-molecule-systemd:co-9"
+    image: "reg.sys.im/tools-systemd:co-9"
     privileged: yes
     pre_build_image: yes
     tmpfs:
@@ -90,7 +90,7 @@ platforms:
 
   # Oracle Linux 8
   - name: "oracle-8"
-    image: "reg.sys.im/tools-molecule-systemd:ol-8"
+    image: "reg.sys.im/tools-systemd:ol-8"
     privileged: yes
     pre_build_image: yes
     tmpfs:
@@ -109,7 +109,7 @@ platforms:
 
   # Oracle Linux 9
   - name: "oracle-9"
-    image: "reg.sys.im/tools-molecule-systemd:ol-9"
+    image: "reg.sys.im/tools-systemd:ol-9"
     privileged: yes
     pre_build_image: yes
     tmpfs:
@@ -129,7 +129,7 @@ platforms:
 
   # Rocky Linux 8
   - name: "rocky-8"
-    image: "reg.sys.im/tools-molecule-systemd:rl-8"
+    image: "reg.sys.im/tools-systemd:rl-8"
     privileged: yes
     pre_build_image: yes
     tmpfs:
@@ -149,7 +149,7 @@ platforms:
 
   # Rocky Linux 9
   - name: "rocky-9"
-    image: "reg.sys.im/tools-molecule-systemd:rl-9"
+    image: "reg.sys.im/tools-systemd:rl-9"
     privileged: yes
     pre_build_image: yes
     tmpfs:
@@ -169,7 +169,7 @@ platforms:
 
   # Debian 11 (bullseye)
   - name: "debian-bullseye"
-    image: "reg.sys.im/tools-molecule-systemd:bullseye"
+    image: "reg.sys.im/tools-systemd:bullseye"
     privileged: yes
     pre_build_image: yes
     tmpfs:
@@ -189,7 +189,7 @@ platforms:
 
   # Debian 12 (bookworm)
   - name: "debian-bookworm"
-    image: "reg.sys.im/tools-molecule-systemd:bookworm"
+    image: "reg.sys.im/tools-systemd:bookworm"
     privileged: yes
     pre_build_image: yes
     tmpfs:
@@ -209,7 +209,7 @@ platforms:
 
   # Ubuntu 20.04 (Focal)
   - name: "ubuntu-focal"
-    image: "reg.sys.im/tools-molecule-systemd:focal"
+    image: "reg.sys.im/tools-systemd:focal"
     privileged: yes
     pre_build_image: yes
     tmpfs:
@@ -229,7 +229,7 @@ platforms:
 
   # Ubuntu 22.04 (Jammy)
   - name: "ubuntu-jammy"
-    image: "reg.sys.im/tools-molecule-systemd:jammy"
+    image: "reg.sys.im/tools-systemd:jammy"
     privileged: yes
     pre_build_image: yes
     tmpfs:
@@ -249,11 +249,11 @@ platforms:
 
 provisioner:
   name: ansible
+  env:
+    ANSIBLE_VERBOSITY: 1
   lint:
     name: ansible-lint
-    enabled: yes
-  options:
-    vvv: yes
+    enabled: true
   inventory:
     links:
       .files: inventory/.files

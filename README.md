@@ -47,14 +47,14 @@ Tasks
 TODO
 --------------
 
-- Add to iptables forward / output zone rules
-- Add to iptables src nat / dst nat zone rules
-- Add iptables restart script with save docker / k8s rules ???
-- Add firewalld support
-- Add ufw support
 - Audisp plugins config for auditd
-- Add support for go-audit (Slack) / go-libaudit (Elastic) versions of auditd
+- Add support for go-audit (Slack) / go-libaudit (Elastic) versions of audit daemons
 - Rewrite rkhunter configure tasks
+- Add to iptables output zone rules | ```low priority```
+- Add to iptables src nat / dst nat zone rules | ```low priority```
+- Add iptables restart script with save docker / k8s rules | ```low priority```
+- Add firewalld support | ```low priority```
+- Add ufw support | ```low priority```
 
 Role Variables
 --------------
@@ -331,6 +331,19 @@ common_firewall_ipset_zones:
     sources:
       - "192.168.23.0/24"
       - "192.168.99.0/24"
+  - zone: "VPN_OPEN_CONNECT_NETWORKS"
+    sources:
+      - "192.168.199.0/24"
+  - zone: "VPN_IPSEC_NETWORKS"
+    sources:
+      - "192.168.200.0/24"
+      - "192.168.201.0/24"
+  - zone: "DMZ"
+    sources:
+      - "192.168.202.0/24"
+  - zone: "ALL"
+    sources:
+        - "0.0.0.0/0"
 
 # default: []
 # default input / forward policy is DROP
@@ -341,62 +354,82 @@ common_firewall:
     interfaces:
       - "eth0"
   filter:
-    # eth0:vip VRRP
-    - zone: "public"
-      ip_addresses:
-        - "10.0.10.10"
-      default: "drop"  # Chain policy
-      services:
-        - name: "HTTP"
-          ports:
-            - "tcp/80"
-            - "tcp/443"
-          sources:
-            - "any"
-        - name: "Kubernetes"
-          ports:
-            - "tcp/6443"
-          sources:
-            - "WHITELIST"
-          action: "reject" # default action is accept
-    # eth0 internal network
-    - zone: "dmz"
-      interfaces:
-        - "eth0"
-      default: "return"
-      services:
-        - name: "Whitelist"
-          ports:
-            - "any"
-          sources:
-            - "1.1.1.1"
-            - "10.0.0.0/16"
-        - name: "SSH"
-          ports:
-            - "tcp/22"
-          sources:
-            - "192.168.1.0/24"
-            - "10.0.0.0/16"
-        - name: "HTTP"
-          ports:
-            - "tcp/80"
-            - "tcp/443"
-          sources:
-            - "any"
-        - name: "IPSec"
-          # ports rules:
-          # udp/53 -> protocol: udp  / port: 53
-          # tcp/80 -> protocol: tcp  / port: 80
-          # 80     -> protocol: tcp  / port: 80
-          # gre/   -> protocol: gre  / port: not used | enable GRE on chain
-          # icmp/  -> protocol: icmp / port: not used | enable pings on chain
-          ports:
-            - "esp/"
-            - "gre/"
-            - "udp/500"
-            - "udp/4500"
-          sources:
-            - "any"
+    input:
+      # eth0:vip VRRP
+      - zone: "public"
+        ip_addresses:
+          - "10.0.10.10"
+        default: "drop"  # Chain policy
+        services:
+          - name: "HTTP"
+            ports:
+              - "tcp/80"
+              - "tcp/443"
+            sources:
+              - "any"
+          - name: "Kubernetes"
+            ports:
+              - "tcp/6443"
+            sources:
+              - "BLACKLIST"
+            action: "reject" # default action is accept
+      # eth0 internal network
+      - zone: "dmz"
+        interfaces:
+          - "eth0"
+        default: "return"
+        services:
+          - name: "Whitelist"
+            ports:
+              - "any"
+            sources:
+              - "1.1.1.1"
+              - "10.0.0.0/16"
+          - name: "SSH"
+            ports:
+              - "tcp/22"
+            sources:
+              - "192.168.1.0/24"
+              - "10.0.0.0/16"
+          - name: "HTTP"
+            ports:
+              - "tcp/80"
+              - "tcp/443"
+            sources:
+              - "any"
+          - name: "IPSec"
+            # ports rules:
+            # udp/53 -> protocol: udp  / port: 53
+            # tcp/80 -> protocol: tcp  / port: 80
+            # 80     -> protocol: tcp  / port: 80
+            # gre/   -> protocol: gre  / port: not used | enable GRE on chain
+            # icmp/  -> protocol: icmp / port: not used | enable pings on chain
+            ports:
+              - "esp/"
+              - "gre/"
+              - "udp/500"
+              - "udp/4500"
+            sources:
+              - "any"
+  forward:
+    # Allow forward between all pairs
+    #    ppp+ <-> tun+
+    #    ppp+ <-> eth0
+    #    tun+ <-> eth0
+    - interfaces:
+      - 'ppp+'
+      - 'tun+'
+      - 'eth0'
+    - networks:
+      - '192.168.23.0/24'
+      - '192.168.24.0/24'
+    - zones:
+      - "ALL"
+      - "DMZ"
+    - zones:
+      - "ALL"
+      - "VPN_OPEN_CONNECT_NETWORKS"
+
   # Direct rules example
   direct:
     mangle: # *mangle table | first rules

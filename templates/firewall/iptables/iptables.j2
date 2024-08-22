@@ -51,7 +51,7 @@ COMMIT
 :INPUT DROP [0:0]
 :FORWARD DROP [0:0]
 :OUTPUT ACCEPT [0:0]
-{% for item in common_firewall.get('filter', []) %}
+{% for item in common_firewall.get('filter', {}).get('input', []) %}
 :Z-{{ item.zone | replace(' ', '-') | upper }} - [0.0]
 {% endfor %}
 
@@ -62,7 +62,7 @@ COMMIT
 {{ rule }}
 {% endfor %}
 
-{% for item in common_firewall.get('filter', []) %}
+{% for item in common_firewall.get('filter', {}).get('input', []) %}
 #######################
 # Zone: {{ item.zone }}
 
@@ -94,10 +94,16 @@ COMMIT
                     {% set proto = 'tcp' %}
                     {% set port_number = port %}
                 {% endif %}
-                {% if "any" in service.sources %}
+                {% if "any" in service.sources | default([]) %}
 -A Z-{{ item.zone | replace(' ', '-') | upper }} -p {{ proto }}{% if port_number %} --dport {{ port_number }}{% endif %} -j {{ service.get('action', "accept") | upper }}
-                {% else %}
+                {% elif service.sources | default([]) | ansible.utils.ipv4 | length > 0 %}
 -A Z-{{ item.zone | replace(' ', '-') | upper }} -p {{ proto }}{% if port_number %} --dport {{ port_number }}{% endif %} -m set --match-set Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }} src -j {{ service.get('action', "accept") | upper }}
+                {% else %}
+                    {% for custom_zone in service.sources | default([]) %}
+                        {% if not custom_zone | ansible.utils.ipv4 and not custom_zone | ansible.utils.ipv6 %}
+-A Z-{{ item.zone | replace(' ', '-') | upper }} -p {{ proto }}{% if port_number %} --dport {{ port_number }}{% endif %} -m set --match-set {{ custom_zone | replace(' ', '-') }} src -j {{ service.get('action', "accept") | upper }}
+                        {% endif %}
+                    {% endfor %}
                 {% endif %}
             {% endfor %}
         {% endif %}
@@ -105,5 +111,29 @@ COMMIT
 
 -A Z-{{ item.zone | replace(' ', '-') | upper }} -j {{ item.get('default', "return") | upper }}
 
+{% endfor %}
+
+#######################
+# Forward
+
+{% for item in common_firewall.get('filter', {}).get('forward', []) %}
+    {% for interface in item.get('interfaces', []) | get_all_pairs %}
+# Interfaces:  {{ interface['from'] }} <-> {{ interface['to'] }}
+-A FORWARD -i {{ interface['from'] }} -o {{ interface['to'] }} -j ACCEPT
+-A FORWARD -o {{ interface['from'] }} -i {{ interface['to'] }} -j ACCEPT
+
+    {% endfor %}
+    {% for network in item.get('networks', []) | get_all_pairs %}
+# Network: {{ network['from'] }} <-> {{ network['to'] }}
+-A FORWARD -s {{ network['from'] }} -d {{ network['to'] }} -j ACCEPT
+-A FORWARD -d {{ network['from'] }} -s {{ network['to'] }} -j ACCEPT
+
+    {% endfor %}
+    {% for zone in item.get('zones', []) | get_all_pairs %}
+# Zone: {{ zone['from'] }} <-> {{ zone['to'] }}
+-A FORWARD -m set --match-set {{ zone['from'] }} src -m set --match-set {{ zone['to'] }} dst -j ACCEPT
+-A FORWARD -m set --match-set {{ zone['from'] }} dst -m set --match-set {{ zone['to'] }} src -j ACCEPT
+
+    {% endfor %}
 {% endfor %}
 COMMIT

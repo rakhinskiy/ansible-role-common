@@ -118,4 +118,7 @@ fi
 [[ ! -f ~/.config/zsh/env.zsh ]] || source ~/.config/zsh/env.zsh
 
 # Aliases
-[[ ! -f ~/.config/zsh/alias.zsh ]] || source ~/.config/zsh/alias.zsh
+[[ ! -f ~/.config/zsh/aliases.zsh ]] || source ~/.config/zsh/aliases.zsh
+
+# Custom env / aliases
+[[ ! -f ~/.config/zsh/custom.zsh ]] || source ~/.config/zsh/custom.zsh

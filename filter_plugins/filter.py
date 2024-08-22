@@ -107,6 +107,7 @@ class FilterModule:
             "is_ne_str": self.is_ne_str,
             "is_sshd_options": self.is_sshd_options,
             "get_sshd_option": self.get_sshd_option,
+            "get_all_pairs": self.get_all_pairs,
         }
 
     @staticmethod
@@ -213,3 +214,19 @@ class FilterModule:
             "Can't find option %s in available sshd options",
             var,
         )
+
+    @staticmethod
+    def get_all_pairs(var: list[str]) -> list[dict]:
+        """
+        :param var: list of interfaces / networks / zones
+        :return: all pairs of list elements
+        """
+        if not isinstance(var, list) or len(var) < 2:
+            return []
+
+        result = [
+            {"from": a, "to": b}
+            for idx, a in enumerate(var)
+            for b in var[idx + 1 :]
+        ]
+        return result

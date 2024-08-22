@@ -70,3 +70,33 @@
     - common
     - common-zsh
     - common-zsh-configure
+
+- name: "Common | ZSH | Create user config directory"
+  ansible.builtin.file:
+    path: "~{{ item.user }}/.config/zsh"
+    state: "directory"
+    owner: "{{ item.user }}"
+    mode: "0700"
+    follow: yes
+  with_items: "{{ common_zsh }}"
+  become: yes
+  become_user: "{{ item.user }}"
+  tags:
+    - common
+    - common-zsh
+    - common-zsh-configure
+
+- name: "Common | ZSH | Configure aliases"
+  ansible.builtin.copy:
+    src: "zsh/aliases.zsh"
+    dest: "~{{ item.user }}/.config/zsh/aliases.zsh"
+    owner: "{{ item.user }}"
+    mode: "0600"
+    backup: no
+  with_items: "{{ common_zsh }}"
+  become: yes
+  become_user: "{{ item.user }}"
+  tags:
+    - common
+    - common-zsh
+    - common-zsh-configure
