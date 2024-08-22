@@ -373,6 +373,13 @@ common_firewall:
             sources:
               - "BLACKLIST"
             action: "reject" # default action is accept
+
+      # For IP / Network in sources for service
+      #   created ipset zone Z-ZONE-S-SERVICE
+      #   example Z-DMZ-S-SSH
+      # And you can use custom zones from
+      #   common_firewall_ipset_zones as sources
+
       # eth0 internal network
       - zone: "dmz"
         interfaces:
