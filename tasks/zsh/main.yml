@@ -16,9 +16,9 @@
     single_branch: yes
     clone: yes
     update: no
-  with_items: "{{ common_zsh }}"
   become: yes
   become_user: "{{ item.user }}"
+  with_items: "{{ common_zsh }}"
   tags:
     - common
     - common-zsh
@@ -33,9 +33,43 @@
     depth: 1
     clone: yes
     update: no
-  with_items: "{{ common_zsh }}"
   become: yes
   become_user: "{{ item.user }}"
+  with_items: "{{ common_zsh }}"
+  tags:
+    - common
+    - common-zsh
+    - common-zsh-configure
+
+- name: "Common | ZSH | Install | Plugin | Autosuggestions"
+  ansible.builtin.git:
+    repo: "https://github.com/zsh-users/zsh-autosuggestions.git"
+    dest: "~{{ item.user }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    version: "v{{ common_zsh_autosuggestions_version }}"
+    single_branch: yes
+    depth: 1
+    clone: yes
+    update: no
+  become: yes
+  become_user: "{{ item.user }}"
+  with_items: "{{ common_zsh }}"
+  tags:
+    - common
+    - common-zsh
+    - common-zsh-configure
+
+- name: "Common | ZSH | Install | Plugin | Syntax Highlighting"
+  ansible.builtin.git:
+    repo: "https://github.com/zsh-users/zsh-syntax-highlighting.git"
+    dest: "~{{ item.user }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+    version: "{{ common_zsh_syntax_highlighting_version }}"
+    single_branch: yes
+    depth: 1
+    clone: yes
+    update: no
+  become: yes
+  become_user: "{{ item.user }}"
+  with_items: "{{ common_zsh }}"
   tags:
     - common
     - common-zsh
@@ -48,9 +82,9 @@
     owner: "{{ item.user }}"
     mode: "0644"
     backup: no
-  with_items: "{{ common_zsh }}"
   become: yes
   become_user: "{{ item.user }}"
+  with_items: "{{ common_zsh }}"
   tags:
     - common
     - common-zsh
@@ -63,9 +97,9 @@
     owner: "{{ item.user }}"
     mode: "0644"
     backup: no
-  with_items: "{{ common_zsh }}"
   become: yes
   become_user: "{{ item.user }}"
+  with_items: "{{ common_zsh }}"
   tags:
     - common
     - common-zsh
@@ -78,9 +112,9 @@
     owner: "{{ item.user }}"
     mode: "0700"
     follow: yes
-  with_items: "{{ common_zsh }}"
   become: yes
   become_user: "{{ item.user }}"
+  with_items: "{{ common_zsh }}"
   tags:
     - common
     - common-zsh
@@ -93,9 +127,9 @@
     owner: "{{ item.user }}"
     mode: "0600"
     backup: no
-  with_items: "{{ common_zsh }}"
   become: yes
   become_user: "{{ item.user }}"
+  with_items: "{{ common_zsh }}"
   tags:
     - common
     - common-zsh

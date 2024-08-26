@@ -20,7 +20,6 @@
   when:
     - common_ssh_authorized_keys | is_ne_list_dicts
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-ssh
@@ -35,7 +34,6 @@
   when:
     - common_ssh_keys | is_ne_list_dicts
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-ssh
@@ -50,7 +48,6 @@
   when:
     - common_ssh_keys | is_ne_list_dicts
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-ssh

@@ -19,7 +19,6 @@
   notify:
     - Restart smartmontools
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-smartmontools
@@ -40,7 +39,6 @@
   notify:
     - Restart smartmontools
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-smartmontools

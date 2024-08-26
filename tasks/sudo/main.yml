@@ -18,7 +18,6 @@
     - item.name | default('') | is_ne_str
   with_items: "{{ common_sudo }}"
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-sudo

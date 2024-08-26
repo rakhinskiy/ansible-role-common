@@ -17,7 +17,6 @@
     modification_time: "preserve"
     access_time: "preserve"
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-locale
@@ -28,7 +27,6 @@
     regexp: "^LANG="
     line: "LANG={{ common_locale }}"
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-locale

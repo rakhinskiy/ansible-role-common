@@ -11,7 +11,6 @@
     group: "root"
     mode: "0600"
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-sshd
@@ -25,7 +24,6 @@
     group: "root"
     mode: "0700"
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-sshd
@@ -44,7 +42,6 @@
   when:
     - common_sshd_options | is_sshd_options
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-sshd
@@ -62,7 +59,6 @@
     - common_sshd_options | is_sshd_options
     - item.option | lower == "port"
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-sshd

@@ -19,7 +19,6 @@
   notify:
     - Restart auditd
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-auditd
@@ -31,7 +30,6 @@
     state: "started"
     enabled: yes
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-auditd

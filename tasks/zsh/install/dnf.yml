@@ -10,7 +10,6 @@
     state: "present"
     update_cache: no
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-zsh

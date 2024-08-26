@@ -10,7 +10,6 @@
     - Update rkhunter
     - Prop update rkhunter
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-rkhunter

@@ -16,7 +16,6 @@
     group: "root"
     mode: "0755"
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-tuned
@@ -31,7 +30,6 @@
     mode: "0644"
     backup: no
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-sysfs
@@ -43,7 +41,6 @@
     enabled: yes
     state: "started"
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-tuned
@@ -55,7 +52,6 @@
   register: common_tuned_current_profile
   changed_when: no
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-tuned
@@ -67,7 +63,6 @@
   when:
     - common_tuned_profile_name not in common_tuned_current_profile.stdout
   become: yes
-  become_user: "{{ ansible_become_user }}"
   changed_when: yes
   tags:
     - common

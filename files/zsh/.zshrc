@@ -114,6 +114,9 @@ if [[ ! "${P9K_SSH}" == "1" ]]; then
   typeset -g POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR='|'
 fi
 
+source "${ZSH}/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+source "${ZSH}/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
 # Environment
 [[ ! -f ~/.config/zsh/env.zsh ]] || source ~/.config/zsh/env.zsh
 
@@ -122,3 +125,6 @@ fi
 
 # Custom env / aliases
 [[ ! -f ~/.config/zsh/custom.zsh ]] || source ~/.config/zsh/custom.zsh
+
+autoload -Uz compinit
+compinit

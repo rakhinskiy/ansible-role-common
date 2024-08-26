@@ -12,7 +12,6 @@
   when:
     - common_repositories_manager | is_ne_list_dicts
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-repositories
@@ -27,7 +26,6 @@
     - item.key is defined
     - common_repositories_add | is_ne_list_dicts
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-repositories
@@ -47,7 +45,6 @@
   notify:
     - Update apt cache
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-repositories

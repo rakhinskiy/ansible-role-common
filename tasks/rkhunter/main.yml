@@ -22,7 +22,6 @@
   when:
     - common_rkhunter_options | default([]) | is_ne_list_dicts
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-rkhunter

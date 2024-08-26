@@ -27,7 +27,6 @@
     cmd: "{{ common_aide_binary }} -c {{ common_aide_config_path }} --init"
     creates: "{{ common_aide_db_new }}"
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-aide
@@ -38,7 +37,6 @@
     cmd: "cp {{ common_aide_db_new }} {{ common_aide_db }}"
     creates: "{{ common_aide_db }}"
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-aide

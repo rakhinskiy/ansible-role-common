@@ -13,7 +13,6 @@
   when:
     - common_repositories_manager | is_ne_list_dicts
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-repositories
@@ -28,7 +27,6 @@
     - common_repositories_add | is_ne_list_dicts
     - item.key is defined
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-repositories
@@ -48,7 +46,6 @@
   notify:
     - Update dnf cache
   become: yes
-  become_user: "{{ ansible_become_user }}"
   tags:
     - common
     - common-repositories

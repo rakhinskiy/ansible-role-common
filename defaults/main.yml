@@ -6,7 +6,6 @@
 
 # Fix sudo error when hostname changed
 ansible_become_flags: "--host=127.0.0.1 --set-home"
-ansible_become_user: "root"
 
 dist_name: "{{ ansible_distribution | lower | replace('linux', '') }}"
 dist_version: "{{ ansible_distribution_major_version }}"
@@ -574,3 +573,6 @@ common_zsh_omz_version: "master"
 
 # common_zsh_p10k_version: "commit:SHA or tag"
 common_zsh_p10k_version: "master"
+
+common_zsh_autosuggestions_version: "0.7.0"
+common_zsh_syntax_highlighting_version: "0.8.0"
