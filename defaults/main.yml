@@ -117,6 +117,9 @@ common_locale: ~
 #     state: present
 common_users: []
 
+# Same as common_users
+common_users_additional: []
+
 # 08 # Sudo
 ##############################################################################
 
@@ -567,6 +570,11 @@ common_sshd_options: []
 #   - user: "deploy"
 #
 common_zsh: []
+
+# common_zsh_additional:
+#   - user: "dba"
+#
+common_zsh_additional: []
 
 # common_zsh_omz_version: "commit:SHA"
 common_zsh_omz_version: "master"

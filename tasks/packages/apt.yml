@@ -1,29 +1,30 @@
 # code: language=ansible
 ---
 
-- name: "Common | Packages | Install | Apt"
-  ansible.builtin.apt:
-    name: "{{ common_packages }}"
-    state: present
-    update_cache: no
-    force_apt_get: yes
-    cache_valid_time: 3600
-  when:
-    - common_packages | is_ne_list
-  become: yes
+- name: "Common | Packages | Install | Apt | Merge packages"
+  ansible.builtin.set_fact:
+    _common_packages_: "{{ (common_packages | default([]) + common_packages_additional | default([])) | unique }}"
   tags:
     - common
     - common-packages
 
-- name: "Common | Packages | Install Additional | Apt"
+- name: "Common | Packages | Install | Apt | Merge packages | Debug"
+  ansible.builtin.debug:
+    msg: "{{ _common_packages_ }}"
+    verbosity: 1
+  tags:
+    - common
+    - common-packages
+
+- name: "Common | Packages | Install | Apt"
   ansible.builtin.apt:
-    name: "{{ common_packages_additional }}"
+    name: "{{ _common_packages_ }}"
     state: present
     update_cache: no
     force_apt_get: yes
     cache_valid_time: 3600
   when:
-    - common_packages_additional | is_ne_list
+    - _common_packages_ | is_ne_list
   become: yes
   tags:
     - common

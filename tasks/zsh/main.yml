@@ -8,6 +8,23 @@
     - common-zsh
     - common-zsh-install
 
+- name: "Common | ZSH | Install | Merge users"
+  ansible.builtin.set_fact:
+    _common_zsh_: "{{ [common_zsh | default([]), common_zsh_additional | default([])] | community.general.lists_mergeby('user') }}"
+  tags:
+    - common
+    - common-zsh
+    - common-zsh-configure
+
+- name: "Common | ZSH | Install | Merge users | Debug"
+  ansible.builtin.debug:
+    msg: "{{ _common_zsh_ }}"
+    verbosity: 1
+  tags:
+    - common
+    - common-zsh
+    - common-zsh-configure
+
 - name: "Common | ZSH | Install OMZ"
   ansible.builtin.git:
     repo: "https://github.com/ohmyzsh/ohmyzsh.git"
@@ -18,7 +35,7 @@
     update: no
   become: yes
   become_user: "{{ item.user }}"
-  with_items: "{{ common_zsh }}"
+  with_items: "{{ _common_zsh_ }}"
   tags:
     - common
     - common-zsh
@@ -35,7 +52,7 @@
     update: no
   become: yes
   become_user: "{{ item.user }}"
-  with_items: "{{ common_zsh }}"
+  with_items: "{{ _common_zsh_ }}"
   tags:
     - common
     - common-zsh
@@ -52,7 +69,7 @@
     update: no
   become: yes
   become_user: "{{ item.user }}"
-  with_items: "{{ common_zsh }}"
+  with_items: "{{ _common_zsh_ }}"
   tags:
     - common
     - common-zsh
@@ -69,7 +86,7 @@
     update: no
   become: yes
   become_user: "{{ item.user }}"
-  with_items: "{{ common_zsh }}"
+  with_items: "{{ _common_zsh_ }}"
   tags:
     - common
     - common-zsh
@@ -84,7 +101,7 @@
     backup: no
   become: yes
   become_user: "{{ item.user }}"
-  with_items: "{{ common_zsh }}"
+  with_items: "{{ _common_zsh_ }}"
   tags:
     - common
     - common-zsh
@@ -99,7 +116,7 @@
     backup: no
   become: yes
   become_user: "{{ item.user }}"
-  with_items: "{{ common_zsh }}"
+  with_items: "{{ _common_zsh_ }}"
   tags:
     - common
     - common-zsh
@@ -114,7 +131,7 @@
     follow: yes
   become: yes
   become_user: "{{ item.user }}"
-  with_items: "{{ common_zsh }}"
+  with_items: "{{ _common_zsh_ }}"
   tags:
     - common
     - common-zsh
@@ -129,7 +146,7 @@
     backup: no
   become: yes
   become_user: "{{ item.user }}"
-  with_items: "{{ common_zsh }}"
+  with_items: "{{ _common_zsh_ }}"
   tags:
     - common
     - common-zsh

@@ -1,25 +1,28 @@
 # code: language=ansible
 ---
 
-- name: "Common | Packages | Install | Dnf"
-  ansible.builtin.dnf:
-    name: "{{ common_packages }}"
-    state: present
-    update_cache: no
-  when:
-    - common_packages | is_ne_list
-  become: yes
+- name: "Common | Packages | Install | Dnf | Merge packages"
+  ansible.builtin.set_fact:
+    _common_packages_: "{{ (common_packages | default([]) + common_packages_additional | default([])) | unique }}"
   tags:
     - common
     - common-packages
 
-- name: "Common | Packages | Install Additional | Dnf"
+- name: "Common | Packages | Install | Dnf | Merge packages | Debug"
+  ansible.builtin.debug:
+    msg: "{{ _common_packages_ }}"
+    verbosity: 1
+  tags:
+    - common
+    - common-packages
+
+- name: "Common | Packages | Install | Dnf"
   ansible.builtin.dnf:
-    name: "{{ common_packages_additional }}"
+    name: "{{ _common_packages_ }}"
     state: present
     update_cache: no
   when:
-    - common_packages_additional | is_ne_list
+    - _common_packages_ | is_ne_list
   become: yes
   tags:
     - common

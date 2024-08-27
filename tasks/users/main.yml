@@ -1,11 +1,26 @@
 # code: language=ansible
 ---
 
+- name: "Common | Users | Merge users"
+  ansible.builtin.set_fact:
+    _common_users_: "{{ [common_users | default([]), common_users_additional | default([])] | community.general.lists_mergeby('name') }}"
+  tags:
+    - common
+    - common-users
+
+- name: "Common | Users | Merge users | Debug"
+  ansible.builtin.debug:
+    msg: "{{ _common_users_ }}"
+    verbosity: 1
+  tags:
+    - common
+    - common-users
+
 - name: "Common | Users | Create groups"
   ansible.builtin.group:
     name: "{{ item.group | default(item.name) }}"
     state: "present"
-  with_items: "{{ common_users }}"
+  with_items: "{{ _common_users_ }}"
   become: yes
   tags:
     - common
@@ -21,7 +36,7 @@
     system: "{{ item.system | default('false') }}"
     append: "{{ item.append | default('false') }}"
     state: "{{ item.state | default('present') }}"
-  with_items: "{{ common_users }}"
+  with_items: "{{ _common_users_ }}"
   become: yes
   tags:
     - common

@@ -178,6 +178,11 @@ common_users:
     system: no            # default: no
     append: yes           # default: no
     state: present        # default: present
+
+# default: []
+# Same as common_users and will be merged
+#   into common_users before run tasks
+common_users_additional: []
 ```
 ```yaml
 # 08 # Sudo
@@ -768,6 +773,12 @@ common_sshd_options:
 common_zsh:
   - user: "deploy"
   - user: "root"
+
+# default: []
+# Same as common_zsh and will be merged
+#   into common_zsh before run tasks
+common_zsh_additional:
+  - user: "dba"
 ```
 
 Dependencies

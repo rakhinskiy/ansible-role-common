@@ -89,7 +89,7 @@
     # cpu_arch                # CPU architecture
     # time                    # current time
     ip                        # ip address and bandwidth usage for a specified network interface
-    # public_ip               # public IP address
+    public_ip                 # public IP address
     # proxy                   # system-wide http/https/ftp proxy
     # battery                 # internal battery
     # wifi                    # wifi speed
@@ -1468,7 +1468,7 @@
   # Don't display the name of the toolbox if it matches fedora-toolbox-*.
   typeset -g POWERLEVEL9K_TOOLBOX_CONTENT_EXPANSION='${P9K_TOOLBOX_NAME:#fedora-toolbox-*}'
   # Custom icon.
-  # typeset -g POWERLEVEL9K_TOOLBOX_VISUAL_IDENTIFIER_EXPANSION='⭐'
+  typeset -g POWERLEVEL9K_TOOLBOX_VISUAL_IDENTIFIER_EXPANSION=''
   # Custom prefix.
   # typeset -g POWERLEVEL9K_TOOLBOX_PREFIX='%244Fin '
 
@@ -1476,7 +1476,7 @@
   # Public IP color.
   typeset -g POWERLEVEL9K_PUBLIC_IP_FOREGROUND=94
   # Custom icon.
-  # typeset -g POWERLEVEL9K_PUBLIC_IP_VISUAL_IDENTIFIER_EXPANSION='⭐'
+  typeset -g POWERLEVEL9K_PUBLIC_IP_VISUAL_IDENTIFIER_EXPANSION=''
 
   ########################[ vpn_ip: virtual private network indicator ]#########################
   # VPN IP color.

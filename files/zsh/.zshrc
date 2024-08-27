@@ -98,6 +98,7 @@ if ps ${PPID} | grep mc; then
   typeset -g POWERLEVEL9K_VISUAL_IDENTIFIER_EXPANSION=''
   typeset -g POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
   typeset -g POWERLEVEL9K_BACKGROUND=''
+  typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context root_indicator dir)
   typeset -g POWERLEVEL9K_LEFT_PROMPT_LAST_SEGMENT_END_SYMBOL=''
   typeset -g POWERLEVEL9K_LEFT_PROMPT_FIRST_SEGMENT_START_SYMBOL=''
   typeset -g POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR='|'
@@ -109,6 +110,7 @@ if [[ ! "${P9K_SSH}" == "1" ]]; then
   typeset -g POWERLEVEL9K_VISUAL_IDENTIFIER_EXPANSION=''
   typeset -g POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
   typeset -g POWERLEVEL9K_BACKGROUND=''
+  typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context root_indicator dir)
   typeset -g POWERLEVEL9K_LEFT_PROMPT_LAST_SEGMENT_END_SYMBOL=''
   typeset -g POWERLEVEL9K_LEFT_PROMPT_FIRST_SEGMENT_START_SYMBOL=''
   typeset -g POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR='|'
@@ -117,14 +119,16 @@ fi
 source "${ZSH}/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "${ZSH}/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
+# Local p10k settings
+[[ ! -f ~/.p10k.local.zsh ]] || source ~/.p10k.local.zsh
+
 # Environment
 [[ ! -f ~/.config/zsh/env.zsh ]] || source ~/.config/zsh/env.zsh
+[[ ! -f ~/.config/zsh/env.local.zsh ]] || source ~/.config/zsh/env.local.zsh
 
 # Aliases
 [[ ! -f ~/.config/zsh/aliases.zsh ]] || source ~/.config/zsh/aliases.zsh
-
-# Custom env / aliases
-[[ ! -f ~/.config/zsh/custom.zsh ]] || source ~/.config/zsh/custom.zsh
+[[ ! -f ~/.config/zsh/aliases.local.zsh ]] || source ~/.config/zsh/aliases.local.zsh
 
 autoload -Uz compinit
 compinit
