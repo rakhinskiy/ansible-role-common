@@ -1,7 +1,6 @@
 ---
 
 ansible_user: root
-ansible_python_interpreter: "/usr/bin/python3.11"
 
 common_hostname: "{{ inventory_hostname }}"
 

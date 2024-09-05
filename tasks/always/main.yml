@@ -36,13 +36,6 @@
   tags:
     - always
 
-# Debug python
-
-- name: "Common | Always | Debug python version"
-  ansible.builtin.debug:
-    msg: "Python version: {{ ansible_python_version }} | Python path {{ ansible_python_interpreter }}"
-    verbosity: 1
-
 # Install role packages dependencies
 
 - name: "Common | Always | Install packages"
