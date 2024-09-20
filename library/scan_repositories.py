@@ -88,7 +88,7 @@ def yum_repositories():
         repo_config = configparser.ConfigParser()
         repo_config.read("/etc/yum.repos.d/" + str(f))
         for section in repo_config.sections():
-            if repo_config[section]["enabled"] == "0":
+            if repo_config[section].get("enabled", "1") == "0":
                 result.append({"name": section, "file": f, "state": False})
             else:
                 result.append({"name": section, "file": f, "state": True})
