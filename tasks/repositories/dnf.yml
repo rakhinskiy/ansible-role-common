@@ -20,12 +20,12 @@
 
 - name: "Common | Repositories | Dnf / Yum | GPG Keys"
   ansible.builtin.rpm_key:
-    key: "{{ item.key }}"
+    key: "{{ item }}"
     state: present
-  with_items: "{{ common_repositories_add }}"
+  with_items: "{{ common_repositories_add | get_keys('gpg') }}"
   when:
     - common_repositories_add | is_ne_list_dicts
-    - item.key is defined
+    - item is url
   become: yes
   tags:
     - common

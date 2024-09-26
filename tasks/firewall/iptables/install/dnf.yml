@@ -4,8 +4,8 @@
 - name: "Common | Firewall | IPTables | Install | Dnf / Yum"
   ansible.builtin.dnf:
     name:
-      - "iptables"
-      - "iptables-services"
+      - "iptables{% if dist_version | int > 8 %}-nft{% endif %}"
+      - "iptables{% if dist_version | int > 8 %}-nft{% endif %}-services"
       - "ipset"
       - "ipset-service"
     state: "present"

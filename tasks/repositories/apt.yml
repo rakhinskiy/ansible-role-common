@@ -17,15 +17,30 @@
     - common-repositories
     - common-repositories-manager
 
-- name: "Common | Repositories | Apt | GPG Keys"
+- name: "Common | Repositories | Apt | GPG Keys | Keyserver"
   ansible.builtin.apt_key:
-    url: "{{ item.key }}"
+    keyserver: "keyserver.ubuntu.com"
+    id: "{{ item }}"
     state: present
-  with_items: "{{ common_repositories_add }}"
+  with_items: "{{ common_repositories_add | get_keys('gpg') }}"
   when:
-    - item.key is defined
     - common_repositories_add | is_ne_list_dicts
-  become: yes
+    - not item is url
+  become: true
+  tags:
+    - common
+    - common-repositories
+    - common-repositories-gpg-keys
+
+- name: "Common | Repositories | Apt | GPG Keys | HTTP"
+  ansible.builtin.apt_key:
+    url: "{{ item }}"
+    state: present
+  with_items: "{{ common_repositories_add | get_keys('gpg') }}"
+  when:
+    - common_repositories_add | is_ne_list_dicts
+    - item is url
+  become: true
   tags:
     - common
     - common-repositories

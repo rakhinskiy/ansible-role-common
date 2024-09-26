@@ -108,6 +108,9 @@ class FilterModule:
             "is_sshd_options": self.is_sshd_options,
             "get_sshd_option": self.get_sshd_option,
             "get_all_pairs": self.get_all_pairs,
+            "to_list": self.to_list,
+            "get_key": self.get_key,
+            "get_keys": self.get_keys,
         }
 
     @staticmethod
@@ -230,3 +233,40 @@ class FilterModule:
             for b in var[idx + 1 :]
         ]
         return result
+
+    @staticmethod
+    def to_list(var: Any) -> list:
+        if not isinstance(var, list):
+            return [
+                var,
+            ]
+        return var
+
+    def get_key(self, var: dict, key: str, default: Any = None) -> Any:
+        if "." in key:
+            _current, _next = key.split(".", 1)
+            _var = var.get(_current, None)
+
+            if not _var or not isinstance(_var, dict):
+                return default
+
+            return self.get_key(var=_var, key=_next)
+
+        return var.get(key, default)
+
+    def get_keys(self, var: list[dict], key: str) -> list[Any]:
+        """
+        :param var: List of dicts
+        :param key: Key for search
+        :return: List with key values
+        """
+
+        result = []
+
+        for v in var:
+            data = self.get_key(v, key)
+            if not data:
+                continue
+            result.extend(self.to_list(data))
+
+        return list(set(result))
