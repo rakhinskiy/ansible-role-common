@@ -24,6 +24,7 @@
   ansible.builtin.include_tasks: "hosts/main.yml"
   when:
     - common_hosts | is_ne_list_dicts
+    - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
   tags:
     - common
     - common-hosts
@@ -228,6 +229,7 @@
   ansible.builtin.include_tasks: "auditd/main.yml"
   when:
     - common_auditd_enable
+    - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
   tags:
     - common
     - common-auditd

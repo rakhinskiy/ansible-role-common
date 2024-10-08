@@ -1,5 +1,7 @@
 ---
 
+# 25 # Rootkit Hunter
+
 common_rkhunter_options:
   - option: "MIRRORS_MODE"
     value: "1"

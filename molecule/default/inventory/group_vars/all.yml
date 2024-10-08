@@ -2,9 +2,23 @@
 
 ansible_user: root
 
+# 01 # Hostname
+
 common_hostname: "{{ inventory_hostname }}"
 
+# 02 # Hosts
+
+common_hosts:
+  - name: "molecule"
+    ip: "127.0.0.1"
+
+# 03 # Timezone
+
 common_timezone: "Etc/UTC"
+
+# 04 # Repositories
+
+# 05 # Packages
 
 common_packages:
   - "htop"
@@ -19,13 +33,19 @@ common_packages:
   - "unzip"
   - "zsh"
 
+# 06 # Locales
+
 common_locale: "en_US.UTF-8"
+
+# 07 # Users
 
 common_users:
   - name: "molecule"
     shell: "/bin/zsh"
     append: yes
     state: "present"
+
+# 08 # Sudo
 
 common_sudo:
   - name: "molecule"
@@ -43,6 +63,10 @@ common_sudo:
         nopasswd: yes
         cmd: "ALL"
 
+# 09 # SSH
+
+# 10 # Dirs
+
 common_dirs:
   - path: "/var/shared/backups"
     state: "directory"
@@ -51,6 +75,8 @@ common_dirs:
     mode: "0750"
     force: no
     follow: yes
+
+# 11 # Environments
 
 common_environments:
   - user: "root"
@@ -61,6 +87,8 @@ common_environments:
     variables:
       PATH: "${PATH}:${HOME}/.bin:${HOME}/bin"
       MOLECULE: "YES"
+
+# 12 # Limits
 
 common_limits:
   - domain: "*"
@@ -74,15 +102,21 @@ common_limits:
     value: "65536"
     use_max: yes
 
+# 13 # Sysctl
+
 common_sysctl_file: "ansible-common.conf"
 common_sysctl_keys:
   - name: "net.core.somaxconn"
     value: "65535"
 
+# 14 # Sysfs
+
 common_sysfs:
   - attribute: "sys/kernel/mm/transparent_hugepage/enabled"
     value: "madvise"
     type: "attribute"
+
+# 15 # Tuned
 
 common_tuned_enable: yes
 common_tuned_profile_name: "molecule"
@@ -104,8 +138,16 @@ common_tuned_profile_config:
       - option: "transparent_hugepages"
         value: "never"
 
+# 16 # Firewall
+
+# 17 # SELinux
+
+# 18 # AIDE
+
 common_aide_enable: yes
 common_aide_config_file: "{{ inventory_dir }}/.files/{{ ansible_os_family | lower }}.aide.conf"
+
+# 19 # Atop
 
 common_atop_enable: yes
 common_atop_options:
@@ -114,7 +156,15 @@ common_atop_options:
   - option: "LOGGENERATIONS"
     value: "7"
 
+# 20 # Auditd
+
+common_auditd_enable: yes
+
+# 21 # Chrony
+
 common_chrony_enable: yes
+
+# 22 # Cron
 
 common_cron_environments:
   - user: "molecule"
@@ -122,14 +172,24 @@ common_cron_environments:
       - name: "MAILTO"
         value: "molecule@exmaple.com"
 
+# 23 # Logwatch
+
 common_logwatch_enable: yes
 common_logwatch_mail_to: "molecule@example.com"
 common_logwatch_mail_from: "logwatch@{{ inventory_hostname }}"
 common_logwatch_hostname: "{{ inventory_hostname }}"
 
+# 24 # NSCD
+
 common_nscd_enable: yes
 
+# 25 # Rootkit Hunter
+
 common_rkhunter_enable: yes
+
+# 26 # Smartmontools
+
+# 27 # SSHD
 
 common_sshd_options:
   - option: "pub_key_authentication"
@@ -142,6 +202,8 @@ common_sshd_options:
     value: "no"
   - option: "permit_root_login"
     value: "no"
+
+# 28 # ZSH
 
 common_zsh:
   - user: "root"
