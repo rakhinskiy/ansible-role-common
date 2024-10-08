@@ -67,20 +67,25 @@ By default, role only run always task, other tasks only if exist config in inven
 # default: none
 common_hostname: "{{ inventory_hostname }}"
 ```
+
 ```yaml
 # 02 # Hosts
+
+# This task ignored for containers
 
 # default: []
 common_hosts:
   - ip: "192.168.0.1"
     name: "gw-1 gw-1.example.com"
 ```
+
 ```yaml
 # 03 # Timezone
 
 # default: none
 common_timezone: "Etc/UTC"
 ```
+
 ```yaml
 # 04 # Repositories
 
@@ -146,6 +151,7 @@ common_repositories_disable:
   # CentOS / AlmaLinux / Rocky example:
   - "epel"
 ```
+
 ```yaml
 # 05 # Packages
 
@@ -159,12 +165,14 @@ common_packages:
 common_packages_additional:
   - "zsh"
 ```
+
 ```yaml
 # 06 # Locale
 
 # default: none
 common_locale: "en_US.UTF-8"
 ```
+
 ```yaml
 # 07 # Users
 
@@ -184,6 +192,7 @@ common_users:
 #   into common_users before run tasks
 common_users_additional: []
 ```
+
 ```yaml
 # 08 # Sudo
 
@@ -210,6 +219,7 @@ common_sudo:
         nopasswd: yes
         cmd: "ALL"
 ```
+
 ```yaml
 # 09 # SSH
 
@@ -226,6 +236,7 @@ common_ssh_keys:
     key_public: "ssh-rsa ..."
     key_private: "..."
 ```
+
 ```yaml
 # 10 # Dirs
 
@@ -239,6 +250,7 @@ common_dirs:
     force: no
     follow: yes
 ```
+
 ```yaml
 # 11 # Environments
 
@@ -251,6 +263,7 @@ common_environments:
     variables:
       PATH: "${PATH}:/usr/local/bin:~/.bin/:~/bin/"
 ```
+
 ```yaml
 # 12 # Limits
 
@@ -264,6 +277,7 @@ common_limits:
     use_max: yes          # default: no | Use max between exist limits.conf and new values
     comment: ""
 ```
+
 ```yaml
 # 13 # Sysctl
 
@@ -276,6 +290,7 @@ common_sysctl_keys:
   - name: "net.core.somaxconn"
     value: "50000"
 ```
+
 ```yaml
 # 14 # SysFS
 
@@ -294,6 +309,7 @@ common_sysfs:
     value: "madvise"
     type: "attribute"
 ```
+
 ```yaml
 # 15 # Tuned
 
@@ -322,6 +338,7 @@ common_tuned_profile_config:
       - option: "transparent_hugepages"
         value: "never"
 ```
+
 ```yaml
 # 16 # Firewall
 
@@ -459,6 +476,7 @@ common_firewall_allow_restart_docker: yes
 # default: no
 common_firewall_allow_restart_kube_proxy: yes
 ```
+
 ```yaml
 # 17 # SELinux
 
@@ -501,8 +519,8 @@ common_selinux_ports:
     proto: tcp
     setype: http_port_t
     state: present
-
 ```
+
 ```yaml
 # 18 # AIDE
 
@@ -528,6 +546,7 @@ common_aide_db_new: "/var/lib/aide/aide.db.new.gz"
 #   redhat family: /var/lib/aide/aide.db.gz
 common_aide_db: "/var/lib/aide/aide.db.gz"
 ```
+
 ```yaml
 # 19 # Atop
 
@@ -543,8 +562,11 @@ common_atop_options:
   - option: "LOGGENERATIONS"
     value: "14"
 ```
+
 ```yaml
 # 20 # Auditd
+
+# This task ignored for containers
 
 # Before enable auditd, please open templates/auditd/audit.rules.j2
 # Before enable `common_auditd_rules_predefined` READ RULES IN TEMPLATE
@@ -568,6 +590,7 @@ common_auditd_rules_immutable: no
 common_auditd_rules_buffers: "8192"
 common_auditd_rules_backlog_wait_time: "60000"
 ```
+
 ```yaml
 # 21 # Chrony
 
@@ -606,6 +629,7 @@ common_chrony_rtc_sync: yes
 common_chrony_servers: ~
 common_chrony_stratum_weight: "0.001"
 ```
+
 ```yaml
 # 22 # Cron
 
@@ -628,6 +652,7 @@ common_cron_tasks:
     user: "root"                  # default: root
     disabled: "no"                # default: no
 ```
+
 ```yaml
 # 23 # Logwatch
 
@@ -659,6 +684,7 @@ common_logwatch_logfile: ~
 common_logwatch_mailer: "/usr/sbin/sendmail -t"
 common_logwatch_hostlimit: ~
 ```
+
 ```yaml
 # 24 # NSCD
 
@@ -721,6 +747,7 @@ common_nscd_netgroup_persistent: "yes"
 common_nscd_netgroup_shared: "yes"
 common_nscd_netgroup_max_db_size: "33554432"
 ```
+
 ```yaml
 # 25 # RKHunter
 
@@ -733,6 +760,7 @@ common_rkhunter_options:
     value: "(.*)"
     state: "absent"
 ```
+
 ```yaml
 # 26 # Smartmontools
 
@@ -750,6 +778,7 @@ common_smartmontools_mail_to: "root"
 common_smartmontools_devicescan: "-H -d removable -n standby,10,q"
 common_smartmontools_devices: ~
 ```
+
 ```yaml
 # 27 # SSHD
 
@@ -766,6 +795,7 @@ common_sshd_options:
   - option: "kerberos_authentication"
     value: "no"
 ```
+
 ```yaml
 # 28 # ZSH
 
