@@ -5,7 +5,7 @@
 :PREROUTING ACCEPT [0:0]
 :OUTPUT ACCEPT [0:0]
 
-{% for rule in common_firewall.get('raw', {}).get('raw', []) %}
+{% for rule in common_firewall.get('direct', {}).get('raw', []) %}
 {{ rule }}
 {% endfor %}
 
@@ -20,7 +20,7 @@ COMMIT
 :OUTPUT ACCEPT [0:0]
 :POSTROUTING ACCEPT [0:0]
 
-{% for rule in common_firewall.get('raw', {}).get('mangle', []) %}
+{% for rule in common_firewall.get('direct', {}).get('mangle', []) %}
 {{ rule }}
 {% endfor %}
 {% if common_firewall.get('tcp_mss', false) %}
@@ -36,7 +36,7 @@ COMMIT
 :POSTROUTING ACCEPT [0:0]
 :OUTPUT ACCEPT [0:0]
 
-{% for rule in common_firewall.get('raw', {}).get('nat', []) %}
+{% for rule in common_firewall.get('direct', {}).get('nat', []) %}
 {{ rule }}
 {% endfor %}
 {% for interface in common_firewall.get('masquerade', {}).get('interfaces', []) %}
@@ -58,7 +58,7 @@ COMMIT
 -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 -A INPUT -p icmp -j ACCEPT
 -A INPUT -i lo -j ACCEPT
-{% for rule in common_firewall.get('raw', {}).get('filter', []) %}
+{% for rule in common_firewall.get('direct', {}).get('filter', []) %}
 {{ rule }}
 {% endfor %}
 
@@ -95,13 +95,13 @@ COMMIT
                     {% set port_number = port %}
                 {% endif %}
                 {% if "any" in service.sources | default([]) %}
--A Z-{{ item.zone | replace(' ', '-') | upper }} -p {{ proto }}{% if port_number %} --dport {{ port_number }}{% endif %} -j {{ service.get('action', "accept") | upper }}
+-A Z-{{ item.zone | replace(' ', '-') | upper }}{% if ":" in port_number %} -m multiport{% endif %} -p {{ proto }}{% if port_number %} --dport{% if ":" in port_number %}s{% endif %} {{ port_number }}{% endif %} -j {{ service.get('action', "accept") | upper }}
                 {% elif service.sources | default([]) | ansible.utils.ipv4 | length > 0 %}
--A Z-{{ item.zone | replace(' ', '-') | upper }} -p {{ proto }}{% if port_number %} --dport {{ port_number }}{% endif %} -m set --match-set Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }} src -j {{ service.get('action', "accept") | upper }}
+-A Z-{{ item.zone | replace(' ', '-') | upper }}{% if ":" in port_number %} -m multiport{% endif %} -p {{ proto }}{% if port_number %} --dport{% if ":" in port_number %}s{% endif %} {{ port_number }}{% endif %} -m set --match-set Z-{{ item.zone | replace(' ', '-') | upper }}-S-{{ service.name | replace(' ', '-') | upper }} src -j {{ service.get('action', "accept") | upper }}
                 {% else %}
                     {% for custom_zone in service.sources | default([]) %}
                         {% if not custom_zone | ansible.utils.ipv4 and not custom_zone | ansible.utils.ipv6 %}
--A Z-{{ item.zone | replace(' ', '-') | upper }} -p {{ proto }}{% if port_number %} --dport {{ port_number }}{% endif %} -m set --match-set {{ custom_zone | replace(' ', '-') }} src -j {{ service.get('action', "accept") | upper }}
+-A Z-{{ item.zone | replace(' ', '-') | upper }}{% if ":" in port_number %} -m multiport{% endif %} -p {{ proto }}{% if port_number %} --dport{% if ":" in port_number %}s{% endif %} {{ port_number }}{% endif %} -m set --match-set {{ custom_zone | replace(' ', '-') }} src -j {{ service.get('action', "accept") | upper }}
                         {% endif %}
                     {% endfor %}
                 {% endif %}
