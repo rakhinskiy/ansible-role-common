@@ -428,11 +428,12 @@ common_firewall:
               - "any"
           - name: "IPSec"
             # ports rules:
-            # udp/53 -> protocol: udp  / port: 53
-            # tcp/80 -> protocol: tcp  / port: 80
-            # 80     -> protocol: tcp  / port: 80
-            # gre/   -> protocol: gre  / port: not used | enable GRE on chain
-            # icmp/  -> protocol: icmp / port: not used | enable pings on chain
+            # udp/53        -> protocol: udp  / port: 53
+            # tcp/80        -> protocol: tcp  / port: 80
+            # tcp/6800:7568 -> protocol: tcp  / port: 6800:7568 | -m multiport --dports
+            # 80            -> protocol: tcp  / port: 80
+            # gre/          -> protocol: gre  / port: not used | enable GRE on chain
+            # icmp/         -> protocol: icmp / port: not used | enable pings on chain
             ports:
               - "esp/"
               - "gre/"
