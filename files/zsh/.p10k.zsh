@@ -18,7 +18,6 @@
 
   # The list of segments shown on the left. Fill it with the most important segments.
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
-    os_icon
     context
     root_indicator
     dir                     # current directory
@@ -89,7 +88,7 @@
     # cpu_arch                # CPU architecture
     # time                    # current time
     ip                        # ip address and bandwidth usage for a specified network interface
-    public_ip                 # public IP address
+    # public_ip               # public IP address
     # proxy                   # system-wide http/https/ftp proxy
     # battery                 # internal battery
     # wifi                    # wifi speed
@@ -297,7 +296,7 @@
   #     '*'            DEFAULT  '')
   #
   # Whenever the current directory is ~/work or a subdirectory of ~/work, it gets styled with one
-  # of the following classes depending on its writability and existence: WORK, WORK_NOT_WRITABLE or
+  # of the following classes depending on its write ability and existence: WORK, WORK_NOT_WRITABLE or
   # WORK_NON_EXISTENT.
   #
   # Simply assigning classes to directories doesn't have any visible effects. It merely gives you an
@@ -406,7 +405,7 @@
       res+="${meta}:${clean}${(V)VCS_STATUS_REMOTE_BRANCH//\%/%%}"
     fi
 
-    # Display "wip" if the latest commit's summary contains "wip" or "WIP".
+    # Display "wip" if the latest commits summary contains "wip" or "WIP".
     if [[ $VCS_STATUS_COMMIT_SUMMARY == (|*[^[:alnum:]])(wip|WIP)(|[^[:alnum:]]*) ]]; then
       res+=" ${modified}wip"
     fi
@@ -478,7 +477,7 @@
 
   # Show status of repositories of these types. You can add svn and/or hg if you are
   # using them. If you do, your prompt may become slow even when your current directory
-  # isn't in an svn or hg reposotiry.
+  # isn't in an svn or hg repository.
   typeset -g POWERLEVEL9K_VCS_BACKENDS=(git)
 
   # These settings are used for repositories other than Git or when gitstatusd fails and
@@ -870,11 +869,11 @@
   typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND='yellow'
 
   # Context format when running with privileges: bold user@hostname.
-  typeset -g POWERLEVEL9K_CONTEXT_ROOT_TEMPLATE='%B%n@%M'
+  typeset -g POWERLEVEL9K_CONTEXT_ROOT_TEMPLATE='%B%n@%2m'
   # Context format when in SSH without privileges: user@hostname.
-  typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_TEMPLATE='%n@%M'
+  typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_TEMPLATE='%n@%2m'
   # Default context format (no privileges, no SSH): user@hostname.
-  typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='%n@%M'
+  typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='%n@%2m'
 
   # Don't show context unless running with privileges or in SSH.
   # Tip: Remove the next line to always show context.
