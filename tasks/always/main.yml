@@ -3,7 +3,7 @@
 
 # Check distribution and version before run tasks
 
-- name: "Common | Always | Check distribution"
+- name: "Common | Always | Check | OS"
   ansible.builtin.fail:
     msg: "Unsupported distribution {{ os.name }}"
   when:
@@ -11,7 +11,7 @@
   tags:
     - always
 
-- name: "Common | Always | Check alma/centos/oracle/rocky linux versions"
+- name: "Common | Always | Check | Version of Alma / Centos / Oracle/ Rocky linux"
   ansible.builtin.fail:
     msg: "Unsupported distribution version {{ os.name }}: {{ os.version }}"
   when:
@@ -20,7 +20,7 @@
   tags:
     - always
 
-- name: "Common | Always | Check Debian / Ubuntu codenames"
+- name: "Common | Always | Check | Codename of Debian / Ubuntu linux"
   ansible.builtin.fail:
     msg: "Unsupported distribution version {{ os.name }}: {{ os.codename }}"
   when:
@@ -31,21 +31,21 @@
 
 # Include distribution specified vars
 
-- name: "Common | Always | Include distribution vars"
+- name: "Common | Always | Include | OS specific vars"
   ansible.builtin.include_vars: "{{ os.name }}.yml"
   tags:
     - always
 
 # Install role packages dependencies
 
-- name: "Common | Always | Install packages"
+- name: "Common | Always | Install | Packages"
   ansible.builtin.include_tasks: "always/install/{{ os.pkg }}.yml"
   when:
     - common_always_packages | is_ne_list
   tags:
     - always
 
-- name: "Common | Always | Get services facts"
+- name: "Common | Always | Facts | Services"
   ansible.builtin.service_facts:
   tags:
     - always
