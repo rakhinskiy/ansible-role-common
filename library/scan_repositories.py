@@ -64,7 +64,7 @@ def apt_repositories():
                 encoding="utf-8",
             ) as r:
                 state = False
-                for line in r.readlines():
+                for line in r:
                     state = bool(re.match(r"^\s*deb(-src)?(.*)$", line))
                     if state:
                         break
