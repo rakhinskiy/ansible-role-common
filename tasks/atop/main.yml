@@ -2,7 +2,7 @@
 ---
 
 - name: "Common | Atop | Install"
-  ansible.builtin.include_tasks: "atop/install/{{ dist_pkg_mgr }}.yml"
+  ansible.builtin.include_tasks: "atop/install/{{ os.pkg }}.yml"
   tags:
     - common
     - common-atop

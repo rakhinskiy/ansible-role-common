@@ -2,7 +2,7 @@
 ---
 
 - name: "Common | Rootkit Hunter | Install"
-  ansible.builtin.include_tasks: "rkhunter/install/{{ dist_pkg_mgr }}.yml"
+  ansible.builtin.include_tasks: "rkhunter/install/{{ os.pkg }}.yml"
   tags:
     - common
     - common-rkhunter

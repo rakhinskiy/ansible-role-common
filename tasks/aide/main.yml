@@ -2,7 +2,7 @@
 ---
 
 - name: "Common | AIDE | Install"
-  ansible.builtin.include_tasks: "aide/install/{{ dist_pkg_mgr }}.yml"
+  ansible.builtin.include_tasks: "aide/install/{{ os.pkg }}.yml"
   tags:
     - common
     - common-aide

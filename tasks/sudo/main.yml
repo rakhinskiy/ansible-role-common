@@ -2,7 +2,7 @@
 ---
 
 - name: "Common | Sudo | Install"
-  ansible.builtin.include_tasks: "sudo/install/{{ dist_pkg_mgr }}.yml"
+  ansible.builtin.include_tasks: "sudo/install/{{ os.pkg }}.yml"
   tags:
     - common
     - common-sudo

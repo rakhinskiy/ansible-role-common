@@ -2,7 +2,7 @@
 ---
 
 - name: "Common | Logwatch | Install"
-  ansible.builtin.include_tasks: "logwatch/install/{{ dist_pkg_mgr }}.yml"
+  ansible.builtin.include_tasks: "logwatch/install/{{ os.pkg }}.yml"
   tags:
     - common
     - common-logwatch

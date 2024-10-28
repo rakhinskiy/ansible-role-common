@@ -5,7 +5,7 @@
 
 common_always_packages:
   - "dnf-utils"
-  - "oracle-epel-release-el{{ dist_version }}"
+  - "oracle-epel-release-el{{ os.version }}"
   - "procps-ng"
   - "python3-libselinux"
   - "python3-netaddr"

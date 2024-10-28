@@ -118,7 +118,7 @@ common_repositories_manager:
 common_repositories_add:
   # Debian / Ubuntu example:
   - name: "zabbix"
-    url: "https://repo.zabbix.com/zabbix/6.4/ubuntu {{ dist_codename }} main"
+    url: "https://repo.zabbix.com/zabbix/6.4/ubuntu {{ os.codename }} main"
     gpg: "https://repo.zabbix.com/RPM-GPG-KEY-ZABBIX-08EFA7DD"
     # deb or deb-src | default deb | ignored on dnf / yum
     type: "deb"
@@ -127,7 +127,7 @@ common_repositories_add:
   # CentOS / AlmaLinux / Rocky example
   - name: "epel"
     url: "https://download.fedoraproject.org/pub/epel/$releasever/$basearch/"
-    gpg: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ dist_version }}"
+    gpg: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ os.version }}"
     options:
       module_hotfixes: "1"
       skip_if_unavailable: "true"

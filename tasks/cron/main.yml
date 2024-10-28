@@ -2,7 +2,7 @@
 ---
 
 - name: "Common | Cron | Install"
-  ansible.builtin.include_tasks: "cron/install/{{ dist_pkg_mgr }}.yml"
+  ansible.builtin.include_tasks: "cron/install/{{ os.pkg }}.yml"
   tags:
     - common
     - common-cron

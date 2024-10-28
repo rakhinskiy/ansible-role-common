@@ -2,7 +2,7 @@
 ---
 
 - name: "Common | Smartmontools | Install"
-  ansible.builtin.include_tasks: "smartmontools/install/{{ dist_pkg_mgr }}.yml"
+  ansible.builtin.include_tasks: "smartmontools/install/{{ os.pkg }}.yml"
   tags:
     - common
     - common-smartmontools

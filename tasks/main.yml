@@ -42,7 +42,7 @@
 # 04 # Repositories
 
 - name: "Common | Repositories"
-  ansible.builtin.include_tasks: "repositories/{{ dist_pkg_mgr }}.yml"
+  ansible.builtin.include_tasks: "repositories/{{ os.pkg }}.yml"
   when:
     - common_repositories_manager | is_ne_list_dicts or
       common_repositories_add | is_ne_list_dicts or
@@ -59,7 +59,7 @@
 # 05 # Packages
 
 - name: "Common | Packages"
-  ansible.builtin.include_tasks: "packages/{{ dist_pkg_mgr }}.yml"
+  ansible.builtin.include_tasks: "packages/{{ os.pkg }}.yml"
   when:
     - common_packages | is_ne_list or
       common_packages_additional | is_ne_list
@@ -192,7 +192,7 @@
   ansible.builtin.include_tasks: "selinux/main.yml"
   when:
     - common_selinux_enable
-    - dist_name in ["alma", "centos", "oracle", "rocky"]
+    - os.name in ["alma", "centos", "oracle", "rocky"]
   tags:
     - common
     - common-selinux

@@ -2,7 +2,7 @@
 ---
 
 - name: "Common | Sysfs | Install"
-  ansible.builtin.include_tasks: "sysfs/install/{{ dist_pkg_mgr }}.yml"
+  ansible.builtin.include_tasks: "sysfs/install/{{ os.pkg }}.yml"
   tags:
     - common
     - common-sysfs
