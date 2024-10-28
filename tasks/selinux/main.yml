@@ -5,8 +5,8 @@
   ansible.builtin.dnf:
     name: "{{ common_selinux_packages }}"
     state: present
-    update_cache: no
-  become: yes
+    update_cache: false
+  become: true
   tags:
     - common
     - common-selinux
@@ -18,7 +18,7 @@
     policy: "{{ common_selinux_policy }}"
     state: "{{ common_selinux_state }}"
     update_kernel_param: "{{ common_selinux_update_kernel }}"
-  become: yes
+  become: true
   tags:
     - common
     - common-selinux
@@ -30,7 +30,7 @@
     state: "{{ item.state }}"
     persistent: "{{ item.persistent | default(no) }}"
   with_items: "{{ common_selinux_booleans }}"
-  become: yes
+  become: true
   tags:
     - common
     - common-selinux
@@ -47,7 +47,7 @@
   with_items: "{{ common_selinux_file_contexts }}"
   when:
     - item.setype is defined
-  become: yes
+  become: true
   tags:
     - common
     - common-selinux
@@ -61,7 +61,7 @@
   with_items: "{{ common_selinux_file_contexts }}"
   when:
     - item.setype is defined
-  become: yes
+  become: true
   tags:
     - common
     - common-selinux
@@ -76,7 +76,7 @@
   with_items: "{{ common_selinux_ports | default([]) }}"
   when:
     - item.setype is defined
-  become: yes
+  become: true
   tags:
     - common
     - common-selinux

@@ -10,7 +10,7 @@
     mode: "{{ item.mode | default('755') }}"
     force: "{{ item.force | default(false) }}"
     follow: "{{ item.follow | default(true) }}"
-  become: yes
+  become: true
   with_items: "{{ common_dirs }}"
   tags:
     - common

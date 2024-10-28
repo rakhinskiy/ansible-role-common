@@ -8,10 +8,10 @@
     owner: "root"
     group: "root"
     mode: "0644"
-    backup: no
+    backup: false
   notify:
     - Reload sysctl
-  become: yes
+  become: true
   tags:
     - common
     - common-sysctl

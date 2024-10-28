@@ -182,9 +182,9 @@ common_users:
     group: "deploy"       # default: item.name
     groups: ["docker"]    # default: []
     shell: "/bin/zsh"     # default: /bin/bash
-    create_home: yes      # default: yes
-    system: no            # default: no
-    append: yes           # default: no
+    create_home: true     # default: true
+    system: false         # default: false
+    append: true          # default: false
     state: present        # default: present
 
 # default: []
@@ -206,7 +206,7 @@ common_sudo:
     permissions:
       - host: "ALL"
         runas: "root"
-        nopasswd: no
+        nopasswd: false
         cmd: "ALL"
   # group example
   - name: "%wheel"
@@ -216,7 +216,7 @@ common_sudo:
     permissions:
       - host: "ALL"
         runas: "root"
-        nopasswd: yes
+        nopasswd: true
         cmd: "ALL"
 ```
 
@@ -247,8 +247,8 @@ common_dirs:
     owner: "root"
     group: "root"
     mode: "0750"
-    force: no
-    follow: yes
+    force: false
+    follow: true
 ```
 
 ```yaml
@@ -273,8 +273,8 @@ common_limits:
     limit_type: "hard"    # Required hard / soft
     limit_item: "core"    # Required
     value: "100000"       # Required
-    use_min: no           # default: no | Use min between exist limits.conf and new values
-    use_max: yes          # default: no | Use max between exist limits.conf and new values
+    use_min: false        # default: false | Use min between exist limits.conf and new values
+    use_max: true         # default: false | Use max between exist limits.conf and new values
     comment: ""
 ```
 
@@ -313,8 +313,8 @@ common_sysfs:
 ```yaml
 # 15 # Tuned
 
-# default: no
-common_tuned_enable: yes
+# default: false
+common_tuned_enabled: true
 
 # default: "profile-custom"
 common_tuned_profile_name: "profile-kubernetes"
@@ -371,7 +371,7 @@ common_firewall_ipset_zones:
 # default input / forward policy is DROP
 # default zone chains policy is RETURN
 common_firewall:
-  tcp_mss: yes
+  tcp_mss: true
   masquerade:
     interfaces:
       - "eth0"
@@ -472,17 +472,17 @@ common_firewall:
     nat: # *nat table | first rules
       - "-A POSTROUTING -o eht0 -j MASQUERADE"
 
-# default: no
-common_firewall_allow_restart_docker: yes
-# default: no
-common_firewall_allow_restart_kube_proxy: yes
+# default: false
+common_firewall_allow_restart_docker: true
+# default: false
+common_firewall_allow_restart_kube_proxy: true
 ```
 
 ```yaml
 # 17 # SELinux
 
-# default: no | yes only run selinux tasks
-common_selinux_enable: yes
+# default: false | true only run selinux tasks
+common_selinux_enabled: true
 
 # default: targeted | ["targeted", "minimum", "mls"]
 common_selinux_policy: "targeted"
@@ -490,18 +490,18 @@ common_selinux_policy: "targeted"
 # default: enforcing | ["disabled", "enforcing", "permissive"]
 common_selinux_state: "enforcing"
 
-# default: no
-common_selinux_update_kernel: no
+# default: false
+common_selinux_update_kernel: false
 
 # default: []
 # https://docs.ansible.com/ansible/latest/collections/ansible/posix/seboolean_module.html
 common_selinux_booleans:
   - name: "httpd_can_network_connect"
-    state: yes
-    persistent: yes
+    state: true
+    persistent: true
   - name: "httpd_use_nfs"
-    state: yes
-    persistent: yes
+    state: true
+    persistent: true
 
 # default: []
 # https://docs.ansible.com/ansible/latest/collections/community/general/sefcontext_module.html
@@ -532,8 +532,8 @@ common_selinux_ports:
 # don't forget to set common_aide_db_new
 # and common_aide_db if not standard path used
 
-# default: no
-common_aide_enable: yes
+# default: false
+common_aide_enabled: true
 
 # default: not defined | not required
 common_aide_config_file: "{{ inventory_dir }}/.files/{{ ansible_os_family | lower }}/aide.conf"
@@ -551,8 +551,8 @@ common_aide_db: "/var/lib/aide/aide.db.gz"
 ```yaml
 # 19 # Atop
 
-# default: no
-common_atop_enable: yes
+# default: false
+common_atop_enabled: true
 
 # default: []
 common_atop_options:
@@ -572,7 +572,7 @@ common_atop_options:
 # Before enable auditd, please open templates/auditd/audit.rules.j2
 # Before enable `common_auditd_rules_predefined` READ RULES IN TEMPLATE
 
-common_auditd_enable: yes
+common_auditd_enabled: true
 
 # default: []
 # Your custom rules
@@ -582,11 +582,11 @@ common_auditd_rules:
   - '-a always,exit -F arch=b32 -S clone -F a0&0x7C020000 -F key=container-create'
   - '-a always,exit -F arch=b64 -S clone -F a0&0x7C020000 -F key=container-create'
 
-# default: no
-common_auditd_rules_predefined: no
+# default: false
+common_auditd_rules_predefined: false
 
-# default: no | After enable immutable, you need to reboot for apply new rules
-common_auditd_rules_immutable: no
+# default: false | After enable immutable, you need to reboot for apply new rules
+common_auditd_rules_immutable: false
 
 common_auditd_rules_buffers: "8192"
 common_auditd_rules_backlog_wait_time: "60000"
@@ -595,7 +595,7 @@ common_auditd_rules_backlog_wait_time: "60000"
 ```yaml
 # 21 # Chrony
 
-common_chrony_enable: no
+common_chrony_enabled: false
 
 common_chrony_allows:
   - "10/8"
@@ -604,8 +604,8 @@ common_chrony_allows:
 common_chrony_command_key: ~
 common_chrony_dump_dir: "/var/lib/chrony"
 common_chrony_drift_file: "{{ common_chrony_dump_dir }}/chrony.drift"
-common_chrony_dump_on_exit: yes
-common_chrony_generate_command_key: no
+common_chrony_dump_on_exit: true
+common_chrony_generate_command_key: false
 common_chrony_hw_clock_file: ~
 common_chrony_hw_timestamp: ~
 common_chrony_keyfile: "/etc/chrony/chrony.keys"
@@ -621,12 +621,12 @@ common_chrony_mail_on_change: ~
 common_chrony_make_step: "1.0 3"
 common_chrony_max_update_skew: "100.0"
 common_chrony_min_sources: ~
-common_chrony_no_client_log: yes
+common_chrony_no_client_log: true
 common_chrony_pools:
   - "pool.ntp.org iburst maxsources 5"
 common_chrony_rtc_file: ~
-common_chrony_rtc_on_utc: yes
-common_chrony_rtc_sync: yes
+common_chrony_rtc_on_utc: true
+common_chrony_rtc_sync: true
 common_chrony_servers: ~
 common_chrony_stratum_weight: "0.001"
 ```
@@ -651,14 +651,14 @@ common_cron_tasks:
     month: "*"                    # default: *
     weekday: "*"                  # default: *
     user: "root"                  # default: root
-    disabled: "no"                # default: no
+    disabled: false               # default: false
 ```
 
 ```yaml
 # 23 # Logwatch
 
-# default: no
-common_logwatch_enable: yes
+# default: false
+common_logwatch_enabled: true
 
 common_logwatch_config: "/etc/logwatch/conf/logwatch.conf"
 common_logwatch_packages:
@@ -689,8 +689,8 @@ common_logwatch_hostlimit: ~
 ```yaml
 # 24 # NSCD
 
-# default: no
-common_nscd_enable: yes
+# default: false
+common_nscd_enabled: true
 
 common_nscd_logfile: "/var/log/nscd.log"
 common_nscd_threads: ~
@@ -752,7 +752,7 @@ common_nscd_netgroup_max_db_size: "33554432"
 ```yaml
 # 25 # RKHunter
 
-common_rkhunter_enable: yes
+common_rkhunter_enabled: true
 common_rkhunter_options:
   - option: "SCRIPTWHITELIST"
     value: "/usr/sbin/adduser"
@@ -765,9 +765,9 @@ common_rkhunter_options:
 ```yaml
 # 26 # Smartmontools
 
-# default: no
+# default: false
 # Enable on bare-metal servers
-common_smartmontools_enable: "{{ ansible_virtualization_role != 'guest' }}"
+common_smartmontools_enabled: "{{ ansible_virtualization_role != 'guest' }}"
 common_smartmontools_daemon_options:
   - option: "smartd_opts"
     value: "-q never --capabilities"

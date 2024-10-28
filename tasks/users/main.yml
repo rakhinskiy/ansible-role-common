@@ -21,7 +21,7 @@
     name: "{{ item.group | default(item.name) }}"
     state: "present"
   with_items: "{{ _common_users_ }}"
-  become: yes
+  become: true
   tags:
     - common
     - common-users
@@ -37,7 +37,7 @@
     append: "{{ item.append | default('false') }}"
     state: "{{ item.state | default('present') }}"
   with_items: "{{ _common_users_ }}"
-  become: yes
+  become: true
   tags:
     - common
     - common-users

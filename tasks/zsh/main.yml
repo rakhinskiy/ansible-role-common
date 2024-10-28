@@ -30,10 +30,10 @@
     repo: "https://github.com/ohmyzsh/ohmyzsh.git"
     dest: "~{{ item.user }}/.oh-my-zsh"
     version: "{{ common_zsh_omz_version }}"
-    single_branch: yes
-    clone: yes
-    update: no
-  become: yes
+    single_branch: true
+    clone: true
+    update: false
+  become: true
   become_user: "{{ item.user }}"
   with_items: "{{ _common_zsh_ }}"
   tags:
@@ -46,11 +46,11 @@
     repo: "https://github.com/romkatv/powerlevel10k.git"
     dest: "~{{ item.user }}/.oh-my-zsh/custom/themes/powerlevel10k"
     version: "{{ common_zsh_p10k_version }}"
-    single_branch: yes
+    single_branch: true
     depth: 1
-    clone: yes
-    update: no
-  become: yes
+    clone: true
+    update: false
+  become: true
   become_user: "{{ item.user }}"
   with_items: "{{ _common_zsh_ }}"
   tags:
@@ -63,11 +63,11 @@
     repo: "https://github.com/zsh-users/zsh-autosuggestions.git"
     dest: "~{{ item.user }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
     version: "v{{ common_zsh_autosuggestions_version }}"
-    single_branch: yes
+    single_branch: true
     depth: 1
-    clone: yes
-    update: no
-  become: yes
+    clone: true
+    update: false
+  become: true
   become_user: "{{ item.user }}"
   with_items: "{{ _common_zsh_ }}"
   tags:
@@ -80,11 +80,11 @@
     repo: "https://github.com/zsh-users/zsh-syntax-highlighting.git"
     dest: "~{{ item.user }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
     version: "{{ common_zsh_syntax_highlighting_version }}"
-    single_branch: yes
+    single_branch: true
     depth: 1
-    clone: yes
-    update: no
-  become: yes
+    clone: true
+    update: false
+  become: true
   become_user: "{{ item.user }}"
   with_items: "{{ _common_zsh_ }}"
   tags:
@@ -98,8 +98,8 @@
     dest: "~{{ item.user }}/.zshrc"
     owner: "{{ item.user }}"
     mode: "0644"
-    backup: no
-  become: yes
+    backup: false
+  become: true
   become_user: "{{ item.user }}"
   with_items: "{{ _common_zsh_ }}"
   tags:
@@ -113,8 +113,8 @@
     dest: "~{{ item.user }}/.p10k.zsh"
     owner: "{{ item.user }}"
     mode: "0644"
-    backup: no
-  become: yes
+    backup: false
+  become: true
   become_user: "{{ item.user }}"
   with_items: "{{ _common_zsh_ }}"
   tags:
@@ -128,8 +128,8 @@
     state: "directory"
     owner: "{{ item.user }}"
     mode: "0700"
-    follow: yes
-  become: yes
+    follow: true
+  become: true
   become_user: "{{ item.user }}"
   with_items: "{{ _common_zsh_ }}"
   tags:
@@ -143,8 +143,8 @@
     dest: "~{{ item.user }}/.config/zsh/aliases.zsh"
     owner: "{{ item.user }}"
     mode: "0600"
-    backup: no
-  become: yes
+    backup: false
+  become: true
   become_user: "{{ item.user }}"
   with_items: "{{ _common_zsh_ }}"
   tags:

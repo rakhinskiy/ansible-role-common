@@ -4,7 +4,7 @@
 - name: "Common | Timezone | Configure"
   community.general.timezone:
     name: "{{ common_timezone }}"
-  become: yes
+  become: true
   tags:
     - common
     - common-timezone

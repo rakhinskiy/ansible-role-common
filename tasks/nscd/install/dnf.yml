@@ -5,8 +5,8 @@
   ansible.builtin.dnf:
     name: "{{ common_nscd_packages }}"
     state: present
-    update_cache: no
-  become: yes
+    update_cache: false
+  become: true
   tags:
     - common
     - common-nscd

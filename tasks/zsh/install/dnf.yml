@@ -8,8 +8,8 @@
       - "tar"
       - "zsh"
     state: "present"
-    update_cache: no
-  become: yes
+    update_cache: false
+  become: true
   tags:
     - common
     - common-zsh

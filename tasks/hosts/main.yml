@@ -8,8 +8,8 @@
     owner: "root"
     group: "root"
     mode: "0644"
-    backup: no
-  become: yes
+    backup: false
+  become: true
   tags:
     - common
     - common-hosts

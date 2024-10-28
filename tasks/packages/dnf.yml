@@ -20,10 +20,10 @@
   ansible.builtin.dnf:
     name: "{{ _common_packages_ }}"
     state: present
-    update_cache: no
+    update_cache: false
   when:
     - _common_packages_ | is_ne_list
-  become: yes
+  become: true
   tags:
     - common
     - common-packages

@@ -5,13 +5,13 @@
   ansible.builtin.apt:
     name: "{{ common_rkhunter_packages }}"
     state: present
-    update_cache: yes
-    force_apt_get: yes
+    update_cache: true
+    force_apt_get: true
     cache_valid_time: 3600
   notify:
     - Update rkhunter
     - Prop update rkhunter
-  become: yes
+  become: true
   tags:
     - common
     - common-rkhunter

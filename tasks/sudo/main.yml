@@ -17,7 +17,7 @@
   when:
     - item.name | default('') | is_ne_str
   with_items: "{{ common_sudo }}"
-  become: yes
+  become: true
   tags:
     - common
     - common-sudo

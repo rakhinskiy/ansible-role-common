@@ -5,11 +5,11 @@
   ansible.builtin.dnf:
     name: "{{ common_rkhunter_packages }}"
     state: present
-    update_cache: no
+    update_cache: false
   notify:
     - Update rkhunter
     - Prop update rkhunter
-  become: yes
+  become: true
   tags:
     - common
     - common-rkhunter

@@ -42,7 +42,7 @@ common_locale: "en_US.UTF-8"
 common_users:
   - name: "molecule"
     shell: "/bin/zsh"
-    append: yes
+    append: true
     state: "present"
 
 # 08 # Sudo
@@ -60,7 +60,7 @@ common_sudo:
     permissions:
       - host: "ALL"
         runas: "ALL"
-        nopasswd: yes
+        nopasswd: true
         cmd: "ALL"
 
 # 09 # SSH
@@ -73,8 +73,8 @@ common_dirs:
     owner: "root"
     group: "root"
     mode: "0750"
-    force: no
-    follow: yes
+    force: false
+    follow: true
 
 # 11 # Environments
 
@@ -95,12 +95,12 @@ common_limits:
     limit_type: "soft"
     limit_item: "nofile"
     value: "65536"
-    use_max: yes
+    use_max: true
   - domain: "*"
     limit_type: "hard"
     limit_item: "nofile"
     value: "65536"
-    use_max: yes
+    use_max: true
 
 # 13 # Sysctl
 
@@ -118,7 +118,7 @@ common_sysfs:
 
 # 15 # Tuned
 
-common_tuned_enable: yes
+common_tuned_enabled: true
 common_tuned_profile_name: "molecule"
 common_tuned_profile_config:
   - name: "main"
@@ -144,12 +144,12 @@ common_tuned_profile_config:
 
 # 18 # AIDE
 
-common_aide_enable: yes
+common_aide_enabled: true
 common_aide_config_file: "{{ inventory_dir }}/.files/{{ ansible_os_family | lower }}.aide.conf"
 
 # 19 # Atop
 
-common_atop_enable: yes
+common_atop_enabled: true
 common_atop_options:
   - option: "LOGINTERVAL"
     value: "5"
@@ -158,11 +158,11 @@ common_atop_options:
 
 # 20 # Auditd
 
-common_auditd_enable: yes
+common_auditd_enabled: true
 
 # 21 # Chrony
 
-common_chrony_enable: yes
+common_chrony_enabled: true
 
 # 22 # Cron
 
@@ -174,18 +174,18 @@ common_cron_environments:
 
 # 23 # Logwatch
 
-common_logwatch_enable: yes
+common_logwatch_enabled: true
 common_logwatch_mail_to: "molecule@example.com"
 common_logwatch_mail_from: "logwatch@{{ inventory_hostname }}"
 common_logwatch_hostname: "{{ inventory_hostname }}"
 
 # 24 # NSCD
 
-common_nscd_enable: yes
+common_nscd_enabled: true
 
 # 25 # Rootkit Hunter
 
-common_rkhunter_enable: yes
+common_rkhunter_enabled: true
 
 # 26 # Smartmontools
 

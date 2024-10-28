@@ -10,7 +10,7 @@
 
 - name: "Common | Cron | Environments"
   ansible.builtin.cron:
-    env: yes
+    env: true
     name: "{{ item.1.name }}"
     value: "{{ item.1.value }}"
     user: "{{ item.0.user }}"
@@ -22,7 +22,7 @@
     - vars
   notify:
     - Restart cron
-  become: yes
+  become: true
   tags:
     - common
     - common-cron
@@ -44,7 +44,7 @@
     - common_cron_tasks | is_ne_list
   notify:
     - Restart cron
-  become: yes
+  become: true
   tags:
     - common
     - common-cron
@@ -54,8 +54,8 @@
   ansible.builtin.service:
     name: "{{ common_cron_service }}"
     state: "started"
-    enabled: yes
-  become: yes
+    enabled: true
+  become: true
   tags:
     - common
     - common-cron

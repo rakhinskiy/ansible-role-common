@@ -15,9 +15,9 @@
     owner: "{{ common_chrony_user }}"
     group: "{{ common_chrony_group }}"
     mode: "0750"
-    force: no
-    follow: yes
-  become: yes
+    force: false
+    follow: true
+  become: true
   tags:
     - common
     - common-chrony
@@ -30,10 +30,10 @@
     owner: "root"
     group: "root"
     mode: "0640"
-    backup: no
+    backup: false
   notify:
     - Restart chrony
-  become: yes
+  become: true
   tags:
     - common
     - common-chrony
@@ -43,7 +43,7 @@
   ansible.builtin.service:
     name: "{{ item }}"
     state: "stopped"
-    enabled: no
+    enabled: false
   when:
     - item in ansible_facts.services.keys() | list
     - ansible_facts.services[item].status == 'loaded'
@@ -51,7 +51,7 @@
     - "ntp.service"
     - "ntpd.service"
     - "systemd-timesyncd.service"
-  become: yes
+  become: true
   tags:
     - common
     - common-chrony
@@ -61,8 +61,8 @@
   ansible.builtin.service:
     name: "{{ common_chrony_service }}"
     state: "started"
-    enabled: yes
-  become: yes
+    enabled: true
+  become: true
   tags:
     - common
     - common-chrony

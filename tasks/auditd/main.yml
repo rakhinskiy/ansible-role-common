@@ -15,10 +15,10 @@
     owner: "root"
     group: "root"
     mode: "0600"
-    backup: no
+    backup: false
   notify:
     - Restart auditd
-  become: yes
+  become: true
   tags:
     - common
     - common-auditd
@@ -28,8 +28,8 @@
   ansible.builtin.service:
     name: "{{ common_auditd_service }}"
     state: "started"
-    enabled: yes
-  become: yes
+    enabled: true
+  become: true
   tags:
     - common
     - common-auditd

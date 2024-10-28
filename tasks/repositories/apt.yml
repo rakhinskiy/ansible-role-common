@@ -8,10 +8,10 @@
     owner: "root"
     group: "root"
     mode: "0644"
-    backup: no
+    backup: false
   when:
     - common_repositories_manager | is_ne_list_dicts
-  become: yes
+  become: true
   tags:
     - common
     - common-repositories
@@ -53,13 +53,13 @@
     owner: "root"
     group: "root"
     mode: "0644"
-    backup: no
+    backup: false
   with_items: "{{ common_repositories_add }}"
   when:
     - common_repositories_add | is_ne_list_dicts
   notify:
     - Update apt cache
-  become: yes
+  become: true
   tags:
     - common
     - common-repositories
@@ -70,7 +70,7 @@
   when:
     - common_repositories_enable | is_ne_list or
       common_repositories_disable | is_ne_list
-  become: yes
+  become: true
   tags:
     - common
     - common-repositories
@@ -90,7 +90,7 @@
     - not item.state
   notify:
     - Update apt cache
-  become: yes
+  become: true
   tags:
     - common
     - common-repositories
@@ -109,7 +109,7 @@
     - item.state
   notify:
     - Update apt cache
-  become: yes
+  become: true
   tags:
     - common
     - common-repositories

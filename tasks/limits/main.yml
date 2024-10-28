@@ -11,7 +11,7 @@
     use_max: "{{ item.use_max | default(false) }}"
     comment: "{{ item.comment | default('') }}"
   with_items: "{{ common_limits }}"
-  become: yes
+  become: true
   tags:
     - common
     - common-limits
